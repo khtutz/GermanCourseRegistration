@@ -1,0 +1,132 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GermanCourseRegistration.Web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/GermanCourseRegistration.Web.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        .custom-toggler.navbar-toggler {
+            border-color: rgb(255,102,203);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm bg-secondary mb-3">
+            <div class="container-fluid">
+                <!-- Logo -->
+                <a class="navbar-brand"
+                   asp-controller="Home"
+                   asp-action="Index">
+                    <i class="bi bi-journal-richtext text-info"></i>
+                </a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainnavbar">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="mainnavbar">
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <ul class="navbar-nav me-auto">
+                            <!-- Admin Actions -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white"
+                                href="#"
+                                role="button"
+                                data-bs-toggle="dropdown">
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item"
+                                        asp-controller="AdminCourse"
+                                        asp-action="List">
+                                            Courses
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                        asp-controller="AdminCourseSchedule"
+                                        asp-action="List">
+                                            Course Schedules
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                        asp-controller="AdminCourseMaterial"
+                                        asp-action="List">
+                                            Course Materials
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="AdminUser"
+                                           asp-action="List">
+                                            Users
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <span class="me-auto"></span>
+                    }
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <div class="me-3 text-light">
+                            @User?.Identity?.Name
+                        </div>
+                        <a class="btn btn-info mx-1 text-dark"
+                           asp-area=""
+                           asp-controller="Account"
+                           asp-action="Logout">
+                            <i class="bi bi-door-closed"></i> Logout
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-info mx-1 text-dark"
+                           asp-area=""
+                           asp-controller="Account"
+                           asp-action="Login">
+                            <i class="bi bi-door-open"></i> Login
+                        </a>
+                        <a class="btn btn-info mx-1 text-dark"
+                           asp-area=""
+                           asp-controller="Account"
+                           asp-action="Register">
+                            <i class="bi bi-pen"></i> Register
+                        </a>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - GermanCourseRegistration.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

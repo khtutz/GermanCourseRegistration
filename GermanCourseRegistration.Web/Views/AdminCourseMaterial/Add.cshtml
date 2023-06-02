@@ -1,0 +1,58 @@
+﻿@model GermanCourseRegistration.Web.Models.ViewModels.CourseMaterialView
+
+<div class="container">
+    <form method="post">
+        <input type="hidden" asp-for="Id" />
+        <!-- Name and Category -->
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" 
+                       id="name"
+                       class="form-control"
+                       asp-for="Name"
+                       required />
+            </div>
+            <div class="col-sm-6">
+                <label for="category" class="form-label">Category</label>
+                <select class="form-select" 
+                        id="category" 
+                        name="category"
+                        asp-items="@Model.AvailableCategories"
+                        asp-for="Category"
+                        required >
+                </select>
+            </div>
+        </div>
+
+        <!-- Description and Price -->
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control"
+                          rows="4"
+                          id="description"
+                          name="description"
+                          asp-for="Description"></textarea>
+            </div>
+            <div class="col-sm-6">
+                <label for="price" class="form-label">Price ($)</label>
+                <input type="number"
+                       step="any"
+                       min="0"
+                       value="0"
+                       class="form-control" 
+                       id="price" 
+                       asp-for="Price"
+                       required />
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <div class="float-end">
+            <button type="submit" class="btn btn-info mx-1">
+                <i class="bi bi-box-arrow-down"></i> Save
+            </button>
+        </div>
+    </form>
+</div>

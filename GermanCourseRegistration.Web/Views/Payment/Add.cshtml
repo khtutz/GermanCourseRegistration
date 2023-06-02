@@ -1,0 +1,111 @@
+﻿@model GermanCourseRegistration.Web.Models.ViewModels.PaymentView
+
+<div class="container mb-3">
+    <p>Personal Information > Course Selection > <b>Payment</b></p>
+    <hr>
+</div>
+
+<div class="container mb-3">
+    <div class="d-flex">
+        <h5 class="me-auto">Total</h5>
+        <h5>$ @Model.Amount.ToString("0.00")</h5>
+    </div>
+</div>
+
+<div class="container">
+    <form method="post">
+        <input type="hidden" asp-for="RegistrationId" />
+        <!-- Payment Methods -->
+        <div class="mb-5">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#card-payment">Card Payment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#other-payment">Other Payment</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="card-payment" class="container tab-pane active">
+                    <br>
+                    <h3>Credit/Debit Card</h3>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Card Type</label>
+                        <div class="mt-1">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="visacard" name="cardtype" value="visa">
+                                <label class="form-check-label" for="visacard">VISA</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="mastercard" name="cardtype" value="master">
+                                <label class="form-check-label" for="mastercard">MasterCard</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="americanexpress" name="cardtype"
+                                       value="americanexpress">
+                                <label class="form-check-label" for="americanexpress">American Express</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cardnumber" class="form-label">Card Number</label>
+                        <input type="number" class="form-control" id="cardnumber" />
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <label for="expirationmonth" class="form-label">Expiration Month</label>
+                            <select class="form-select" id="expirationmonth" name="expirationmonth">
+                                <option value="January">January</option>
+                                <option value="February">February</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
+                                <option value="May">May</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="expirationyear" class="form-label">Expiration Year</label>
+                            <select class="form-select" id="expirationyear" name="expirationyear">
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="csc" class="form-label">CSC</label>
+                            <input type="number" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div id="other-payment" class="container tab-pane fade">
+                    <br>
+                    <h3>Other Payment</h3>
+                    <div class="container">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back and Register Buttons -->
+        <div class="float-end">
+            <a class="btn btn-secondary mx-1">
+                <i class="bi bi-backspace"></i> Back
+            </a>
+            <button type="submit"
+                    class="btn btn-info mx-1">
+                <i class="bi bi-file-arrow-up"></i> Pay and Register
+            </button>
+        </div>
+    </form>
+</div>

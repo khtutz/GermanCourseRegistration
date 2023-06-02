@@ -1,0 +1,53 @@
+﻿@model GermanCourseRegistration.Web.Models.ViewModels.UserView
+
+<div class="container mb-3 d-flex justify-content-center">
+    <h3>User List</h3>
+</div>
+
+<div class="container mb-3 d-flex justify-content-end">
+    <a class="btn btn-info ms-2"
+       asp-area=""
+       asp-controller="AdminUser"
+       asp-action="Add">
+        <i class="bi bi-plus"></i> Add a new user
+    </a>
+</div>
+
+<div class="container mb-3">
+    @if (Model.Users != null && Model.Users.Any())
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-light">
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.Username</td>
+                        <td>@user.EmailAddress</td>
+                        <td>
+                            <a class="btn btn-secondary me-2"
+                               asp-controller="AdminUser"
+                               asp-action="Edit"
+                               asp-route-id="@user.Id">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No users found!</p>
+    }
+</div>

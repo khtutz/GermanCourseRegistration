@@ -1,0 +1,113 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = GermanCourseRegistration.Web
+build_property.RootNamespace = GermanCourseRegistration.Web
+build_property.ProjectDir = C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Web\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Web
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/AdminCourseMaterial/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Db3Vyc2VNYXRlcmlhbFxBZGQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/AdminCourseMaterial/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Db3Vyc2VNYXRlcmlhbFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/AdminCourseMaterial/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Db3Vyc2VNYXRlcmlhbFxMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/AdminCourseSchedule/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Db3Vyc2VTY2hlZHVsZVxBZGQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/AdminCourseSchedule/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Db3Vyc2VTY2hlZHVsZVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/AdminCourseSchedule/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Db3Vyc2VTY2hlZHVsZVxMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/AdminCourse/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Db3Vyc2VcQWRkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/AdminCourse/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Db3Vyc2VcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/AdminCourse/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Db3Vyc2VcTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/AdminUser/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Vc2VyXEFkZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/AdminUser/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Vc2VyXExpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/CourseSelection/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlU2VsZWN0aW9uXEFkZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/Payment/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxBZGQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/StudentPersonalInformation/Add.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFBlcnNvbmFsSW5mb3JtYXRpb25cQWRkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/khtutz/coding/csharp/pp/GermanCourseRegistration/GermanCourseRegistration.Web/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-3x2jx2tpbs

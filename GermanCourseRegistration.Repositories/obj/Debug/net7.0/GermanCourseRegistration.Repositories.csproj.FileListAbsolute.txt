@@ -1,0 +1,17 @@
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\bin\Debug\net7.0\GermanCourseRegistration.Repositories.deps.json
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\bin\Debug\net7.0\GermanCourseRegistration.Repositories.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\bin\Debug\net7.0\GermanCourseRegistration.Repositories.pdb
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\bin\Debug\net7.0\GermanCourseRegistration.DataContext.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\bin\Debug\net7.0\GermanCourseRegistration.EntityModels.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\bin\Debug\net7.0\GermanCourseRegistration.DataContext.pdb
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\bin\Debug\net7.0\GermanCourseRegistration.EntityModels.pdb
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\GermanCourseRegistration.Repositories.csproj.AssemblyReference.cache
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\GermanCourseRegistration.Repositories.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\GermanCourseRegistration.Repositories.AssemblyInfoInputs.cache
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\GermanCourseRegistration.Repositories.AssemblyInfo.cs
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\GermanCourseRegistration.Repositories.csproj.CoreCompileInputs.cache
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\GermanCourseRegistration.Repositories.csproj.CopyComplete
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\GermanCourseRegistration.Repositories.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\refint\GermanCourseRegistration.Repositories.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\GermanCourseRegistration.Repositories.pdb
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\ref\GermanCourseRegistration.Repositories.dll

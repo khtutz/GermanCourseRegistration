@@ -1,0 +1,119 @@
+﻿@model GermanCourseRegistration.Web.Models.ViewModels.CourseRegistrationView
+
+<div class="container my-3">
+    <p>Personal Information > <b>Course Selection</b> > Payment</p>
+    <hr>
+</div>
+
+<div class="container">
+    <form method="post">
+        <!-- Course Schedule (Offered Coures and Course Materials) View -->
+        <div class="row mb-3">
+            
+            @if (Model.CourseSchedules != null && Model.CourseSchedules.Any())
+            {
+                <h6>Please select the course</h6>
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table-light">
+                            <th>Course Level</th>
+                            <th>Course Name</th>
+                            <th>Cost</th>
+                            <th>Class Type</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var schedule in Model.CourseSchedules)
+                        {
+                            <tr>
+                                <td>
+                                    @if (schedule.Course != null)
+                                    {
+                                        @(schedule.Course.Level.ToString() +
+                                            "." +
+                                            schedule.Course.Part.ToString())
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td>@schedule.Name</td>
+                                <td>@("$" + schedule.Cost.ToString())</td>
+                                <td>@schedule.ClassType</td>
+                                <td>@schedule.StartDate</td>
+                                <td>@schedule.EndDate</td>
+                                <td>
+                                    <!-- To Select an offered Course (only one course allowed) -->
+                                    <input type="radio"
+                                           name="SelectedScheduleId"
+                                           value="@schedule.Id" />
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>There are no courses offering at the moment.</p>
+            }
+        </div>
+
+        <!-- Course Materials -->
+        <div class="row mb-3">
+            @if (Model.CourseMaterials != null && Model.CourseMaterials.Any())
+            {
+                <h6>Please select the course material</h6>
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table-light">
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Price ($)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var courseMaterial in Model.CourseMaterials)
+                        {
+                            <tr>
+                                <td>@courseMaterial.Name</td>
+                                <td>@courseMaterial.Category</td>
+                                <td>@(courseMaterial.Description ?? "-")</td>
+                                <td>@courseMaterial.Price</td>
+                                <td>
+                                    <!-- To select course items to purchase -->
+                                    <input type="checkbox"
+                                           name="SelectedMaterialIds"
+                                           value="@courseMaterial.Id" />
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No course materials found!</p>
+            }
+        </div>
+
+        <!-- Back and Continue Buttons -->
+        <div class="float-end">
+            <a class="btn btn-secondary mx-1">
+                <i class="bi bi-backspace"></i> Back
+            </a>
+            <button type="submit" 
+                    class="btn btn-info mx-1">
+                Save and Continue <i class="bi bi-forward"></i>
+            </button>
+        </div>
+    </form>
+</div>

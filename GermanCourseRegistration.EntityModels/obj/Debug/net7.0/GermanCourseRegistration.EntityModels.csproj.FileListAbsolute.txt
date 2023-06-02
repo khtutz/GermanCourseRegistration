@@ -1,0 +1,12 @@
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\bin\Debug\net7.0\GermanCourseRegistration.EntityModels.deps.json
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\bin\Debug\net7.0\GermanCourseRegistration.EntityModels.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\bin\Debug\net7.0\GermanCourseRegistration.EntityModels.pdb
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\obj\Debug\net7.0\GermanCourseRegistration.EntityModels.csproj.AssemblyReference.cache
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\obj\Debug\net7.0\GermanCourseRegistration.EntityModels.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\obj\Debug\net7.0\GermanCourseRegistration.EntityModels.AssemblyInfoInputs.cache
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\obj\Debug\net7.0\GermanCourseRegistration.EntityModels.AssemblyInfo.cs
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\obj\Debug\net7.0\GermanCourseRegistration.EntityModels.csproj.CoreCompileInputs.cache
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\obj\Debug\net7.0\GermanCourseRegistration.EntityModels.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\obj\Debug\net7.0\refint\GermanCourseRegistration.EntityModels.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\obj\Debug\net7.0\GermanCourseRegistration.EntityModels.pdb
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.EntityModels\obj\Debug\net7.0\ref\GermanCourseRegistration.EntityModels.dll

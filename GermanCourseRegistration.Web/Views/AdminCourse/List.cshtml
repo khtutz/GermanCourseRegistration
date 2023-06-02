@@ -1,0 +1,52 @@
+﻿@model List<GermanCourseRegistration.Web.Models.ViewModels.CourseView>
+
+<div class="container mb-3 d-flex justify-content-center">
+    <h3>Course List</h3>
+</div>
+
+<div class="container mb-3 d-flex justify-content-end">
+    <a class="btn btn-info ms-2"
+       asp-area=""
+       asp-controller="AdminCourse"
+       asp-action="Add">
+        <i class="bi bi-plus"></i> Add a new course
+    </a>
+</div>
+
+<div class="container mb-3">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-light">
+                    <th>Course Level</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Model)
+                {
+                    <tr>
+                        <td>@(course.Level.ToString() + "." + @course.Part.ToString())</td>
+                        <td>@(course.Description ?? "-")</td>
+                        <td>
+                            <a class="btn btn-secondary me-2"
+                               asp-area=""
+                               asp-controller="AdminCourse"
+                               asp-action="Edit"
+                               asp-route-id="@course.Id">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No courses found!</p>
+    }
+</div>

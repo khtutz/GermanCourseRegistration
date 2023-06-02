@@ -1,0 +1,29 @@
+﻿@model GermanCourseRegistration.Web.Models.ViewModels.RegisterView;
+
+<div class="container mb-3">
+    <form method="post">
+        <div class="mb-3">
+            <label for="usename" class="form-label">Username</label>
+            <input type="usename" class="form-control" id="usename" asp-for="Username" requried />
+            <span class="text-danger" asp-validation-for="Username"></span>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" asp-for="Email" required />
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                asp-for="Password"
+                required minlength="6" />
+            <span class="text-danger" asp-validation-for="Password"></span>
+        </div>
+        <button type="submit" class="btn btn-info mx-1">
+            <i class="bi bi-pen"></i> Register
+        </button>
+    </form>
+</div>

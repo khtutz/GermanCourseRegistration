@@ -1,0 +1,129 @@
+﻿@model GermanCourseRegistration.Web.Models.ViewModels.CourseScheduleView
+
+<div class="container">
+    <form method="post">
+        <!-- Course Level and Course Name -->
+        <div class="row mb-3">
+            <div class="col-sm-4">
+                <label for="courselevel" class="form-label">Course Level</label>
+                <select class="form-select"
+                        asp-items="@Model.AvailableCourseLevels"
+                        asp-for="Course!.Id"
+                        required>
+                </select>
+            </div>
+            <div class="col-sm-8">
+                <label for="coursename" class="form-label">Course Name</label>
+                <input type="text" 
+                       class="form-control" 
+                       id="coursename"
+                       asp-for="Name"
+                       required/>
+            </div>
+        </div>
+
+        <!-- Class Type and Cost -->
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <label for="classtype" class="form-label">Class Type</label>
+                <select class="form-select" 
+                        asp-items="@Model.AvailableClassTypes"
+                        asp-for="ClassType"
+                        required>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <label for="cost" class="form-label">Cost ($)</label>
+                <input type="number" 
+                       step="any"
+                       min="0"
+                       class="form-control" 
+                       asp-for="Cost"
+                       required/>
+            </div>
+        </div>
+
+        <!-- Start Date and End Date -->
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date"
+                       id="startDate"
+                       class="form-control"
+                       asp-for="StartDate"
+                       required/>
+            </div>
+            <div class="col-sm-6">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date"
+                       id="endDate"
+                       class="form-control"
+                       asp-for="EndDate"
+                       required/>
+            </div>
+        </div>
+
+        <!-- Start Time and End Time -->
+        <div class="row mb-3">
+            <div class="col-sm-3">
+                <label for="startTimeHour" class="form-label">Start Time Hr</label>
+                <input type="number"
+                       id="startTimeHour"
+                       class="form-control"
+                       asp-for="Timetable.StartTimeHour"
+                       required/>
+            </div>
+            <div class="col-sm-3">
+                <label for="startTimeMinute" class="form-label">Start Time Min</label>
+                <input type="number"
+                       id="startTimeMinute"
+                       class="form-control"
+                       asp-for="Timetable.StartTimeMinute"
+                       required/>
+            </div>
+            <div class="col-sm-3">
+                <label for="endTimeHour" class="form-label">End Time Hr</label>
+                <input type="number"
+                       id="endTimeHour"
+                       class="form-control"
+                       asp-for="Timetable.EndTimeHour"
+                       required/>
+            </div>
+            <div class="col-sm-3">
+                <label for="endTimeMinute" class="form-label">End Time Hr</label>
+                <input type="number"
+                       id="endTimeMinute"
+                       class="form-control"
+                       asp-for="Timetable.EndTimeMinute"
+                       required/>
+            </div>
+        </div>
+
+        <!-- Days of Week -->
+        <div class="row mb-3">
+            <div class="col-sm-12">
+                <label for="daysofweek" class="form-label">Days of the Week</label>
+                <div class="d-flex">
+                    @foreach (var dayOfWeek in Model.DaysOfWeek)
+                    {
+                        <div class="form-check me-2">
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   name="daysofweek" 
+                                   value="@dayOfWeek">
+                            <label class="form-check-label">@dayOfWeek.Substring(0, 3)</label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Save Button -->
+        <div class="float-end">
+            <button type="submit" class="btn btn-info mx-1">
+                <i class="bi bi-box-arrow-down"></i> Save
+            </button>
+        </div>
+    </form>
+</div>

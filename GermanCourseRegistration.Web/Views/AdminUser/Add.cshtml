@@ -1,0 +1,60 @@
+﻿@model GermanCourseRegistration.Web.Models.ViewModels.UserView
+
+<div class="container">
+    <form method="post">
+        <!-- Username -->
+        <div class="mb-3">
+            <label for="usename" class="form-label">Username</label>
+            <input type="usename" class="form-control" id="usename" asp-for="Username" requried />
+            <span class="text-danger" asp-validation-for="Username"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" asp-for="Email" required />
+            <span class="text-danger" asp-validation-for="Email"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password"
+                   class="form-control"
+                   id="password"
+                   asp-for="Password"
+                   required minlength="6" />
+            <span class="text-danger" asp-validation-for="Password"></span>
+        </div>
+
+        <!-- User Role -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input type="checkbox"
+                       id="chkUserRole"
+                       class="form-check-input"
+                       value="User"
+                       checked disabled />
+                <label class="form-check-label" for="chkUserRole">User Role</label>
+            </div>
+            <!-- Admin Role Check Box -->
+            @if (User.IsInRole("SuperAdmin"))
+            {
+                <div class="form-check">
+                    <input type="checkbox"
+                           id="chkAdminRole"
+                           class="form-check-input"
+                           asp-for="AdminRoleChecked" />
+                    <label class="form-check-label" for="chkAdminRole">Admin Role</label>
+                </div>
+            }
+        </div>
+
+        <!-- Save Button -->
+        <div class="float-end">
+            <button type="submit" class="btn btn-info mx-1">
+                <i class="bi bi-person-plus-fill"></i> Create
+            </button>
+        </div>
+    </form>
+</div>

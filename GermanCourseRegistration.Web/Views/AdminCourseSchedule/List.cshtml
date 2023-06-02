@@ -1,0 +1,69 @@
+﻿@model List<GermanCourseRegistration.Web.Models.ViewModels.CourseScheduleView>
+
+<div class="container mb-3 d-flex justify-content-center">
+    <h3>Course Schedule List</h3>
+</div>
+
+<div class="container mb-3 d-flex justify-content-end">
+    <a class="btn btn-info ms-2"
+       asp-area=""
+       asp-controller="AdminCourseSchedule"
+       asp-action="Add">
+        <i class="bi bi-plus"></i> Add a new course schedule
+    </a>
+</div>
+
+<div class="container mb-3">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-light">
+                    <th>Course Level</th>
+                    <th>Course Name</th>
+                    <th>Class Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var schedule in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (schedule.Course != null)
+                            {
+                                @(schedule.Course.Level.ToString() + 
+                                "." + 
+                                schedule.Course.Part.ToString())
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+                        <td>@schedule.Name</td>
+                        <td>@schedule.ClassType</td>
+                        <td>@schedule.StartDate</td>
+                        <td>@schedule.EndDate</td>
+                        <td>
+                            <a class="btn btn-secondary me-2"
+                               asp-area=""
+                               asp-controller="AdminCourseSchedule"
+                               asp-action="Edit"
+                               asp-route-id="@schedule.Id">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No course schedules found!</p>
+    }
+</div>
