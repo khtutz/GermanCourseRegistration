@@ -32,7 +32,7 @@ public class PaymentController : Controller
         IEnumerable<CourseMaterialOrderItem> orderItems =
             await orderItemRepository.GetAllByORderIdAsync(orderId);
 
-        if (orderItems == null || !orderItems.Any())
+        if (!orderItems.Any())
         {
             // Show error message
             return View(new PaymentView());

@@ -99,9 +99,15 @@ public class AdminCourseScheduleController : Controller
         courseOffer.Timetables = MapTimetableViewModelToTimetableDomainModels(
             model.DaysOfWeek, model.Timetable);
 
-        await courseOfferRepository.AddAsync(courseOffer);
+        bool isAdded = await courseOfferRepository.AddAsync(courseOffer);
 
-        // Show success notification
+        if (isAdded)
+        {
+            // Show success notification
+            return RedirectToAction("List");
+        }
+
+        // Show error notification
         return RedirectToAction("List");
     }
 
@@ -164,9 +170,15 @@ public class AdminCourseScheduleController : Controller
         }
 
         // Update the course offer along with time table
-        await courseOfferRepository.UpdateAsync(courseOffer);
+        var updatedCourseOffer = await courseOfferRepository.UpdateAsync(courseOffer);
 
-        // Show success notification
+        if (updatedCourseOffer != null)
+        {
+            // Show success notification
+            return RedirectToAction("List");
+        }
+
+        // Show error notification
         return RedirectToAction("List");
     }
 

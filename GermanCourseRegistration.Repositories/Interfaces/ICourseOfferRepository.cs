@@ -8,7 +8,7 @@ public interface ICourseOfferRepository
 
     Task<IEnumerable<CourseOffer>> GetAllAsync();
 
-    Task<CourseOffer> AddAsync(CourseOffer courseOffer);
+    Task<bool> AddAsync(CourseOffer courseOffer);
 
     Task<CourseOffer?> UpdateAsync(CourseOffer courseOffer);
 

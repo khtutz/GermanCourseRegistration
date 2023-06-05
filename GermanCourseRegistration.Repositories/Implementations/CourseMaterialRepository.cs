@@ -16,52 +16,87 @@ public class CourseMaterialRepository : ICourseMaterialRepository
 
     public async Task<CourseMaterial?> GetByIdAsync(Guid id)
     {
-        return await dbContext.CourseMaterials
-            .FirstOrDefaultAsync(x => x.Id == id);
+        try
+        {
+            return await dbContext.CourseMaterials
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     public async Task<IEnumerable<CourseMaterial>> GetAllAsync()
     {
-        return await dbContext.CourseMaterials.ToListAsync();
+        try
+        {
+            return await dbContext.CourseMaterials.ToListAsync();
+        }
+        catch
+        {
+            return Enumerable.Empty<CourseMaterial>();
+        }    
     }
 
-    public async Task<CourseMaterial> AddAsync(CourseMaterial courseMaterial)
+    public async Task<bool> AddAsync(CourseMaterial courseMaterial)
     {
-        await dbContext.AddAsync(courseMaterial);
-        await dbContext.SaveChangesAsync();
+        try
+        {
+            await dbContext.AddAsync(courseMaterial);
+            await dbContext.SaveChangesAsync();
 
-        return courseMaterial;
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public async Task<CourseMaterial?> UpdateAsync(CourseMaterial courseMaterial)
     {
-        var existingCourseMaterial = await dbContext.CourseMaterials
+        try
+        {
+            var existingCourseMaterial = await dbContext.CourseMaterials
             .FirstOrDefaultAsync(x => x.Id == courseMaterial.Id);
 
-        if (existingCourseMaterial == null) return null;
+            if (existingCourseMaterial == null) return null;
 
-        existingCourseMaterial.Name = courseMaterial.Name;
-        existingCourseMaterial.Description = courseMaterial.Description;
-        existingCourseMaterial.Category = courseMaterial.Category;
-        existingCourseMaterial.Price = courseMaterial.Price;
-        existingCourseMaterial.LastModifiedBy = courseMaterial.LastModifiedBy;
-        existingCourseMaterial.LastModifiedOn = courseMaterial.LastModifiedOn;
+            existingCourseMaterial.Name = courseMaterial.Name;
+            existingCourseMaterial.Description = courseMaterial.Description;
+            existingCourseMaterial.Category = courseMaterial.Category;
+            existingCourseMaterial.Price = courseMaterial.Price;
+            existingCourseMaterial.LastModifiedBy = courseMaterial.LastModifiedBy;
+            existingCourseMaterial.LastModifiedOn = courseMaterial.LastModifiedOn;
 
-        await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
 
-        return existingCourseMaterial;
+            return existingCourseMaterial;
+        }
+        catch
+        {
+            return null;
+        }  
     }
 
     public async Task<CourseMaterial?> DeleteAsync(Guid id)
     {
-        var existingCourseMaterial = await dbContext.CourseMaterials.FindAsync(id);
-
-        if (existingCourseMaterial != null)
+        try
         {
-            dbContext.CourseMaterials.Remove(existingCourseMaterial);
-            await dbContext.SaveChangesAsync();
-        }
+            var existingCourseMaterial = await dbContext.CourseMaterials.FindAsync(id);
 
-        return existingCourseMaterial;
+            if (existingCourseMaterial != null)
+            {
+                dbContext.CourseMaterials.Remove(existingCourseMaterial);
+                await dbContext.SaveChangesAsync();
+            }
+
+            return existingCourseMaterial;
+        }
+        catch
+        {
+            return null;
+        }
     }
 }

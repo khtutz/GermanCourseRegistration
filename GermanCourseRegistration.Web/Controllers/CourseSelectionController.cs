@@ -32,7 +32,7 @@ public class CourseSelectionController : Controller
         // Step 1: Load currently offered classes
         var courseOffers = await courseOfferRepository.GetAllAsync();
 
-        if (courseOffers == null)
+        if (!courseOffers.Any())
         {
             // Show error message
             return RedirectToAction("List", "MyCourse");

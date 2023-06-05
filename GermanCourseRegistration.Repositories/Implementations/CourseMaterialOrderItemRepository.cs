@@ -16,9 +16,16 @@ public class CourseMaterialOrderItemRepository : ICourseMaterialOrderItemReposit
 
     public async Task<IEnumerable<CourseMaterialOrderItem>> GetAllByORderIdAsync(Guid orderId)
     {
-        return await dbContext.CourseMaterialOrderItems
-            .Where(o => o.CourseMaterialOrderId == orderId)
-            .Include(o => o.CourseMaterial)
-            .ToListAsync();
+        try
+        {
+            return await dbContext.CourseMaterialOrderItems
+                .Where(o => o.CourseMaterialOrderId == orderId)
+                .Include(o => o.CourseMaterial)
+                .ToListAsync();
+        }
+        catch
+        {
+            return Enumerable.Empty<CourseMaterialOrderItem>();
+        }     
     }
 }

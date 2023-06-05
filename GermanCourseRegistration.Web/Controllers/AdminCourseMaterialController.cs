@@ -73,9 +73,15 @@ public class AdminCourseMaterialController : Controller
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
         var courseMaterial = MapViewModelToCourseMaterial(model, loginId, AddAction);
       
-        await courseMaterialRepository.AddAsync(courseMaterial);
+        bool isAdded = await courseMaterialRepository.AddAsync(courseMaterial);
 
-        // Show success notification
+        if (isAdded)
+        {
+            // Show success notification
+            return RedirectToAction("List");
+        }
+
+        // Show error notification
         return RedirectToAction("List");
     }
 
@@ -109,9 +115,15 @@ public class AdminCourseMaterialController : Controller
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
         var courseMaterial = MapViewModelToCourseMaterial(model, loginId, EditAction);
 
-        await courseMaterialRepository.UpdateAsync(courseMaterial);
+        var updatedCourseMaterial = await courseMaterialRepository.UpdateAsync(courseMaterial);
 
-        // Show success notification
+        if (updatedCourseMaterial != null)
+        {
+            // Show success notification
+            return RedirectToAction("List");
+        }
+
+        // Show error notification
         return RedirectToAction("List");
     }
 
