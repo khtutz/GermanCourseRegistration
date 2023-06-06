@@ -23,7 +23,7 @@ public class CourseMaterialRepository : ICourseMaterialRepository
         }
         catch
         {
-            return null;
+            throw;
         }
     }
 
@@ -35,7 +35,7 @@ public class CourseMaterialRepository : ICourseMaterialRepository
         }
         catch
         {
-            return Enumerable.Empty<CourseMaterial>();
+            throw;
         }    
     }
 
@@ -50,7 +50,7 @@ public class CourseMaterialRepository : ICourseMaterialRepository
         }
         catch
         {
-            return false;
+            throw;
         }
     }
 
@@ -76,7 +76,7 @@ public class CourseMaterialRepository : ICourseMaterialRepository
         }
         catch
         {
-            return null;
+            throw;
         }  
     }
 
@@ -96,7 +96,7 @@ public class CourseMaterialRepository : ICourseMaterialRepository
         }
         catch
         {
-            return null;
+            throw;
         }
     }
 }

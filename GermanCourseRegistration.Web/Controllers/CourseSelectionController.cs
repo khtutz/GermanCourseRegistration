@@ -30,7 +30,17 @@ public class CourseSelectionController : Controller
     public async Task<IActionResult> Add()
     {
         // Step 1: Load currently offered classes
-        var courseOffers = await courseOfferRepository.GetAllAsync();
+        var courseOffers = Enumerable.Empty<CourseOffer>();
+
+        try
+        {
+            courseOffers = await courseOfferRepository.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
 
         if (!courseOffers.Any())
         {
@@ -39,9 +49,19 @@ public class CourseSelectionController : Controller
         }
 
         // Step 2: load currently offered materials to buy
-        var courseMaterials = await courseMaterialRepository.GetAllAsync();
+        var courseMaterials = Enumerable.Empty<CourseMaterial>();
 
-        if (courseMaterials == null)
+        try
+        {
+            courseMaterials = await courseMaterialRepository.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
+
+        if (!courseMaterials.Any())
         {
             // Show error message
             return RedirectToAction("List", "MyCourse");

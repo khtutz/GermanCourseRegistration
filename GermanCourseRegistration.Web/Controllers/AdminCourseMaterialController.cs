@@ -32,7 +32,24 @@ public class AdminCourseMaterialController : Controller
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var courseMaterials = await courseMaterialRepository.GetAllAsync();
+        var courseMaterials = Enumerable.Empty<CourseMaterial>();
+
+        try
+        {
+            courseMaterials = await courseMaterialRepository.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
+
+        if (!courseMaterials.Any())
+        {
+            // Show error notification
+            View(Enumerable.Empty<CourseMaterial>());
+        }
+
         var models = new List<CourseMaterialView>();
 
         foreach (var courseMaterial in courseMaterials)
@@ -73,7 +90,17 @@ public class AdminCourseMaterialController : Controller
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
         var courseMaterial = MapViewModelToCourseMaterial(model, loginId, AddAction);
       
-        bool isAdded = await courseMaterialRepository.AddAsync(courseMaterial);
+        bool isAdded = false;
+
+        try
+        {
+            isAdded = await courseMaterialRepository.AddAsync(courseMaterial);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
 
         if (isAdded)
         {
@@ -88,8 +115,23 @@ public class AdminCourseMaterialController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        var courseMaterial = await courseMaterialRepository.GetByIdAsync(id);
-        if (courseMaterial == null) return View("Error");
+        CourseMaterial? courseMaterial = null;
+
+        try
+        {
+            courseMaterial = await courseMaterialRepository.GetByIdAsync(id);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
+
+        if (courseMaterial == null)
+        {
+            // Show error notification
+            return View("Error");
+        }
 
         var model = MapCourseMaterialToViewModel(courseMaterial);
 
@@ -115,7 +157,17 @@ public class AdminCourseMaterialController : Controller
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
         var courseMaterial = MapViewModelToCourseMaterial(model, loginId, EditAction);
 
-        var updatedCourseMaterial = await courseMaterialRepository.UpdateAsync(courseMaterial);
+        CourseMaterial? updatedCourseMaterial = null;
+
+        try
+        {
+            updatedCourseMaterial = await courseMaterialRepository.UpdateAsync(courseMaterial);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
 
         if (updatedCourseMaterial != null)
         {
@@ -130,7 +182,17 @@ public class AdminCourseMaterialController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var deletedCourseMaterial = await courseMaterialRepository.DeleteAsync(id);
+        CourseMaterial? deletedCourseMaterial = null;
+
+        try
+        {
+            deletedCourseMaterial = await courseMaterialRepository.DeleteAsync(id);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
 
         if (deletedCourseMaterial != null)
         {
