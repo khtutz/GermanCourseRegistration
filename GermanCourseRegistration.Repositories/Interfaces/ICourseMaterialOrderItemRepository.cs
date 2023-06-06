@@ -4,5 +4,5 @@ namespace GermanCourseRegistration.Repositories.Interfaces;
 
 public interface ICourseMaterialOrderItemRepository
 {
-    Task<IEnumerable<CourseMaterialOrderItem>> GetAllByORderIdAsync(Guid orderId);
+    Task<IEnumerable<CourseMaterialOrderItem>> GetAllByOrderIdAsync(Guid orderId);
 }

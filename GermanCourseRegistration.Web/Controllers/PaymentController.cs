@@ -29,8 +29,17 @@ public class PaymentController : Controller
         var courseOffer = await courseOfferRepository.GetByIdAsync(courseOfferId);
         decimal courseCost = courseOffer != null ? courseOffer.Cost : 0;
 
-        IEnumerable<CourseMaterialOrderItem> orderItems =
-            await orderItemRepository.GetAllByORderIdAsync(orderId);
+        var orderItems = Enumerable.Empty<CourseMaterialOrderItem>();
+
+        try
+        {
+            orderItems = await orderItemRepository.GetAllByOrderIdAsync(orderId);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
 
         if (!orderItems.Any())
         {

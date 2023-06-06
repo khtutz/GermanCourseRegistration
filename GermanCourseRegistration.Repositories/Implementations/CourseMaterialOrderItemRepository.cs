@@ -14,7 +14,7 @@ public class CourseMaterialOrderItemRepository : ICourseMaterialOrderItemReposit
         this.dbContext = dbContext;
     }
 
-    public async Task<IEnumerable<CourseMaterialOrderItem>> GetAllByORderIdAsync(Guid orderId)
+    public async Task<IEnumerable<CourseMaterialOrderItem>> GetAllByOrderIdAsync(Guid orderId)
     {
         try
         {
@@ -25,7 +25,7 @@ public class CourseMaterialOrderItemRepository : ICourseMaterialOrderItemReposit
         }
         catch
         {
-            return Enumerable.Empty<CourseMaterialOrderItem>();
+            throw;
         }     
     }
 }
