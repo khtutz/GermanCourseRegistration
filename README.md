@@ -20,7 +20,6 @@ The web application allows students to register different level of German course
 * **IDEs**: Visual Studio or Visual Studio Code, SQL Server Management Studio
 * Download the file or clone the repository
 * Setup credentials for super admin at GermanCourseAuthDbContext.cs file under DBContext project
-* Create the two databases named ‘GermanCourseAuthDb’ and ‘GermanCourseRegistrationDb’
 * Run the migrations at Package Manager Console: Menu: Tools > NuGet Package Manager > Package Manager Console
 ```
 Add-Migration "Creating Auth Db Again" -Context "GermanCourseAuthDbContext"
