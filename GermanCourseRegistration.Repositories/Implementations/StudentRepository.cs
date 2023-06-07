@@ -14,41 +14,64 @@ public class StudentRepository : IStudentRepository
         this.dbContext = dbContext;
     }
 
-    public async Task<Student?> AddAsync(Student student)
+    public async Task<Student?> GetByIdAsync(Guid id)
     {
-        await dbContext.Students.AddAsync(student);
-        await dbContext.SaveChangesAsync();
-
-        return student;
+        try
+        {
+            return await dbContext.Students
+                .FirstOrDefaultAsync(s => s.Id == id);
+        }
+        catch
+        {
+            throw;
+        }
     }
 
-    public async Task<Student?> GetAsync(Guid id)
+    public async Task<bool> AddAsync(Student student)
     {
-        return await dbContext.Students
-            .FirstOrDefaultAsync(s => s.Id == id);
+        try
+        {
+            await dbContext.Students.AddAsync(student);
+            await dbContext.SaveChangesAsync();
+
+            return true;
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     public async Task<Student?> UpdateAsync(Student student)
     {
-        var existingStudent = await dbContext.Students
-            .FirstOrDefaultAsync(s => s.Id == student.Id);
-
-        if (existingStudent != null)
+        try
         {
-            existingStudent.Salutation = student.Salutation;
-            existingStudent.FirstName = student.FirstName;
-            existingStudent.LastName = student.LastName;
-            existingStudent.Birthday = student.Birthday;
-            existingStudent.Gender = student.Gender;
-            existingStudent.Mobile = student.Mobile;
-            existingStudent.Email = student.Email;
-            existingStudent.Address = student.Address;
-            existingStudent.PostalCode = student.PostalCode;
-            existingStudent.LastModifiedOn = student.LastModifiedOn;
+            var existingStudent = await dbContext.Students
+                .FirstOrDefaultAsync(s => s.Id == student.Id);
 
-            await dbContext.SaveChangesAsync();
+            if (existingStudent != null)
+            {
+                existingStudent.Salutation = student.Salutation;
+                existingStudent.FirstName = student.FirstName;
+                existingStudent.LastName = student.LastName;
+                existingStudent.Birthday = student.Birthday;
+                existingStudent.Gender = student.Gender;
+                existingStudent.Mobile = student.Mobile;
+                existingStudent.Email = student.Email;
+                existingStudent.Address = student.Address;
+                existingStudent.PostalCode = student.PostalCode;
+                existingStudent.LastModifiedOn = student.LastModifiedOn;
 
-            return existingStudent;
+                await dbContext.SaveChangesAsync();
+
+                return existingStudent;
+            }
+
+            // To throw custom exception
+        }
+        catch
+        {
+            throw;
         }
 
         return null;

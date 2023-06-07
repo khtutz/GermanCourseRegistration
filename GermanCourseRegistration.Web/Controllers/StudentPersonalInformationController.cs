@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
 using GermanCourseRegistration.Web.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GermanCourseRegistration.Web.Controllers;
 
@@ -28,10 +29,24 @@ public class StudentPersonalInformationController : Controller
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
         // Load the existing information if registered previously
-        var student = await studentRepository.GetAsync(loginId);
+        Student? student = null;
+
+        try
+        {
+            student = await studentRepository.GetByIdAsync(loginId);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+
+            // Show error notification
+            return View(new StudentView());
+        }
+
         bool isExistingStudent = student != null;
 
-        var model = isExistingStudent ? MapStudentToViewModel(student!) : new();
+        var model = isExistingStudent ? MapStudentToViewModel(student!) : new StudentView();
 
         // Load the selection data and properties
         var salutations = Enum.GetNames(typeof(Salutation));
@@ -45,6 +60,62 @@ public class StudentPersonalInformationController : Controller
 		return View(model);
 	}
 
+    [HttpPost]
+    public async Task<IActionResult> Add(StudentView model)
+    {
+        Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
+        var student = MapViewModelToStudent(model, loginId);
+
+        if (model.IsExistingStudent)
+        {
+            student.LastModifiedOn = DateTime.Now;
+
+            Student? updatedStudent = null;
+
+            try
+            {
+                updatedStudent = await studentRepository.UpdateAsync(student);
+            }
+            catch (Exception ex)
+            {
+                WriteLine(ex.Message);
+                WriteLine(ex.StackTrace);
+            }
+
+            if (updatedStudent == null)
+            {
+                // Show error notification
+                return View(model);
+            }
+        }
+        else
+        {
+            student.CreatedOn = DateTime.Now;
+
+            bool isAdded = false;
+
+            try
+            {
+                isAdded = await studentRepository.AddAsync(student);
+            }
+            catch (Exception ex)
+            {
+                WriteLine(ex.Message);
+                WriteLine(ex.StackTrace);
+            }
+
+            if (!isAdded)
+            {
+                // Show error notification
+                return View(model);
+            }
+        }
+        
+        return RedirectToAction("Add", "CourseSelection");
+    }
+
+    //
+    // Mapping Methods
     private StudentView MapStudentToViewModel(Student student)
     {
         return new StudentView
@@ -60,26 +131,6 @@ public class StudentPersonalInformationController : Controller
             Address = student.Address,
             PostalCode = student.PostalCode
         };
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Add(StudentView model)
-    {
-        Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
-        var student = MapViewModelToStudent(model, loginId);
-
-        if (model.IsExistingStudent)
-        {
-            student.LastModifiedOn = DateTime.Now;
-            await studentRepository.UpdateAsync(student);
-        }
-        else
-        {
-            student.CreatedOn = DateTime.Now;
-            await studentRepository.AddAsync(student);
-        }
-        
-        return RedirectToAction("Add", "CourseSelection");
     }
 
     private Student MapViewModelToStudent(StudentView model, Guid loginId)
