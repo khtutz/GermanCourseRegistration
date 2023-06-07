@@ -203,10 +203,20 @@ public class AdminCourseScheduleController : Controller
             model.DaysOfWeek, model.Timetable);
 
         // Delete the existing time table first
-        var deletedTimetables = await timetableRepository
-            .DeleteByCouseOfferIdAsync(courseOffer.Id);
+        IEnumerable<Timetable> deletedTimetables = Enumerable.Empty<Timetable>();
 
-        if (deletedTimetables == null || !deletedTimetables.Any())
+        try
+        {
+            deletedTimetables = await timetableRepository
+                .DeleteByCouseOfferIdAsync(courseOffer.Id);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
+
+        if (!deletedTimetables.Any())
         {
             // Show error notification
             return RedirectToAction("List");

@@ -16,65 +16,109 @@ public class TimetableRepository : ITimetableRepository
 
     public async Task<Timetable?> GetByIdAsync(Guid id)
     {
-        return await dbContext.Timetables
-            .FirstOrDefaultAsync(c => c.Id == id);
+        try
+        {
+            return await dbContext.Timetables
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     public async Task<IEnumerable<Timetable>> GetAllAsync()
     {
-        return await dbContext.Timetables.ToListAsync();
+        try
+        {
+            return await dbContext.Timetables.ToListAsync();
+        }
+        catch
+        {
+            throw;
+        }
     }
 
-    public async Task<Timetable> AddAsync(Timetable timetable)
+    public async Task<bool> AddAsync(Timetable timetable)
     {
-        await dbContext.AddAsync(timetable);
-        await dbContext.SaveChangesAsync();
+        try
+        {
+            await dbContext.AddAsync(timetable);
+            await dbContext.SaveChangesAsync();
 
-        return timetable;
+            return true;
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     public async Task<Timetable?> UpdateAsync(Timetable timetable)
     {
-        var existingTimetable = await dbContext.Timetables
-             .FirstOrDefaultAsync(c => c.Id == timetable.Id);
+        try
+        {
+            var existingTimetable = await dbContext.Timetables
+                 .FirstOrDefaultAsync(c => c.Id == timetable.Id);
 
-        if (existingTimetable == null) return null;
+            if (existingTimetable == null) return null;
 
-        existingTimetable.DayName = timetable.DayName;
-        existingTimetable.StartTimeHour = timetable.StartTimeHour;
-        existingTimetable.StartTimeMinute = timetable.StartTimeMinute;
-        existingTimetable.EndTimeHour = timetable.EndTimeHour;
-        existingTimetable.EndTimeMinute = timetable.EndTimeMinute;
+            existingTimetable.DayName = timetable.DayName;
+            existingTimetable.StartTimeHour = timetable.StartTimeHour;
+            existingTimetable.StartTimeMinute = timetable.StartTimeMinute;
+            existingTimetable.EndTimeHour = timetable.EndTimeHour;
+            existingTimetable.EndTimeMinute = timetable.EndTimeMinute;
 
-        return existingTimetable;
+            return existingTimetable;
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     public async Task<Timetable?> DeleteAsync(Guid id)
     {
-        var existingTimetable = await dbContext.Timetables.FindAsync(id);
-
-        if (existingTimetable != null)
+        try
         {
-            dbContext.Timetables.Remove(existingTimetable);
-            await dbContext.SaveChangesAsync();
-        }
+            var existingTimetable = await dbContext.Timetables.FindAsync(id);
 
-        return existingTimetable;
+            if (existingTimetable != null)
+            {
+                dbContext.Timetables.Remove(existingTimetable);
+                await dbContext.SaveChangesAsync();
+            }
+
+            return existingTimetable;
+        }
+        catch
+        {
+            throw;
+        }
     }
 
-    public async Task<IEnumerable<Timetable>?> DeleteByCouseOfferIdAsync(Guid courseOfferId)
+    public async Task<IEnumerable<Timetable>> DeleteByCouseOfferIdAsync(Guid courseOfferId)
     {
-        var existingTimetables = await dbContext.Timetables
-            .Where(t => t.CourseOfferId == courseOfferId)
-            .ToListAsync();
-
-        if (existingTimetables != null && existingTimetables.Any())
+        try
         {
-            dbContext.Timetables.RemoveRange(existingTimetables);
-            await dbContext.SaveChangesAsync();
-        }
+            var existingTimetables = await dbContext.Timetables
+                .Where(t => t.CourseOfferId == courseOfferId)
+                .ToListAsync();
 
-        return existingTimetables;
+            if (existingTimetables != null && existingTimetables.Any())
+            {
+                dbContext.Timetables.RemoveRange(existingTimetables);
+                await dbContext.SaveChangesAsync();
+
+                return existingTimetables;
+            }
+
+            return Enumerable.Empty<Timetable>();
+        }
+        catch
+        {
+            throw;
+        }
     }
 
 }

@@ -16,16 +16,23 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<IdentityUser>> GetAll()
     {
-        // Return all users except super admin
-        var users = await authDbContext.Users.ToListAsync();
-        var superAdminUser = await authDbContext.Users
-            .FirstOrDefaultAsync(x => x.Email == "superadmin@deutchinstitut.com");
-
-        if (superAdminUser != null)
+        try
         {
-            users.Remove(superAdminUser);
-        }
+            // Return all users except super admin
+            var users = await authDbContext.Users.ToListAsync();
+            var superAdminUser = await authDbContext.Users
+                .FirstOrDefaultAsync(x => x.Email == "superadmin@deutchinstitut.com");
 
-        return users;
+            if (superAdminUser != null)
+            {
+                users.Remove(superAdminUser);
+            }
+
+            return users;
+        }
+        catch
+        { 
+            throw;
+        }
     }
 }

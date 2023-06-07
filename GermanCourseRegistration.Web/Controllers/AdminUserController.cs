@@ -23,7 +23,17 @@ public class AdminUserController : Controller
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var users = await userRepository.GetAll();
+        IEnumerable<IdentityUser> users = Enumerable.Empty<IdentityUser>();
+
+        try
+        {
+            users = await userRepository.GetAll();
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
 
         // Map the domain model to the view model
         var userIndividualViews = new List<UserIndividualView>();

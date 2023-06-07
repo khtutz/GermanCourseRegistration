@@ -8,11 +8,11 @@ public interface ITimetableRepository
 
     Task<IEnumerable<Timetable>> GetAllAsync();
 
-    Task<Timetable> AddAsync(Timetable timetable);
+    Task<bool> AddAsync(Timetable timetable);
 
     Task<Timetable?> UpdateAsync(Timetable timetable);
 
     Task<Timetable?> DeleteAsync(Guid id);
 
-    Task<IEnumerable<Timetable>?> DeleteByCouseOfferIdAsync(Guid courseOfferId);
+    Task<IEnumerable<Timetable>> DeleteByCouseOfferIdAsync(Guid courseOfferId);
 }
