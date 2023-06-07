@@ -16,58 +16,100 @@ public class CourseRepository : ICourseRepository
 
     public async Task<Course?> GetByIdAsync(Guid id)
     {
-        return await dbContext.Courses
-            .FirstOrDefaultAsync(c => c.Id == id);
+        try
+        {
+            return await dbContext.Courses
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+        catch
+        {
+            throw;
+        } 
     }
 
     public async Task<IEnumerable<Course>> GetByIdsAsync(List<Guid> ids)
     {
-        return await dbContext.Courses
-            .Where(c => ids.Contains(c.Id))
-            .ToListAsync();
+        try
+        {
+            return await dbContext.Courses
+                .Where(c => ids.Contains(c.Id))
+                .ToListAsync();
+        }
+        catch
+        {
+            throw;
+        } 
     }
 
     public async Task<IEnumerable<Course>> GetAllAsync()
     {
-        return await dbContext.Courses.ToListAsync();
+        try
+        {
+            return await dbContext.Courses.ToListAsync();
+        }
+        catch
+        {
+            throw;
+        }
     }
 
-    public async Task<Course> AddAsync(Course course)
+    public async Task<bool> AddAsync(Course course)
     {
-        await dbContext.AddAsync(course);
-        await dbContext.SaveChangesAsync();
+        try
+        {
+            await dbContext.AddAsync(course);
+            await dbContext.SaveChangesAsync();
 
-        return course;
+            return true;
+        }
+        catch
+        {
+            throw;
+        } 
     }
 
     public async Task<Course?> UpdateAsync(Course course)
     {
-        var existingCourse = await dbContext.Courses
+        try
+        {
+            var existingCourse = await dbContext.Courses
             .FirstOrDefaultAsync(c => c.Id == course.Id);
 
-        if (existingCourse == null) return null;
+            if (existingCourse == null) return null;
 
-        existingCourse.Level = course.Level;
-        existingCourse.Part = course.Part;
-        existingCourse.Description = course.Description;
-        existingCourse.LastModifiedBy = course.LastModifiedBy;
-        existingCourse.LastModifiedOn = course.LastModifiedOn;
+            existingCourse.Level = course.Level;
+            existingCourse.Part = course.Part;
+            existingCourse.Description = course.Description;
+            existingCourse.LastModifiedBy = course.LastModifiedBy;
+            existingCourse.LastModifiedOn = course.LastModifiedOn;
 
-        await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
 
-        return existingCourse;
+            return existingCourse;
+        }
+        catch
+        {
+            throw;
+        } 
     }
 
     public async Task<Course?> DeleteAsync(Guid id)
     {
-        var existingCourse = await dbContext.Courses.FindAsync(id);
-
-        if (existingCourse != null)
+        try
         {
-            dbContext.Courses.Remove(existingCourse);
-            await dbContext.SaveChangesAsync();
-        }
+            var existingCourse = await dbContext.Courses.FindAsync(id);
 
-        return existingCourse;
+            if (existingCourse != null)
+            {
+                dbContext.Courses.Remove(existingCourse);
+                await dbContext.SaveChangesAsync();
+            }
+
+            return existingCourse;
+        }
+        catch
+        {
+            throw;
+        }  
     }
 }

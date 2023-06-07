@@ -10,7 +10,7 @@ public interface ICourseRepository
 
     Task<IEnumerable<Course>> GetAllAsync();
 
-    Task<Course> AddAsync(Course course);
+    Task<bool> AddAsync(Course course);
 
     Task<Course?> UpdateAsync(Course course);
 

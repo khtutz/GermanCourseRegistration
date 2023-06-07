@@ -67,8 +67,19 @@ public class AdminCourseScheduleController : Controller
     {
         // Load the course information
         // Courses must be created first
-        var courses = await courseRepository.GetAllAsync();
-        if (courses == null)
+        IEnumerable<Course> courses = Enumerable.Empty<Course>();
+
+        try
+        {
+            courses = await courseRepository.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
+
+        if (!courses.Any())
         {
             // Show error message
             return RedirectToAction("List");
