@@ -26,9 +26,22 @@ public class PaymentController : Controller
     [HttpGet]
     public async Task<IActionResult> Add(Guid registrationId, Guid courseOfferId, Guid orderId)
     {
-        var courseOffer = await courseOfferRepository.GetByIdAsync(courseOfferId);
+        CourseOffer? courseOffer = null;
+
+        // Get selected course
+        try
+        {
+            courseOffer = await courseOfferRepository.GetByIdAsync(courseOfferId);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
+
         decimal courseCost = courseOffer != null ? courseOffer.Cost : 0;
 
+        // Get purchased item(s)
         var orderItems = Enumerable.Empty<CourseMaterialOrderItem>();
 
         try

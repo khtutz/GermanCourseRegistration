@@ -43,7 +43,17 @@ namespace GermanCourseRegistration.Web.Controllers
             // For student, show the registered course (only one at a time)
             if (User.IsInRole("Admin"))
             {
-                var courseOffers = await courseOfferRepository.GetAllAsync();
+                var courseOffers = Enumerable.Empty<CourseOffer>();
+
+                try
+                {
+                    courseOffers = await courseOfferRepository.GetAllAsync();
+                }
+                catch (Exception ex)
+                {
+                    WriteLine(ex.Message);
+                    WriteLine(ex.StackTrace);
+                }
 
                 foreach (var courseSchedule in courseOffers)
                 {

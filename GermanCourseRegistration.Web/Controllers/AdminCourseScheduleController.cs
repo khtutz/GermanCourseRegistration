@@ -38,7 +38,18 @@ public class AdminCourseScheduleController : Controller
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var courseOffers = await courseOfferRepository.GetAllAsync();
+        IEnumerable<CourseOffer> courseOffers = Enumerable.Empty<CourseOffer>();
+
+        try
+        {
+            courseOffers = await courseOfferRepository.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
+
         var models = new List<CourseScheduleView>();
 
         foreach (var courseSchedule in courseOffers)
@@ -99,7 +110,17 @@ public class AdminCourseScheduleController : Controller
         courseOffer.Timetables = MapTimetableViewModelToTimetableDomainModels(
             model.DaysOfWeek, model.Timetable);
 
-        bool isAdded = await courseOfferRepository.AddAsync(courseOffer);
+        bool isAdded = false;
+
+        try
+        {
+            isAdded = await courseOfferRepository.AddAsync(courseOffer);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
 
         if (isAdded)
         {
@@ -114,10 +135,21 @@ public class AdminCourseScheduleController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        var courseOffer = await courseOfferRepository.GetByIdAsync(id);
-        var courses = await courseRepository.GetAllAsync();
+        CourseOffer? courseOffer = null;
+        IEnumerable<Course> courses = Enumerable.Empty<Course>();
 
-        if (courseOffer == null || courses == null)
+        try
+        {
+            courseOffer = await courseOfferRepository.GetByIdAsync(id);
+            courses = await courseRepository.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
+
+        if (courseOffer == null || !courses.Any())
         {
             // Show error message
             return RedirectToAction("List");
@@ -170,7 +202,17 @@ public class AdminCourseScheduleController : Controller
         }
 
         // Update the course offer along with time table
-        var updatedCourseOffer = await courseOfferRepository.UpdateAsync(courseOffer);
+        CourseOffer? updatedCourseOffer = null;
+
+        try
+        {
+            updatedCourseOffer = await courseOfferRepository.UpdateAsync(courseOffer);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
 
         if (updatedCourseOffer != null)
         {
@@ -185,7 +227,17 @@ public class AdminCourseScheduleController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var deletedCourseOffer = await courseOfferRepository.DeleteAsync(id);
+        CourseOffer? deletedCourseOffer = null;
+        
+        try
+        {
+            deletedCourseOffer = await courseOfferRepository.DeleteAsync(id);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
 
         if (deletedCourseOffer != null) 
         { 

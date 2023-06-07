@@ -24,7 +24,7 @@ public class CourseOfferRepository : ICourseOfferRepository
         }
         catch
         {
-            return null;
+            throw;
         }
     }
 
@@ -39,7 +39,7 @@ public class CourseOfferRepository : ICourseOfferRepository
         }
         catch
         {
-            return Enumerable.Empty<CourseOffer>();
+            throw;
         }  
     }
 
@@ -54,7 +54,7 @@ public class CourseOfferRepository : ICourseOfferRepository
         }
         catch
         {
-            return false;
+            throw;
         }
     }
 
@@ -82,7 +82,7 @@ public class CourseOfferRepository : ICourseOfferRepository
         }
         catch
         {
-            return null;
+            throw;
         } 
     }
 
@@ -105,7 +105,7 @@ public class CourseOfferRepository : ICourseOfferRepository
         }
         catch
         {
-            return null;
+            throw;
         }
     }
 }
