@@ -16,16 +16,30 @@ public class RegistrationRepository : IRegistrationRepository
 
     public async Task<Registration?> GetByStudentIdAsync(Guid id)
     {
-        return await dbContext.Registrations
-            .Include(r => r.CourseOffer)
-            .FirstOrDefaultAsync(r => r.StudentId == id);
+        try
+        {
+            return await dbContext.Registrations
+                .Include(r => r.CourseOffer)
+                .FirstOrDefaultAsync(r => r.StudentId == id);
+        }
+        catch
+        {
+            throw;
+        }
     }
 
-    public async Task<Registration> AddAsync(Registration registration)
+    public async Task<bool> AddAsync(Registration registration)
     {
-        await dbContext.AddAsync(registration);
-        await dbContext.SaveChangesAsync();
+        try
+        {
+            await dbContext.AddAsync(registration);
+            await dbContext.SaveChangesAsync();
 
-        return registration;
+            return true;
+        }
+        catch
+        {
+            throw;
+        }
     }
 }

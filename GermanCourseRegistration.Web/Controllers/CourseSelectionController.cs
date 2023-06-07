@@ -136,13 +136,30 @@ public class CourseSelectionController : Controller
         }
 
         // Step 4: Save the entities to database
-        await registrationRepository.AddAsync(registration);
+        bool isAdded = false;
 
-        return RedirectToAction("Add", "Payment", new { 
-            registrationId,
-            courseOfferId, 
-            orderId  
-        });
+        try
+        {
+            isAdded = await registrationRepository.AddAsync(registration);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
+
+        if (isAdded)
+        {
+            return RedirectToAction("Add", "Payment", new
+            {
+                registrationId,
+                courseOfferId,
+                orderId
+            });
+        }
+
+        // Show error notification
+        return View();
     }
 
     //

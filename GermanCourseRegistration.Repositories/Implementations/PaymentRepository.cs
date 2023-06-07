@@ -13,11 +13,18 @@ public class PaymentRepository : IPaymentRepository
         this.dbContext = dbContext;
     }
 
-    public async Task<Payment> AddAsync(Payment payment)
+    public async Task<bool> AddAsync(Payment payment)
     {
-        await dbContext.AddAsync(payment);
-        await dbContext.SaveChangesAsync();
+        try
+        {
+            await dbContext.AddAsync(payment);
+            await dbContext.SaveChangesAsync();
 
-        return payment;
+            return true;
+        }
+        catch
+        {
+            throw;
+        }
     }
 }

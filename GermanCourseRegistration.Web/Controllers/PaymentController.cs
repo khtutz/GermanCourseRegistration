@@ -84,8 +84,25 @@ public class PaymentController : Controller
             PaymentStatus = Payment.PaymentSuccess
         };
 
-        await paymentRepository.AddAsync(payment);
+        bool isAdded = false;
 
+        try
+        {
+            isAdded = await paymentRepository.AddAsync(payment);
+        }
+        catch (Exception ex)
+        {
+            WriteLine(ex.Message);
+            WriteLine(ex.StackTrace);
+        }
+
+        if (isAdded)
+        {
+            // Show success notification
+            return RedirectToAction("Index", "Home");
+        }
+
+        // Show error notification
         return RedirectToAction("Index", "Home");
     }
 }

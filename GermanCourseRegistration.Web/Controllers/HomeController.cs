@@ -63,8 +63,18 @@ namespace GermanCourseRegistration.Web.Controllers
             }
             else
             {
-                Guid studentId = await UserAccountService.GetCurrentUserId(userManager, User);
-                var registeredCourse = await registrationRepository.GetByStudentIdAsync(studentId);
+                Registration? registeredCourse = null;
+
+                try
+                {
+                    Guid studentId = await UserAccountService.GetCurrentUserId(userManager, User);
+                    registeredCourse = await registrationRepository.GetByStudentIdAsync(studentId);
+                }
+                catch (Exception ex)
+                {
+                    WriteLine(ex.Message);
+                    WriteLine(ex.StackTrace);
+                }
                 
                 if (registeredCourse != null)
                 {

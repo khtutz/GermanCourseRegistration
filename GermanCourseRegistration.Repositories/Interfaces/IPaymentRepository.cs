@@ -4,5 +4,5 @@ namespace GermanCourseRegistration.Repositories.Interfaces;
 
 public interface IPaymentRepository
 {
-    Task<Payment> AddAsync(Payment payment);
+    Task<bool> AddAsync(Payment payment);
 }

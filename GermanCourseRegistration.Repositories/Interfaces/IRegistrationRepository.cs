@@ -6,5 +6,5 @@ public interface IRegistrationRepository
 {
     Task<Registration?> GetByStudentIdAsync(Guid id);
 
-    Task<Registration> AddAsync(Registration registration);
+    Task<bool> AddAsync(Registration registration);
 }
