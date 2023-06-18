@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using GermanCourseRegistration.Web.Services;
 using Microsoft.AspNetCore.Authorization;
-using System.Data;
 
 namespace GermanCourseRegistration.Web.Controllers;
 

@@ -32,14 +32,9 @@ public class AdminCourseMaterialService : IAdminCourseMaterialService
             WriteLine(ex.StackTrace);
         }
 
-        var results = new List<CourseMaterialResult>();
+        var courseMaterialResults = courseMaterials.Select(cm => new CourseMaterialResult(cm));
 
-        foreach (var courseMaterial in courseMaterials)
-        {
-            results.Add(new CourseMaterialResult(courseMaterial));
-        }
-
-        return results;
+        return courseMaterialResults;
     }
 
     public async Task<CourseMaterialResult> AddAsync(
