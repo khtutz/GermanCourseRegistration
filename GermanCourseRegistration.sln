@@ -5,11 +5,13 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GermanCourseRegistration.Web", "GermanCourseRegistration.Web\GermanCourseRegistration.Web.csproj", "{97050DC1-B532-417D-A62C-68876DAEC6DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GermanCourseRegistration.EntityModels", "GermanCourseRegistration.EntityModels\GermanCourseRegistration.EntityModels.csproj", "{2DCA18F9-7509-4F65-BB74-45CD9E6E8954}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GermanCourseRegistration.EntityModels", "GermanCourseRegistration.EntityModels\GermanCourseRegistration.EntityModels.csproj", "{2DCA18F9-7509-4F65-BB74-45CD9E6E8954}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GermanCourseRegistration.DataContext", "GermanCourseRegistration.DataContext\GermanCourseRegistration.DataContext.csproj", "{A37E3E37-1EEF-46D5-8C7F-6866691BBDB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GermanCourseRegistration.DataContext", "GermanCourseRegistration.DataContext\GermanCourseRegistration.DataContext.csproj", "{A37E3E37-1EEF-46D5-8C7F-6866691BBDB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GermanCourseRegistration.Repositories", "GermanCourseRegistration.Repositories\GermanCourseRegistration.Repositories.csproj", "{56BBBF32-3C91-43B4-B1AA-FA75E2D8A193}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GermanCourseRegistration.Repositories", "GermanCourseRegistration.Repositories\GermanCourseRegistration.Repositories.csproj", "{56BBBF32-3C91-43B4-B1AA-FA75E2D8A193}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GermanCourseRegistration.Application", "GermanCourseRegistration.Application\GermanCourseRegistration.Application.csproj", "{90738048-7C46-4AFA-BCF7-BBF53DEFB04F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{56BBBF32-3C91-43B4-B1AA-FA75E2D8A193}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56BBBF32-3C91-43B4-B1AA-FA75E2D8A193}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56BBBF32-3C91-43B4-B1AA-FA75E2D8A193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90738048-7C46-4AFA-BCF7-BBF53DEFB04F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90738048-7C46-4AFA-BCF7-BBF53DEFB04F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90738048-7C46-4AFA-BCF7-BBF53DEFB04F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90738048-7C46-4AFA-BCF7-BBF53DEFB04F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,15 @@
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\bin\Debug\net7.0\GermanCourseRegistration.Application.deps.json
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\bin\Debug\net7.0\GermanCourseRegistration.Application.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\bin\Debug\net7.0\GermanCourseRegistration.Application.pdb
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\bin\Debug\net7.0\GermanCourseRegistration.EntityModels.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\bin\Debug\net7.0\GermanCourseRegistration.EntityModels.pdb
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\obj\Debug\net7.0\GermanCourseRegistration.Application.csproj.AssemblyReference.cache
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\obj\Debug\net7.0\GermanCourseRegistration.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\obj\Debug\net7.0\GermanCourseRegistration.Application.AssemblyInfoInputs.cache
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\obj\Debug\net7.0\GermanCourseRegistration.Application.AssemblyInfo.cs
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\obj\Debug\net7.0\GermanCourseRegistration.Application.csproj.CoreCompileInputs.cache
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\obj\Debug\net7.0\GermanCourseRegistration.Application.csproj.CopyComplete
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\obj\Debug\net7.0\GermanCourseRegistration.Application.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\obj\Debug\net7.0\refint\GermanCourseRegistration.Application.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\obj\Debug\net7.0\GermanCourseRegistration.Application.pdb
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Application\obj\Debug\net7.0\ref\GermanCourseRegistration.Application.dll
