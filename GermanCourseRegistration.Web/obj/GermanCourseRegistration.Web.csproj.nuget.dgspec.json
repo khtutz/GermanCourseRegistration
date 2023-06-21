@@ -323,6 +323,9 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
+              "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.Application\\GermanCourseRegistration.Application.csproj": {
+                "projectPath": "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.Application\\GermanCourseRegistration.Application.csproj"
+              },
               "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.DataContext\\GermanCourseRegistration.DataContext.csproj": {
                 "projectPath": "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.DataContext\\GermanCourseRegistration.DataContext.csproj"
               },

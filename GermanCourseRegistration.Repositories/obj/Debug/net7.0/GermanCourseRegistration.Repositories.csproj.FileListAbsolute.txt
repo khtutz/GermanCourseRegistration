@@ -15,3 +15,5 @@ C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistrati
 C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\refint\GermanCourseRegistration.Repositories.dll
 C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\GermanCourseRegistration.Repositories.pdb
 C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\obj\Debug\net7.0\ref\GermanCourseRegistration.Repositories.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\bin\Debug\net7.0\GermanCourseRegistration.Application.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Repositories\bin\Debug\net7.0\GermanCourseRegistration.Application.pdb

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GermanCourseRegistration.Application\GermanCourseRegistration.Application.csproj" />
     <ProjectReference Include="..\GermanCourseRegistration.DataContext\GermanCourseRegistration.DataContext.csproj" />
     <ProjectReference Include="..\GermanCourseRegistration.EntityModels\GermanCourseRegistration.EntityModels.csproj" />
     <ProjectReference Include="..\GermanCourseRegistration.Repositories\GermanCourseRegistration.Repositories.csproj" />

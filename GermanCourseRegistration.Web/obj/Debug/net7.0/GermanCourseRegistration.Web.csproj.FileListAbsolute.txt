@@ -85,3 +85,5 @@ C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistrati
 C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Web\bin\Debug\net7.0\GermanCourseRegistration.DataContext.pdb
 C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Web\bin\Debug\net7.0\GermanCourseRegistration.EntityModels.pdb
 C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Web\bin\Debug\net7.0\GermanCourseRegistration.Repositories.pdb
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Web\bin\Debug\net7.0\GermanCourseRegistration.Application.dll
+C:\Users\khtutz\coding\csharp\pp\GermanCourseRegistration\GermanCourseRegistration.Web\bin\Debug\net7.0\GermanCourseRegistration.Application.pdb

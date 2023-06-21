@@ -1,7 +1,7 @@
 ﻿using GermanCourseRegistration.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GermanCourseRegistration.Application;
+namespace GermanCourseRegistration.Application.DependencyInjection;
 
 public static class DependencyInjection
 {

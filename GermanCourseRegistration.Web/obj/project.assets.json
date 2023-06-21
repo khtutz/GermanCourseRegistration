@@ -3704,6 +3704,7 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "GermanCourseRegistration.Application >= 1.0.0",
       "GermanCourseRegistration.DataContext >= 1.0.0",
       "GermanCourseRegistration.EntityModels >= 1.0.0",
       "GermanCourseRegistration.Repositories >= 1.0.0",
@@ -3748,6 +3749,9 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
+            "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.Application\\GermanCourseRegistration.Application.csproj": {
+              "projectPath": "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.Application\\GermanCourseRegistration.Application.csproj"
+            },
             "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.DataContext\\GermanCourseRegistration.DataContext.csproj": {
               "projectPath": "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.DataContext\\GermanCourseRegistration.DataContext.csproj"
             },
