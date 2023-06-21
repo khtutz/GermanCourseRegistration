@@ -3,6 +3,7 @@ using GermanCourseRegistration.DataContext;
 using GermanCourseRegistration.Repositories.DependencyInjection;
 using GermanCourseRegistration.Repositories.Implementations;
 using GermanCourseRegistration.Repositories.Interfaces;
+using GermanCourseRegistration.Web.Mappings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,6 +47,9 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
     builder.Services.AddScoped<ICourseMaterialOrderItemRepository, CourseMaterialOrderItemRepository>();
     builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
+    // Mappers
+    builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 }
 
 var app = builder.Build();

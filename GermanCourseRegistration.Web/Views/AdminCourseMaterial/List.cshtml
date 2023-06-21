@@ -34,7 +34,7 @@
                         <td>@courseMaterial.Name</td>
                         <td>@courseMaterial.Category</td>
                         <td>@(courseMaterial.Description ?? "-")</td>
-                        <td>@courseMaterial.Price</td>
+                        <td>@Convert.ToDecimal(courseMaterial.Price.ToString("0.####"))</td>
                         <td>
                             <a class="btn btn-secondary me-2"
                                asp-area=""
