@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\Repositories\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\GermanCourseRegistration.EntityModels\GermanCourseRegistration.EntityModels.csproj" />
   </ItemGroup>
 
