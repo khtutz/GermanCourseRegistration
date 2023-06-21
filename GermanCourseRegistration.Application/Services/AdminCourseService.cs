@@ -15,34 +15,14 @@ public class AdminCourseService : IAdminCourseService
 
     public async Task<CourseResult> GetByIdAsync(Guid id)
     {
-        Course? course = null;
-
-        try
-        {
-            course = await courseRepository.GetByIdAsync(id);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        Course? course = await courseRepository.GetByIdAsync(id);
 
         return new CourseResult(course);
     }
 
     public async Task<IEnumerable<CourseResult>> GetAllAsync()
     {
-        var courses = Enumerable.Empty<Course>();
-
-        try
-        {
-            courses = await courseRepository.GetAllAsync();
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        var courses = await courseRepository.GetAllAsync();
 
         var courseResults = courses.Select(c => new CourseResult(c));
 
@@ -55,9 +35,7 @@ public class AdminCourseService : IAdminCourseService
         string description, 
         Guid createdBy, 
         DateTime createdOn)
-    {
-        bool isAdded = false;
-
+    {   
         var course = new Course()
         {
             Level = level,
@@ -67,15 +45,7 @@ public class AdminCourseService : IAdminCourseService
             CreatedOn = createdOn
         };
 
-        try
-        {
-            isAdded = await courseRepository.AddAsync(course);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        bool isAdded = await courseRepository.AddAsync(course);
 
         return isAdded;
     }
@@ -88,34 +58,14 @@ public class AdminCourseService : IAdminCourseService
         Guid lastModifiedBy, 
         DateTime lastModifiedOn)
     {
-        Course? updatedCourse = null;
-
-        try
-        {
-            updatedCourse = await courseRepository.GetByIdAsync(id);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        Course? updatedCourse = await courseRepository.GetByIdAsync(id);
 
         return new CourseResult(updatedCourse);
     }
 
     public async Task<CourseResult> DeleteAsync(Guid id)
     {
-        Course? deletedCourse = null;
-
-        try
-        {
-            deletedCourse = await courseRepository.DeleteAsync(id);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        Course? deletedCourse = await courseRepository.DeleteAsync(id);
 
         return new CourseResult(deletedCourse);
     }

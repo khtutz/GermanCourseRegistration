@@ -1215,6 +1215,21 @@
           }
         }
       },
+      "GermanCourseRegistration.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "GermanCourseRegistration.EntityModels": "1.0.0",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "7.0.7",
+          "Microsoft.Extensions.DependencyInjection": "7.0.0"
+        },
+        "compile": {
+          "bin/placeholder/GermanCourseRegistration.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GermanCourseRegistration.Application.dll": {}
+        }
+      },
       "GermanCourseRegistration.DataContext/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
@@ -1244,6 +1259,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
+          "GermanCourseRegistration.Application": "1.0.0",
           "GermanCourseRegistration.DataContext": "1.0.0",
           "GermanCourseRegistration.EntityModels": "1.0.0"
         },
@@ -3664,6 +3680,11 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "GermanCourseRegistration.Application/1.0.0": {
+      "type": "project",
+      "path": "../GermanCourseRegistration.Application/GermanCourseRegistration.Application.csproj",
+      "msbuildProject": "../GermanCourseRegistration.Application/GermanCourseRegistration.Application.csproj"
     },
     "GermanCourseRegistration.DataContext/1.0.0": {
       "type": "project",

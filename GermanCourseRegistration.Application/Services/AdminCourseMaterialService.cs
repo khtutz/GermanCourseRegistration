@@ -20,17 +20,7 @@ public class AdminCourseMaterialService : IAdminCourseMaterialService
 
     public async Task<IEnumerable<CourseMaterialResult>> GetAllAsync()
     {
-        var courseMaterials = Enumerable.Empty<CourseMaterial>();
-
-        try
-        {
-            courseMaterials = await courseMaterialRepository.GetAllAsync();
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        var courseMaterials = await courseMaterialRepository.GetAllAsync();
 
         var courseMaterialResults = courseMaterials.Select(cm => new CourseMaterialResult(cm));
 
@@ -55,17 +45,7 @@ public class AdminCourseMaterialService : IAdminCourseMaterialService
             CreatedOn = createdOn
         };
 
-        bool isAdded = false;
-
-        try
-        {
-            isAdded = await courseMaterialRepository.AddAsync(courseMaterial);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        bool isAdded = await courseMaterialRepository.AddAsync(courseMaterial);
 
         return new CourseMaterialResult(courseMaterial);
     }
@@ -79,34 +59,14 @@ public class AdminCourseMaterialService : IAdminCourseMaterialService
         Guid lastModifiedBy, 
         DateTime lastModifiedOn)
     {
-        CourseMaterial? courseMaterial = null;
-
-        try
-        {
-            courseMaterial = await courseMaterialRepository.GetByIdAsync(id);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        CourseMaterial? courseMaterial = await courseMaterialRepository.GetByIdAsync(id);
 
         return new CourseMaterialResult(courseMaterial);
     }
 
     public async Task<CourseMaterialResult> DeleteAsync(Guid id)
     {
-        CourseMaterial? deletedCourseMaterial = null;
-
-        try
-        {
-            deletedCourseMaterial = await courseMaterialRepository.DeleteAsync(id);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        CourseMaterial? deletedCourseMaterial = await courseMaterialRepository.DeleteAsync(id);
 
         return new CourseMaterialResult(deletedCourseMaterial);
     }
