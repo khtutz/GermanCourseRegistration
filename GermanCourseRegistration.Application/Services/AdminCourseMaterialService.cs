@@ -27,9 +27,9 @@ public class AdminCourseMaterialService : IAdminCourseMaterialService
         return courseMaterialResults;
     }
 
-    public async Task<CourseMaterialResult> AddAsync(
+    public async Task<bool> AddAsync(
         string name, 
-        string description, 
+        string? description, 
         string category, 
         decimal price, 
         Guid createdBy, 
@@ -47,13 +47,13 @@ public class AdminCourseMaterialService : IAdminCourseMaterialService
 
         bool isAdded = await courseMaterialRepository.AddAsync(courseMaterial);
 
-        return new CourseMaterialResult(courseMaterial);
+        return isAdded;
     }
 
     public async Task<CourseMaterialResult> UpdateAsync(
         Guid id, 
         string name, 
-        string description, 
+        string? description, 
         string category, 
         decimal price, 
         Guid lastModifiedBy, 
@@ -69,5 +69,17 @@ public class AdminCourseMaterialService : IAdminCourseMaterialService
         CourseMaterial? deletedCourseMaterial = await courseMaterialRepository.DeleteAsync(id);
 
         return new CourseMaterialResult(deletedCourseMaterial);
+    }
+
+    public IEnumerable<string> GetCourseMaterialCategories()
+    {
+        var categories = new List<string>()
+        {
+            CourseMaterial.PhysicalCopyCategory,
+            CourseMaterial.DigitalCopyCategory,
+            CourseMaterial.AudioCopyCategory
+        };
+
+        return categories;
     }
 }

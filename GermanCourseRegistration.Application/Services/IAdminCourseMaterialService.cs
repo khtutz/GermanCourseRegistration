@@ -8,9 +8,9 @@ public interface IAdminCourseMaterialService
 
     Task<IEnumerable<CourseMaterialResult>> GetAllAsync();
 
-    Task<CourseMaterialResult> AddAsync(
+    Task<bool> AddAsync(
         string name,
-        string description,
+        string? description,
         string category,
         decimal price,
         Guid createdBy,
@@ -19,11 +19,13 @@ public interface IAdminCourseMaterialService
     Task<CourseMaterialResult> UpdateAsync(
         Guid id,
         string name,
-        string description,
+        string? description,
         string category,
         decimal price,
         Guid lastModifiedBy,
         DateTime lastModifiedOn);
 
     Task<CourseMaterialResult> DeleteAsync(Guid id);
+
+    IEnumerable<string> GetCourseMaterialCategories();
 }

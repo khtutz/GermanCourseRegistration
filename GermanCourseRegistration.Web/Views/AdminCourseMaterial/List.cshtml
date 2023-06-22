@@ -1,6 +1,14 @@
 ﻿
 @model List<GermanCourseRegistration.Web.Models.ViewModels.CourseMaterialView>
 
+@*@{
+    var successMessage = TempData["SuccessMessage"] as string;
+    var errorMessage = TempData["ErrorMessage"] as string;
+
+    var message = !string.IsNullOrEmpty(successMessage) ? successMessage :
+                  !string.IsNullOrEmpty(errorMessage) ? errorMessage : "";
+}*@
+
 <div class="container mb-3 d-flex justify-content-center">
     <h3>Course Material List</h3>
 </div>
@@ -55,3 +63,31 @@
         <p>No course materials found!</p>
     }
 </div>
+
+@*<!-- Modal to display success or failed message of added, edited, or deleted course material -->
+@if (!string.IsNullOrEmpty(message))
+{
+    <!-- Display modal -->
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">@(!string.IsNullOrEmpty(successMessage) ? "Success" : "Error")</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @message
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call JavaScript to show the modal -->
+    <script>
+        $(document).ready(function () {
+            $('#messageModal').modal('show');
+        });
+    </script>
+}*@

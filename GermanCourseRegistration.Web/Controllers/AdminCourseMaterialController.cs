@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using GermanCourseRegistration.Application.ServiceResults;
 using GermanCourseRegistration.Application.Services;
-using GermanCourseRegistration.EntityModels;
 using GermanCourseRegistration.Web.Models.ViewModels;
 using GermanCourseRegistration.Web.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -32,8 +31,6 @@ public class AdminCourseMaterialController : Controller
         this.mapper = mapper;
     }
 
-    //
-    // Reading Method
     [HttpGet]
     public async Task<IActionResult> List()
     {
@@ -44,156 +41,107 @@ public class AdminCourseMaterialController : Controller
         return View(viewModels);
     }
 
-    //
-    // Writing Methods
     [HttpGet]
-    public async Task<IActionResult> Add()
+    public IActionResult Add()
     {
-        var model = new CourseMaterialView();
+        var viewModel = new CourseMaterialView();
 
-        // Load the categories
-        var categories = new List<string>()
-        {
-            CourseMaterial.PhysicalCopyCategory, 
-            CourseMaterial.DigitalCopyCategory,
-            CourseMaterial.AudioCopyCategory
-        };
-        model.AvailableCategories = categories.Select(c => new SelectListItem
+        // Load the categories to select
+        var categories = adminCourseMaterialService.GetCourseMaterialCategories();
+        viewModel.AvailableCategories = categories.Select(c => new SelectListItem
         {
             Text = c,
             Value = c
         });
 
-        return View(model);
+        return View(viewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(CourseMaterialView model)
+    public async Task<IActionResult> Add(CourseMaterialView viewModel)
     {
-        // Get Id of logged in user
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
-        var courseMaterial = MapViewModelToCourseMaterial(model, loginId, AddAction);
 
-        bool isAdded = false;// await courseMaterialRepository.AddAsync(courseMaterial);
-
+        bool isAdded = await adminCourseMaterialService.AddAsync(
+            viewModel.Name,
+            viewModel.Description,
+            viewModel.Category,
+            viewModel.Price,
+            loginId,
+            DateTime.Now);
 
         if (isAdded)
         {
-            // Show success notification
-            return RedirectToAction("List");
+            TempData["SuccessMessage"] = "Course material added successfully.";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Failed to add course material.";
         }
 
-        // Show error notification
         return RedirectToAction("List");
     }
 
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        CourseMaterial? courseMaterial = null;//await courseMaterialRepository.GetByIdAsync(id);
+        var courseMaterialResult = await adminCourseMaterialService.GetByIdAsync(id);
 
-        if (courseMaterial == null)
-        {
-            // Show error notification
-            return View("Error");
-        }
+        var viewModel = mapper.Map<CourseMaterialView>(courseMaterialResult);
 
-        var model = MapCourseMaterialToViewModel(courseMaterial);
-
-        // Load the categories, and assign the id
-        var categories = new List<string>()
-        {
-            CourseMaterial.PhysicalCopyCategory,
-            CourseMaterial.DigitalCopyCategory,
-            CourseMaterial.AudioCopyCategory
-        };
-        model.AvailableCategories = categories.Select(c => new SelectListItem
+        // Load the categories to select
+        var categories = adminCourseMaterialService.GetCourseMaterialCategories();
+        viewModel.AvailableCategories = categories.Select(c => new SelectListItem
         {
             Text = c,
             Value = c
         });
 
-        return View(model);
+        return View(viewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(CourseMaterialView model)
+    public async Task<IActionResult> Edit(CourseMaterialView viewModel)
     {
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
-        var courseMaterial = MapViewModelToCourseMaterial(model, loginId, EditAction);
 
-        CourseMaterial? updatedCourseMaterial = null;//await courseMaterialRepository.UpdateAsync(courseMaterial);
+        CourseMaterialResult courseMaterialResult = 
+            await adminCourseMaterialService.UpdateAsync(
+                viewModel.Id,
+                viewModel.Name,
+                viewModel.Description,
+                viewModel.Category,
+                viewModel.Price,
+                loginId,
+                DateTime.Now);
 
-        if (updatedCourseMaterial != null)
+        if (courseMaterialResult.CourseMaterial != null) 
         {
-            // Show success notification
-            return RedirectToAction("List");
+            TempData["SuccessMessage"] = "Course material updated successfully.";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Failed to update course material.";
         }
 
-        // Show error notification
         return RedirectToAction("List");
     }
 
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id)
     {
-        CourseMaterial? deletedCourseMaterial = null;//await courseMaterialRepository.DeleteAsync(id);
+        CourseMaterialResult courseMaterialResult = 
+            await adminCourseMaterialService.DeleteAsync(id);
 
-        if (deletedCourseMaterial != null)
+        if (courseMaterialResult.CourseMaterial != null)
         {
-            // Show success notification
-            return RedirectToAction("List");
-        }
-
-        // Show error notification
-        return RedirectToAction("List", new { id });
-    }
-
-    //
-    // Mapping Methods
-    private CourseMaterial MapViewModelToCourseMaterial(
-        CourseMaterialView model, Guid loginId, string action)
-    {
-        if (action == AddAction)
-        {
-            return new CourseMaterial
-            {
-                Name = model.Name,
-                Category = model.Category,
-                Description = model.Description,
-                Price = model.Price,
-                CreatedBy = loginId,
-                CreatedOn = DateTime.Now
-            };
-        }
-        else if (action == EditAction)
-        {
-            return new CourseMaterial
-            {
-                Id = model.Id,
-                Name = model.Name,
-                Category = model.Category,
-                Description = model.Description,
-                Price = model.Price,
-                LastModifiedBy = loginId,
-                LastModifiedOn = DateTime.Now
-            };
+            TempData["SuccessMessage"] = "Course material deleted successfully.";
         }
         else
         {
-            return new();
+            TempData["ErrorMessage"] = "Failed to delete course material.";
         }
-    }
 
-    private CourseMaterialView MapCourseMaterialToViewModel(CourseMaterial model)
-    {
-        return new CourseMaterialView
-        {
-            Id = model.Id,
-            Name = model.Name,
-            Category = model.Category,
-            Description = model.Description,
-            Price = Convert.ToDecimal(model.Price.ToString("0.####"))
-        };
+        return RedirectToAction("List");
     }
 }

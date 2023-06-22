@@ -1,16 +1,30 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> signInManager
 
+@{
+    var successMessage = TempData["SuccessMessage"] as string;
+    var errorMessage = TempData["ErrorMessage"] as string;
+
+    var message = !string.IsNullOrEmpty(successMessage) ? successMessage :
+                  !string.IsNullOrEmpty(errorMessage) ? errorMessage : "";
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>@ViewData["Title"] - GermanCourseRegistration.Web</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GermanCourseRegistration.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <style>
         .custom-toggler.navbar-toggler {
             border-color: rgb(255,102,203);
@@ -119,14 +133,40 @@
         </main>
     </div>
 
+    <!-- Modal to display success or failed message of added, edited, or deleted course material -->
+    @if (!string.IsNullOrEmpty(message))
+    {
+        <!-- Display modal -->
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="messageModalLabel">@(!string.IsNullOrEmpty(successMessage) ? "Success" : "Error")</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @message
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call JavaScript to show the modal -->
+        <script>
+            $(document).ready(function () {
+                $('#messageModal').modal('show');
+            });
+        </script>
+    }
+
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2023 - GermanCourseRegistration.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
