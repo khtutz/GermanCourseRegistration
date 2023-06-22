@@ -1,59 +1,41 @@
-﻿using GermanCourseRegistration.EntityModels;
+﻿using AutoMapper;
+using GermanCourseRegistration.Application.ServiceResults;
+using GermanCourseRegistration.Application.Services;
 using GermanCourseRegistration.Web.Models.ViewModels;
-using GermanCourseRegistration.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
 using GermanCourseRegistration.Web.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GermanCourseRegistration.Web.Controllers;
 
 [Authorize(Roles = "Admin")]
 public class AdminCourseController : Controller
 {
-    private readonly ICourseRepository courseRepository;
+    private readonly IAdminCourseService adminCourseService;
     private readonly UserManager<IdentityUser> userManager;
-
-    private const string AddAction = "Add";
-    private const string EditAction = "Edit";
+    private readonly IMapper mapper;
 
     public AdminCourseController(
-        ICourseRepository courseRepository,
-        UserManager<IdentityUser> userManager)
+        IAdminCourseService adminCourseService,
+        UserManager<IdentityUser> userManager,
+        IMapper mapper)
     {
-        this.courseRepository = courseRepository;
+        this.adminCourseService = adminCourseService;
         this.userManager = userManager;
+        this.mapper = mapper;
     }
 
-    //
-    // Reading Method
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        IEnumerable<Course> courses = Enumerable.Empty<Course>();
+        var courseResults = await adminCourseService.GetAllAsync();
 
-        try
-        {
-            courses = await courseRepository.GetAllAsync();
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        var viewModels = mapper.Map<List<CourseView>>(courseResults);
 
-        var models = new List<CourseView>();
-
-        foreach (var course in courses)
-        {
-            models.Add(MapCourseToViewModel(course));
-        }
-
-        return View(models);
+        return View(viewModels);
     }
 
-    //
-    // Writing Methods
     [HttpGet]
     public IActionResult Add()
     {
@@ -64,146 +46,75 @@ public class AdminCourseController : Controller
     public async Task<IActionResult> Add(CourseView model)
     {
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
-        var course = MapViewModelToCourse(model, loginId, AddAction);
 
-        bool isAdded = false;
-
-        try
-        {
-            isAdded = await courseRepository.AddAsync(course);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        bool isAdded = await adminCourseService.AddAsync(
+            model.Level,
+            model.Part,
+            model.Description,
+            loginId,
+            DateTime.Now);
 
         if (isAdded)
         {
-            // Show success notification
-            return RedirectToAction("List");
+            TempData["SuccessMessage"] = "Course added successfully.";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Failed to add course.";
         }
 
-        // Show error notification
         return RedirectToAction("List");
     }
 
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        Course? course = null;
+        var courseResult = await adminCourseService.GetByIdAsync(id);
 
-        try
-        {
-            course = await courseRepository.GetByIdAsync(id);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        var viewModel = mapper.Map<CourseView>(courseResult);
 
-        if (course == null) return View("Error");
-
-        var model = MapCourseToViewModel(course);
-
-        return View(model);
+        return View(viewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(CourseView model)
+    public async Task<IActionResult> Edit(CourseView viewModel)
     {
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
-        var course = MapViewModelToCourse(model, loginId, EditAction);
 
-        Course? updatedCourse = null;
+        CourseResult courseResult = await adminCourseService.UpdateAsync(
+            viewModel.Id,
+            viewModel.Level,
+            viewModel.Part,
+            viewModel.Description,
+            loginId,
+            DateTime.Now);
 
-        try
+        if (courseResult.Course != null)
         {
-            updatedCourse = await courseRepository.UpdateAsync(course);
+            TempData["SuccessMessage"] = "Course updated successfully.";
         }
-        catch (Exception ex)
+        else
         {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
-
-        if (updatedCourse != null)
-        {
-            // Show success notification
-            return RedirectToAction("List");
+            TempData["ErrorMessage"] = "Failed to update course.";
         }
 
-        // Show error notification
         return RedirectToAction("List");
     }
 
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id)
     {
-        Course? deletedCourse = null;
+        CourseResult courseResult = await adminCourseService.DeleteAsync(id);
 
-        try
+        if (courseResult.Course != null)
         {
-            deletedCourse = await courseRepository.DeleteAsync(id);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }    
-
-        if (deletedCourse != null)
-        {
-            // Show success notification
-            return RedirectToAction("List");
-        }
-
-        // Show error notification
-        return RedirectToAction("List", new { id });
-    }
-
-    //
-    // Private Methods
-    private Course MapViewModelToCourse(CourseView model, Guid loginId, string action)
-    {
-        if (action == AddAction)
-        {
-            return new Course
-            {
-                Level = model.Level,
-                Part = model.Part,
-                Description = model.Description,
-                CreatedBy = loginId,
-                CreatedOn = DateTime.Now
-            };
-        }
-        else if (action == EditAction)
-        {
-            return new Course
-            {
-                Id = model.Id,
-                Level = model.Level,
-                Part = model.Part,
-                Description = model.Description,
-                LastModifiedBy = loginId,
-                LastModifiedOn = DateTime.Now
-            };
+            TempData["SuccessMessage"] = "Course deleted successfully.";
         }
         else
         {
-            return new();
+            TempData["ErrorMessage"] = "Failed to delete course.";
         }
-    }
 
-    private CourseView MapCourseToViewModel(Course model)
-    {
-        return new CourseView
-        {
-            Id = model.Id,
-            Level = model.Level,
-            Part = model.Part,
-            Description = model.Description
-        };
+        return RedirectToAction("List");
     }
 }

@@ -11,7 +11,7 @@ public interface IAdminCourseService
     Task<bool> AddAsync(
         string level,
         int part,
-        string description,
+        string? description,
         Guid createdBy,
         DateTime createdOn);
 
@@ -19,7 +19,7 @@ public interface IAdminCourseService
         Guid id,
         string level,
         int part,
-        string description,
+        string? description,
         Guid lastModifiedBy,
         DateTime lastModifiedOn);
 

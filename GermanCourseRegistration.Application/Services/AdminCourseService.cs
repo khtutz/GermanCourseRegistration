@@ -32,7 +32,7 @@ public class AdminCourseService : IAdminCourseService
     public async Task<bool> AddAsync(
         string level, 
         int part, 
-        string description, 
+        string? description, 
         Guid createdBy, 
         DateTime createdOn)
     {   
@@ -54,11 +54,22 @@ public class AdminCourseService : IAdminCourseService
         Guid id, 
         string level, 
         int part, 
-        string description, 
+        string? description, 
         Guid lastModifiedBy, 
         DateTime lastModifiedOn)
     {
-        Course? updatedCourse = await courseRepository.GetByIdAsync(id);
+        var course = new Course()
+        {
+            Id = id,
+            Level = level,
+            Part = part,
+            Description = description,
+            LastModifiedBy = lastModifiedBy,
+            LastModifiedOn = lastModifiedOn
+        };
+
+        Course? updatedCourse =
+            await courseRepository.UpdateAsync(course, id);
 
         return new CourseResult(updatedCourse);
     }
