@@ -18,9 +18,6 @@ public class AdminCourseMaterialController : Controller
     private readonly UserManager<IdentityUser> userManager;
     private readonly IMapper mapper;
 
-    private const string AddAction = "Add";
-    private const string EditAction = "Edit";
-
     public AdminCourseMaterialController(
         IAdminCourseMaterialService adminCourseMaterialService,
         UserManager<IdentityUser> userManager,

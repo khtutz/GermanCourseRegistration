@@ -13,9 +13,11 @@ public class AdminCourseMaterialService : IAdminCourseMaterialService
         this.courseMaterialRepository = courseMaterialRepository;
     }
 
-    public Task<CourseMaterialResult> GetByIdAsync(Guid id)
+    public async Task<CourseMaterialResult> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var courseMaterial = await courseMaterialRepository.GetByIdAsync(id);
+        
+        return new CourseMaterialResult(courseMaterial);
     }
 
     public async Task<IEnumerable<CourseMaterialResult>> GetAllAsync()
@@ -59,9 +61,21 @@ public class AdminCourseMaterialService : IAdminCourseMaterialService
         Guid lastModifiedBy, 
         DateTime lastModifiedOn)
     {
-        CourseMaterial? courseMaterial = await courseMaterialRepository.GetByIdAsync(id);
+        var courseMaterial = new CourseMaterial()
+        {
+            Id = id,
+            Name = name,
+            Description = description,
+            Category = category,
+            Price = price,
+            LastModifiedBy = lastModifiedBy,
+            LastModifiedOn = lastModifiedOn
+        };
 
-        return new CourseMaterialResult(courseMaterial);
+        CourseMaterial? updatedCourseMaterial = 
+            await courseMaterialRepository.UpdateAsync(courseMaterial, id);
+
+        return new CourseMaterialResult(updatedCourseMaterial);
     }
 
     public async Task<CourseMaterialResult> DeleteAsync(Guid id)
