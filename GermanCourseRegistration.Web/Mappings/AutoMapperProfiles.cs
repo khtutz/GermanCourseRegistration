@@ -16,11 +16,11 @@ public class AutoMapperProfiles : Profile
             .ForPath(d => d.CourseMaterial!.Price, opt => opt.MapFrom(s => s.Price))
             .ReverseMap();
 
-        //CreateMap<CourseView, CourseResult>()
-        //    .ForPath(d => d.Course!.Id, opt => opt.MapFrom(s => s.Id))
-        //    .ForPath(d => d.Course!.Level, opt => opt.MapFrom(s => s.Level))
-        //    .ForPath(d => d.Course!.Part, opt => opt.MapFrom(s => s.Part))
-        //    .ForPath(d => d.Course!.Description, opt => opt.MapFrom(s => s.Description))
-        //    .ReverseMap();
+        CreateMap<CourseView, CourseResult>()
+            .ForPath(d => d.Course!.Id, opt => opt.MapFrom(s => s.Id))
+            .ForPath(d => d.Course!.Level, opt => opt.MapFrom(s => s.Level))
+            .ForPath(d => d.Course!.Part, opt => opt.MapFrom(s => s.Part))
+            .ForPath(d => d.Course!.Description, opt => opt.MapFrom(s => s.Description))
+            .ReverseMap();
     }
 }
