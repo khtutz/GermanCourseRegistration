@@ -2,7 +2,4 @@
 
 namespace GermanCourseRegistration.Application.Interfaces.Repositories;
 
-public interface IPaymentRepository
-{
-    Task<bool> AddAsync(Payment payment);
-}
+public interface IPaymentRepository : IRepository<Payment, Guid> { }
