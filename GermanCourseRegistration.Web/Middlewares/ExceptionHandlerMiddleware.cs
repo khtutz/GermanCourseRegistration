@@ -46,13 +46,13 @@ public class ExceptionHandlerMiddleware
         }
     }
 
-    private static void HandleDevelopmentErrors(
+    private void HandleDevelopmentErrors(
         HttpContext context, Exception ex, Guid errorId)
     {
         context.Response.Redirect($"/Home/Error?id={errorId}&message={Uri.EscapeDataString(ex.Message)}&stackTrace={Uri.EscapeDataString(ex.StackTrace!)}");
     }
 
-    private static void HandleProductionErrors(HttpContext context)
+    private void HandleProductionErrors(HttpContext context)
     {
         context.Response.Redirect("/Home/Error/Production");
     }
