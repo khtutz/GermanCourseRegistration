@@ -4,11 +4,25 @@ using GermanCourseRegistration.Repositories.DependencyInjection;
 using GermanCourseRegistration.Repositories.Implementations;
 using GermanCourseRegistration.Repositories.Interfaces;
 using GermanCourseRegistration.Web.Mappings;
+using GermanCourseRegistration.Web.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    // Logging
+    var logger = new LoggerConfiguration()
+        .WriteTo.Console()
+        .WriteTo.File(
+            "Logs/GermanCourseRegistration_Log.txt",
+            rollingInterval: RollingInterval.Day)
+        .MinimumLevel.Information()
+        .CreateLogger();
+
+    builder.Logging.ClearProviders();
+    builder.Logging.AddSerilog(logger);
+
     // DI classes from Application and Repository layers
     builder.Services
         .AddApplication()
@@ -58,9 +72,10 @@ var app = builder.Build();
     if (!app.Environment.IsDevelopment())
     {
         app.UseExceptionHandler("/Home/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
+
+    app.UseMiddleware<ExceptionHandlerMiddleware>();
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
