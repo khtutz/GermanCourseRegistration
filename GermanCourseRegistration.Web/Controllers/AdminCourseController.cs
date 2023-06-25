@@ -43,14 +43,14 @@ public class AdminCourseController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(CourseView model)
+    public async Task<IActionResult> Add(CourseView viewModel)
     {
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
         bool isAdded = await adminCourseService.AddAsync(
-            model.Level,
-            model.Part,
-            model.Description,
+            viewModel.Level,
+            viewModel.Part,
+            viewModel.Description,
             loginId,
             DateTime.Now);
 
