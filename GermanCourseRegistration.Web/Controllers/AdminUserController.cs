@@ -1,4 +1,6 @@
-﻿using GermanCourseRegistration.Repositories.Interfaces;
+﻿using GermanCourseRegistration.Application.ServiceResults;
+using GermanCourseRegistration.Application.Services;
+using GermanCourseRegistration.Web.Mappings;
 using GermanCourseRegistration.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,43 +11,24 @@ namespace GermanCourseRegistration.Web.Controllers;
 [Authorize(Roles = "Admin")]
 public class AdminUserController : Controller
 {
-    private readonly IUserRepository userRepository;
+    private readonly IUserService userService;
     private readonly UserManager<IdentityUser> userManager;
 
     public AdminUserController(
-        IUserRepository userRepository,
+        IUserService userService,
         UserManager<IdentityUser> userManager)
     {
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.userManager = userManager;
     }
 
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        IEnumerable<IdentityUser> users = Enumerable.Empty<IdentityUser>();
+        IEnumerable<UserResult> users = await userService.GetAllAsync();
 
-        try
-        {
-            users = await userRepository.GetAll();
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        var userIndividualViews = MapperProfiles.MapUserResultsToUserIndividualViews(users);
 
-        // Map the domain model to the view model
-        var userIndividualViews = new List<UserIndividualView>();
-        foreach (var user in users)
-        {
-            userIndividualViews.Add(new UserIndividualView
-            {
-                Id = Guid.Parse(user.Id),
-                Username = user.UserName!,
-                EmailAddress = user.Email!
-            });
-        }
         var userView = new UserView { Users = userIndividualViews };
 
         return View(userView);
@@ -58,39 +41,21 @@ public class AdminUserController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(UserView userView)
+    public async Task<IActionResult> Add(UserView viewModel)
     {
-        var identityUser = new IdentityUser
+        bool isAdded = await userService.AddAsync(
+            viewModel.Username,
+            viewModel.Email,
+            viewModel.Password,
+            viewModel.AdminRoleChecked);
+
+        if (isAdded)
         {
-            UserName = userView.Username,
-            Email = userView.Email
-        };
-
-        var identityResult = await userManager.CreateAsync(
-            identityUser, userView.Password);
-        
-        if (identityResult.Succeeded)
-        {
-            var roles = new List<string> { "User" };
-
-            if (userView.AdminRoleChecked)
-            {
-                roles.Add("Admin");
-            }
-
-            identityResult = await userManager
-                .AddToRolesAsync(identityUser, roles);
-
-            if (identityResult != null && identityResult.Succeeded)
-            {
-                // Show success message
-                return RedirectToAction("List", "AdminUser");
-            }
+            TempData["SuccessMessage"] = "User added successfully.";
         }
         else
         {
-            // Read the message from identityResult and show it
-            return RedirectToAction("List", "AdminUser");
+            TempData["ErrorMessage"] = "Failed to add user.";
         }
 
         // Show error message
@@ -98,7 +63,7 @@ public class AdminUserController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(Guid userId)
+    public IActionResult Edit(Guid userId)
     {
         return View();
     }
@@ -106,18 +71,18 @@ public class AdminUserController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id)
     {
+        bool isDeleted = await userService.DeleteAsync(id);
         var user = await userManager.FindByIdAsync(id.ToString());
 
-        if (user != null)
+        if (isDeleted)
         {
-            var identityResult = await userManager.DeleteAsync(user);
-
-            if (identityResult != null && identityResult.Succeeded)
-            {
-                return RedirectToAction("List", "AdminUser");
-            }
+            TempData["SuccessMessage"] = "User deleted successfully.";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Failed to delete user.";
         }
 
-        return View();
+        return RedirectToAction("List", "AdminUser");
     }
 }

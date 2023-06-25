@@ -14,7 +14,7 @@ public class UserRepository : IUserRepository
         this.authDbContext = authDbContext;
     }
 
-    public async Task<IEnumerable<IdentityUser>> GetAll()
+    public async Task<IEnumerable<IdentityUser>> GetAllAsync()
     {
         // Return all users except super admin
         var users = await authDbContext.Users.ToListAsync();

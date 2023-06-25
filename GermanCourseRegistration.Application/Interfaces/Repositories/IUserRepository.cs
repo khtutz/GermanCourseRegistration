@@ -4,5 +4,5 @@ namespace GermanCourseRegistration.Application.Interfaces.Repositories;
 
 public interface IUserRepository
 {
-    Task<IEnumerable<IdentityUser>> GetAll();
+    Task<IEnumerable<IdentityUser>> GetAllAsync();
 }
