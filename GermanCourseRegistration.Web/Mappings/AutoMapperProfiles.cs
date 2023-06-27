@@ -22,5 +22,14 @@ public class AutoMapperProfiles : Profile
             .ForPath(d => d.Course!.Part, opt => opt.MapFrom(s => s.Part))
             .ForPath(d => d.Course!.Description, opt => opt.MapFrom(s => s.Description))
             .ReverseMap();
+
+        //CreateMap<CourseScheduleView, CourseOfferResult>()
+        //    .ForPath(d => d.CouseOffer!.Id, opt => opt.MapFrom(s => s.Id))
+        //    .ForPath(d => d.CouseOffer!.Name, opt => opt.MapFrom(s => s.Name))
+        //    .ForPath(d => d.CouseOffer!.ClassType, opt => opt.MapFrom(s => s.ClassType))
+        //    .ForPath(d => d.CouseOffer!.Cost, opt => opt.MapFrom(s => s.Cost))
+        //    .ForPath(d => d.CouseOffer!.StartDate, opt => opt.MapFrom(s => s.StartDate))
+        //    .ForPath(d => d.CouseOffer!.EndDate, opt => opt.MapFrom(s => s.EndDate))
+        //    .ReverseMap();
     }
 }

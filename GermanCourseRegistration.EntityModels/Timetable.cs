@@ -5,7 +5,7 @@ namespace GermanCourseRegistration.EntityModels;
 
 public sealed class Timetable : Entity<Guid>
 {
-    public static readonly List<string> DaysOfWeek = new List<string>
+    public static readonly IEnumerable<string> DaysOfWeek = new List<string>
     {
         "Monday",
         "Tuesday",

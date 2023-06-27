@@ -1,11 +1,4 @@
-﻿using GermanCourseRegistration.Web.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-
-namespace GermanCourseRegistration.Web.Middlewares;
+﻿namespace GermanCourseRegistration.Web.Middlewares;
 
 public class ExceptionHandlerMiddleware
 {
@@ -31,9 +24,8 @@ public class ExceptionHandlerMiddleware
         }
         catch (Exception ex)
         {
-            // Log the exception
             var errorId = Guid.NewGuid();
-            logger.LogError(ex, $"{errorId} : {ex.Message}");
+            logger.LogError(ex, $"{errorId} :\n {ex.Message}\n{ex.StackTrace}\n");
 
             if (environment.IsDevelopment())
             {
@@ -49,7 +41,7 @@ public class ExceptionHandlerMiddleware
     private void HandleDevelopmentErrors(
         HttpContext context, Exception ex, Guid errorId)
     {
-        context.Response.Redirect($"/Home/Error?id={errorId}&message={Uri.EscapeDataString(ex.Message)}&stackTrace={Uri.EscapeDataString(ex.StackTrace!)}");
+        context.Response.Redirect($"/Home/Error?id={errorId}");
     }
 
     private void HandleProductionErrors(HttpContext context)

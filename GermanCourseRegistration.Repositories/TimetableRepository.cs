@@ -5,13 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GermanCourseRegistration.Repositories;
 
-public class TimetableRepository
-    : Repository<Timetable, Guid>, ITimetableRepository
+public class TimetableRepository : ITimetableRepository
 {
     private readonly GermanCourseRegistrationDbContext dbContext;
 
     public TimetableRepository(GermanCourseRegistrationDbContext dbContext)
-        : base(dbContext)
     {
         this.dbContext = dbContext;
     }

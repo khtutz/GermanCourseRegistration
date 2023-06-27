@@ -22,15 +22,18 @@ public class CourseScheduleView
     [Required(ErrorMessage = "End date is required.")]
     public DateTime EndDate { get; set; }
 
-    public IEnumerable<SelectListItem>? AvailableClassTypes { get; set; }
-
-    public IEnumerable<SelectListItem>? AvailableCourseLevels { get; set; }
-
+    // Navigation properties
     public CourseView? Course { get; set; }
 
+    public TimetableView Timetable { get; set; } = new TimetableView();
+
+    // UI display properties
     public IEnumerable<string> DaysOfWeek { get; set; }
 
     public IEnumerable<string> SelectDays { get; set; }
 
-    public TimetableView Timetable { get; set; } = new TimetableView();
+    // Drop down list properties
+    public IEnumerable<SelectListItem>? AvailableClassTypes { get; set; }
+
+    public IEnumerable<SelectListItem>? AvailableCourseLevels { get; set; }
 }
