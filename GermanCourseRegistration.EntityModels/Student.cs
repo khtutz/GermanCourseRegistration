@@ -4,6 +4,12 @@ namespace GermanCourseRegistration.EntityModels;
 
 public sealed class Student : Entity<Guid>
 {
+    public const string Mr = "Mr";
+    public const string Mrs = "Mrs";
+    public const string Miss = "Miss";
+    public const string Ms = "Ms";
+    public const string Dr = "Dr";
+
     public Student(
 		Guid id,
 		string salutation,

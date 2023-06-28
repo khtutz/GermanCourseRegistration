@@ -23,13 +23,16 @@ public class AutoMapperProfiles : Profile
             .ForPath(d => d.Course!.Description, opt => opt.MapFrom(s => s.Description))
             .ReverseMap();
 
-        //CreateMap<CourseScheduleView, CourseOfferResult>()
-        //    .ForPath(d => d.CouseOffer!.Id, opt => opt.MapFrom(s => s.Id))
-        //    .ForPath(d => d.CouseOffer!.Name, opt => opt.MapFrom(s => s.Name))
-        //    .ForPath(d => d.CouseOffer!.ClassType, opt => opt.MapFrom(s => s.ClassType))
-        //    .ForPath(d => d.CouseOffer!.Cost, opt => opt.MapFrom(s => s.Cost))
-        //    .ForPath(d => d.CouseOffer!.StartDate, opt => opt.MapFrom(s => s.StartDate))
-        //    .ForPath(d => d.CouseOffer!.EndDate, opt => opt.MapFrom(s => s.EndDate))
-        //    .ReverseMap();
+        CreateMap<StudentResult, StudentView>()
+            .ForPath(d => d.Id, opt => opt.MapFrom(s => s.Student!.Id))
+            .ForPath(d => d.Salutation, opt => opt.MapFrom(s => s.Student!.Salutation))
+            .ForPath(d => d.FirstName, opt => opt.MapFrom(s => s.Student!.FirstName))
+            .ForPath(d => d.LastName, opt => opt.MapFrom(s => s.Student!.LastName))
+            .ForPath(d => d.Birthday, opt => opt.MapFrom(s => s.Student!.Birthday))
+            .ForPath(d => d.Gender, opt => opt.MapFrom(s => s.Student!.Gender))
+            .ForPath(d => d.Mobile, opt => opt.MapFrom(s => s.Student!.Mobile))
+            .ForPath(d => d.Email, opt => opt.MapFrom(s => s.Student!.Email))
+            .ForPath(d => d.Address, opt => opt.MapFrom(s => s.Student!.Address))
+            .ForPath(d => d.PostalCode, opt => opt.MapFrom(s => s.Student!.PostalCode));
     }
 }

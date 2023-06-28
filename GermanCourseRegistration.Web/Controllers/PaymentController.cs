@@ -1,108 +1,67 @@
-﻿using GermanCourseRegistration.EntityModels;
-using GermanCourseRegistration.Repositories.Implementations;
-using GermanCourseRegistration.Repositories.Interfaces;
+﻿using GermanCourseRegistration.Application.Services;
 using GermanCourseRegistration.Web.Models.ViewModels;
-using GermanCourseRegistration.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GermanCourseRegistration.Web.Controllers;
 
 public class PaymentController : Controller
 {
-    private readonly ICourseOfferRepository courseOfferRepository;
-    private readonly ICourseMaterialOrderItemRepository orderItemRepository;
-    private readonly IPaymentRepository paymentRepository;
+    private readonly IAdminCourseScheduleService adminCourseScheduleService;
+    private readonly ICartService cartService;
+    private readonly IPaymentService paymentService;
 
     public PaymentController(
-        ICourseOfferRepository courseOfferRepository,
-        ICourseMaterialOrderItemRepository orderItemRepository,
-        IPaymentRepository paymentRepository)
+        IAdminCourseScheduleService adminCourseScheduleService,
+        ICartService cartService,
+        IPaymentService paymentService)
     {
-        this.courseOfferRepository = courseOfferRepository;
-        this.orderItemRepository = orderItemRepository;
-        this.paymentRepository = paymentRepository;
+        this.adminCourseScheduleService = adminCourseScheduleService;
+        this.cartService = cartService;
+        this.paymentService = paymentService;
     }
 
     [HttpGet]
     public async Task<IActionResult> Add(Guid registrationId, Guid courseOfferId, Guid orderId)
     {
-        CourseOffer? courseOffer = null;
+        // Get the cost of selected course
+        var courseOfferResult = await adminCourseScheduleService.GetByIdAsync(courseOfferId);
+        decimal courseCost = courseOfferResult?.CouseOffer?.Cost ?? 0;
 
-        // Get selected course
-        try
-        {
-            courseOffer = await courseOfferRepository.GetByIdAsync(courseOfferId);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        // Get purchased items
+        var order = await cartService.GetItemsByOrderIdAsync(orderId);
 
-        decimal courseCost = courseOffer != null ? courseOffer.Cost : 0;
-
-        // Get purchased item(s)
-        var orderItems = Enumerable.Empty<CourseMaterialOrderItem>();
-
-        try
-        {
-            orderItems = await orderItemRepository.GetAllByOrderIdAsync(orderId);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
-
-        if (!orderItems.Any())
-        {
-            // Show error message
-            return View(new PaymentView());
-        }
-
-        var model = new PaymentView()
+        // Map to view model
+        var viewModel = new PaymentView()
         {
             RegistrationId = registrationId,
-            Amount = courseCost + OrderCalculationService.CalculateTotalAmount(orderItems)
+            Amount = courseCost + cartService.CalculateTotalAmount(order)
         };
 
-        return View(model);
+        return View(viewModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(PaymentView model)
+    public async Task<IActionResult> Add(PaymentView viewModel)
     {
         // Mock Payment
-        // Information will be sent to thired party payment gateway
+        // Information will be sent to third party payment gateway
         // Application will continue based on the result from the payment
 
         // It is assumed that payment is successful here
-        var payment = new Payment()
-        {
-            PaymentMethod = "Credit/Debit",
-            Amount = model.Amount,
-            PaymentStatus = Payment.PaymentSuccess
-        };
-
-        bool isAdded = false;
-
-        try
-        {
-            isAdded = await paymentRepository.AddAsync(payment);
-        }
-        catch (Exception ex)
-        {
-            WriteLine(ex.Message);
-            WriteLine(ex.StackTrace);
-        }
+        bool isAdded = await paymentService.AddAsync(
+            "Credit/Debit",
+            viewModel.Amount,
+            "Success");
 
         if (isAdded)
         {
-            // Show success notification
-            return RedirectToAction("Index", "Home");
+            TempData["SuccessMessage"] = "Course has been registered successfully.";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Failed to register course.";
         }
 
-        // Show error notification
         return RedirectToAction("Index", "Home");
     }
 }

@@ -10,6 +10,8 @@ public static class DependencyInjection
         services.AddScoped<IAdminCourseMaterialService, AdminCourseMaterialService>();
         services.AddScoped<IAdminCourseScheduleService, AdminCourseScheduleService>();
         services.AddScoped<IAdminCourseService, AdminCourseService>();
+        services.AddScoped<IStudentService, StudentService>();
+        services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IUserService, UserService>();
 
         return services;

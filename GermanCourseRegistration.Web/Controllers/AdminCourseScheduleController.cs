@@ -45,8 +45,6 @@ public class AdminCourseScheduleController : Controller
         return View(viewModels);
     }
 
-    //
-    // Writing Methods
     [HttpGet]
     public async Task<IActionResult> Add()
     {
