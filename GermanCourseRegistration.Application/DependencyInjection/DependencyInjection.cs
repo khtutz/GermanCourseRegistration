@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddScoped<IStudentService, StudentService>();
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<ICartService, CartService>();
+        services.AddScoped<IRegistrationService, RegistrationService>();
         services.AddScoped<IUserService, UserService>();
 
         return services;
