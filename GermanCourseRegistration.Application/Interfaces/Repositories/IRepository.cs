@@ -1,6 +1,6 @@
 ﻿namespace GermanCourseRegistration.Application.Interfaces.Repositories;
 
-public interface IRepository<T, TEntityKey>
+public interface IRepository<T, TEntityKey> where T : class
 {
     Task<T?> GetByIdAsync(TEntityKey id);
 

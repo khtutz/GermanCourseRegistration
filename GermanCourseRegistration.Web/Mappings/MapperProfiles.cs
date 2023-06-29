@@ -59,4 +59,17 @@ public static class MapperProfiles
                 : Enumerable.Empty<string>()
         };
     }
+
+    public static IEnumerable<CourseScheduleView> MapCourseOfferResultsToCourseScheduleViewModels(
+        IEnumerable<CourseOfferResult> courseOfferResults)
+    {
+        var courseScheduleViews = new List<CourseScheduleView>();
+
+        foreach (var result in courseOfferResults)
+        {
+            courseScheduleViews.Add(MapCourseOfferResultToCourseScheduleViewModel(result));
+        }
+
+        return courseScheduleViews;
+    }
 }
