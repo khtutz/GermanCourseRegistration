@@ -1,4 +1,5 @@
 ﻿using GermanCourseRegistration.Application.Interfaces.Repositories;
+using GermanCourseRegistration.Application.ServiceResults;
 using GermanCourseRegistration.EntityModels;
 
 namespace GermanCourseRegistration.Application.Services;
@@ -34,5 +35,12 @@ public class RegistrationService : IRegistrationService
         };
 
         return registration;
+    }
+
+    public async Task<RegistrationResult> GetByStudentIdAsync(Guid id)
+    {
+        var registration = await registrationRepository.GetByStudentIdAsync(id);
+
+        return new RegistrationResult(registration);
     }
 }

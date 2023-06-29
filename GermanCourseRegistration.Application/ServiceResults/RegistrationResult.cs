@@ -2,4 +2,4 @@
 
 namespace GermanCourseRegistration.Application.ServiceResults;
 
-public record RegistrationResult(Registration Registration);
+public record RegistrationResult(Registration? Registration);
