@@ -1,8 +1,6 @@
 using GermanCourseRegistration.Application.DependencyInjection;
 using GermanCourseRegistration.DataContext;
 using GermanCourseRegistration.Repositories.DependencyInjection;
-using GermanCourseRegistration.Repositories.Implementations;
-using GermanCourseRegistration.Repositories.Interfaces;
 using GermanCourseRegistration.Web.Mappings;
 using GermanCourseRegistration.Web.Middlewares;
 using Microsoft.AspNetCore.Identity;
@@ -50,17 +48,6 @@ var builder = WebApplication.CreateBuilder(args);
         options.Password.RequiredLength = 6;
         options.Password.RequiredUniqueChars = 1;
     });
-
-    // Inject repositories
-    builder.Services.AddScoped<IUserRepository, UserRepository>();
-    builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-    builder.Services.AddScoped<ICourseMaterialRepository, CourseMaterialRepository>();
-    builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-    builder.Services.AddScoped<ICourseOfferRepository, CourseOfferRepository>();
-    builder.Services.AddScoped<ITimetableRepository, TimetableRepository>();
-    builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
-    builder.Services.AddScoped<ICourseMaterialOrderItemRepository, CourseMaterialOrderItemRepository>();
-    builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
     // Mappers
     builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
