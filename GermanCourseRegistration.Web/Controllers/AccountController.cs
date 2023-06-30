@@ -1,5 +1,4 @@
-﻿using GermanCourseRegistration.EntityModels.Enums;
-using GermanCourseRegistration.Web.Models.ViewModels;
+﻿using GermanCourseRegistration.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,7 +51,7 @@ public class AccountController : Controller
 			}
 		}
 
-        // Show error message
+		TempData["ErrorMessage"] = "Failed to register.";
         return View();
 	}
 
@@ -70,22 +69,23 @@ public class AccountController : Controller
 	[HttpPost]
 	public async Task<IActionResult> Login(LoginView model)
 	{
-        if (!ModelState.IsValid) return View();
-
-        var signInResult = await signInManager.PasswordSignInAsync(
+        if (ModelState.IsValid)
+		{
+            var signInResult = await signInManager.PasswordSignInAsync(
                 model.Username, model.Password, false, false);
 
-        if (signInResult != null && signInResult.Succeeded)
-        {
-            if (!string.IsNullOrWhiteSpace(model.ReturnedUrl))
+            if (signInResult != null && signInResult.Succeeded)
             {
-                return Redirect(model.ReturnedUrl);
-            }
+                if (!string.IsNullOrWhiteSpace(model.ReturnedUrl))
+                {
+                    return Redirect(model.ReturnedUrl);
+                }
 
-            return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
+            }
         }
 
-        // Show error message
+        TempData["ErrorMessage"] = "Failed to log in.";
         return View();
     }
 
