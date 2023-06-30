@@ -4267,6 +4267,7 @@
       "AutoMapper >= 12.0.1",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
       "GermanCourseRegistration.Application >= 1.0.0",
+      "GermanCourseRegistration.DataContext >= 1.0.0",
       "GermanCourseRegistration.Repositories >= 1.0.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 7.0.7",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.5",
@@ -4314,6 +4315,9 @@
           "projectReferences": {
             "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.Application\\GermanCourseRegistration.Application.csproj": {
               "projectPath": "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.Application\\GermanCourseRegistration.Application.csproj"
+            },
+            "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.DataContext\\GermanCourseRegistration.DataContext.csproj": {
+              "projectPath": "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.DataContext\\GermanCourseRegistration.DataContext.csproj"
             },
             "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.Repositories\\GermanCourseRegistration.Repositories.csproj": {
               "projectPath": "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.Repositories\\GermanCourseRegistration.Repositories.csproj"

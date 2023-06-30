@@ -1,10 +1,10 @@
 using GermanCourseRegistration.Application.DependencyInjection;
 using GermanCourseRegistration.DataContext;
+using GermanCourseRegistration.DataContext.DependencyInjection;
 using GermanCourseRegistration.Repositories.DependencyInjection;
 using GermanCourseRegistration.Web.Mappings;
 using GermanCourseRegistration.Web.Middlewares;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,19 +21,12 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Logging.ClearProviders();
     builder.Logging.AddSerilog(logger);
 
-    // DI classes from Application and Repository layers
     builder.Services
         .AddApplication()
-        .AddRepository();
+        .AddRepository()
+        .AddDbContexts(builder.Configuration);
 
-    // Add services to the container.
     builder.Services.AddControllersWithViews();
-
-    // Database contexts injections
-    builder.Services.AddDbContext<GermanCourseRegistrationDbContext>(options => options.UseSqlServer(
-        builder.Configuration.GetConnectionString("GermanCourseRegistrationDbConnectionString")));
-    builder.Services.AddDbContext<GermanCourseAuthDbContext>(options => options.UseSqlServer(
-        builder.Configuration.GetConnectionString("GermanCourseAuthDbConnectionString")));
 
     builder.Services.AddIdentity<IdentityUser, IdentityRole>()
         .AddEntityFrameworkStores<GermanCourseAuthDbContext>();
@@ -49,7 +42,6 @@ var builder = WebApplication.CreateBuilder(args);
         options.Password.RequiredUniqueChars = 1;
     });
 
-    // Mappers
     builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 }
 
