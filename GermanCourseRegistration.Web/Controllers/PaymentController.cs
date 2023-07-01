@@ -43,6 +43,11 @@ public class PaymentController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(PaymentView viewModel)
     {
+        if (ModelState.IsValid == false)
+        {
+            return View();
+        }
+
         // Mock Payment
         // Information will be sent to third party payment gateway
         // Application will continue based on the result from the payment

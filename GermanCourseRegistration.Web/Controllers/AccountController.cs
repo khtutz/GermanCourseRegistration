@@ -83,6 +83,11 @@ public class AccountController : Controller
 
                 return RedirectToAction("Index", "Home");
             }
+			else
+			{
+                TempData["ErrorMessage"] = "Invalid credentials.";
+                return View();
+            }
         }
 
         TempData["ErrorMessage"] = "Failed to log in.";
