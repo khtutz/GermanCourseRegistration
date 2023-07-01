@@ -8,20 +8,18 @@ public class AutoMapperProfiles : Profile
 {
     public AutoMapperProfiles()
     {
-        CreateMap<CourseMaterialView, CourseMaterialResult>()
-            .ForPath(d => d.CourseMaterial!.Id, opt => opt.MapFrom(s => s.Id))
-            .ForPath(d => d.CourseMaterial!.Name, opt => opt.MapFrom(s => s.Name))
-            .ForPath(d => d.CourseMaterial!.Description, opt => opt.MapFrom(s => s.Description))
-            .ForPath(d => d.CourseMaterial!.Category, opt => opt.MapFrom(s => s.Category))
-            .ForPath(d => d.CourseMaterial!.Price, opt => opt.MapFrom(s => s.Price))
-            .ReverseMap();
+        CreateMap<CourseMaterialResult, CourseMaterialView>()
+            .ForMember(d => d.Id, opt => opt.MapFrom(s => s.CourseMaterial!.Id))
+            .ForMember(d => d.Name, opt => opt.MapFrom(s => s.CourseMaterial!.Name))
+            .ForMember(d => d.Description, opt => opt.MapFrom(s => s.CourseMaterial!.Description))
+            .ForMember(d => d.Category, opt => opt.MapFrom(s => s.CourseMaterial!.Category))
+            .ForMember(d => d.Price, opt => opt.MapFrom(s => s.CourseMaterial!.Price));
 
-        CreateMap<CourseView, CourseResult>()
-            .ForPath(d => d.Course!.Id, opt => opt.MapFrom(s => s.Id))
-            .ForPath(d => d.Course!.Level, opt => opt.MapFrom(s => s.Level))
-            .ForPath(d => d.Course!.Part, opt => opt.MapFrom(s => s.Part))
-            .ForPath(d => d.Course!.Description, opt => opt.MapFrom(s => s.Description))
-            .ReverseMap();
+        CreateMap<CourseResult, CourseView>()
+            .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Course!.Id))
+            .ForMember(d => d.Level, opt => opt.MapFrom(s => s.Course!.Level))
+            .ForMember(d => d.Part, opt => opt.MapFrom(s => s.Course!.Part))
+            .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Course!.Description));
 
         CreateMap<StudentResult, StudentView>()
             .ForPath(d => d.Id, opt => opt.MapFrom(s => s.Student!.Id))

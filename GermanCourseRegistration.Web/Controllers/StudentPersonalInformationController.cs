@@ -54,11 +54,6 @@ public class StudentPersonalInformationController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(StudentView viewModel)
     {
-        if (ModelState.IsValid == false)
-        {
-            return View();
-        }
-
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
         if (!viewModel.IsExistingStudent)

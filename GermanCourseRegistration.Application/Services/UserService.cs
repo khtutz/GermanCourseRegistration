@@ -1,11 +1,6 @@
 ﻿using GermanCourseRegistration.Application.Interfaces.Repositories;
 using GermanCourseRegistration.Application.ServiceResults;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GermanCourseRegistration.Application.Services;
 

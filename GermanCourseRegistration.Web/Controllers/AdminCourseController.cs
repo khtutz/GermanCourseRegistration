@@ -45,11 +45,6 @@ public class AdminCourseController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(CourseView viewModel)
     {
-        if (ModelState.IsValid == false)
-        {
-            return View();
-        }
-
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
         bool isAdded = await adminCourseService.AddAsync(
@@ -84,10 +79,6 @@ public class AdminCourseController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(CourseView viewModel)
     {
-        if (ModelState.IsValid == false)
-        {
-            return View();
-        }
 
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 

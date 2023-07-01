@@ -67,11 +67,6 @@ public class AdminCourseScheduleController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(CourseScheduleView viewModel)
     {
-        if (ModelState.IsValid == false)
-        {
-            return View();
-
-        }
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
         bool isAdded = await adminCourseScheduleService.AddAsync(
@@ -128,11 +123,6 @@ public class AdminCourseScheduleController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(CourseScheduleView viewModel)
     {
-        if (ModelState.IsValid == false)
-        {
-            return View();
-        }
-
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
         CourseOfferResult courseOfferResult = await adminCourseScheduleService.UpdateAsync(

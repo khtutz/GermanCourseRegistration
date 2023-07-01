@@ -43,11 +43,6 @@ public class AdminUserController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(UserView viewModel)
     {
-        if (ModelState.IsValid == false)
-        {
-            return View();
-        }
-
         bool isAdded = await userService.AddAsync(
             viewModel.Username,
             viewModel.Email,

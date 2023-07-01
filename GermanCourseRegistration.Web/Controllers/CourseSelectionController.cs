@@ -63,11 +63,6 @@ public class CourseSelectionController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(CourseRegistrationView model)
     {
-        if (ModelState.IsValid == false)
-        {
-            return View();
-        }
-
         Guid courseOfferId = model.SelectedScheduleId;
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 

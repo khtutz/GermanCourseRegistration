@@ -46,7 +46,8 @@ public class AccountController : Controller
 
 				if (roleIdentityResult.Succeeded)
 				{
-					return RedirectToAction("Login");
+                    TempData["SuccessMessage"] = "Registered successfully.";
+                    return RedirectToAction("Login");
 				}
 			}
 		}

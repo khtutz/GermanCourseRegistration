@@ -32,11 +32,6 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
 	{
-        if (!signInManager.IsSignedIn(User))
-        {
-            return View();
-        }
-
         var courseScheduleModels = Enumerable.Empty<CourseScheduleView>();
         CourseScheduleForStudentView? courseScheduleForStudentModel = null;
 

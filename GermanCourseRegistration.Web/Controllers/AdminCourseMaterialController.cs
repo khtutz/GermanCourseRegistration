@@ -57,11 +57,6 @@ public class AdminCourseMaterialController : Controller
     [HttpPost]
     public async Task<IActionResult> Add(CourseMaterialView viewModel)
     {
-        if (ModelState.IsValid == false)
-        {
-            return View();
-        }
-
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
         bool isAdded = await adminCourseMaterialService.AddAsync(
@@ -105,11 +100,6 @@ public class AdminCourseMaterialController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(CourseMaterialView viewModel)
     {
-        if (ModelState.IsValid == false)
-        {
-            return View();
-        }
-
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
         CourseMaterialResult courseMaterialResult = 
