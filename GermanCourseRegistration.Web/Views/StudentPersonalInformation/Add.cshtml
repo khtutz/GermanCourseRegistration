@@ -8,12 +8,11 @@
         <div class="row mb-3">
             <div class="col-sm-2">
                 <label for="salutation" class="form-label">Salutation</label>
-                <select 
-                    class="form-select" 
-                    id="salutation" 
-                    name="salutation"
-                    asp-items="@Model.AvailableSalutations"
-                    asp-for="Salutation" required >
+                <select class="form-select"
+                        id="salutation"
+                        name="salutation"
+                        asp-items="@Model.AvailableSalutations"
+                        asp-for="Salutation" required>
                 </select>
             </div>
             <div class="col-sm-5">
@@ -38,7 +37,12 @@
         <div class="row mb-3">
             <div class="col-sm-6">
                 <label for="birthday" class="form-label">Birthday</label>
-                <input type="date" class="form-control" id="birthday" asp-for="Birthday" required />
+                <input type="date" 
+                       class="form-control"
+                       id="birthday"
+                       value="@DateTime.Now.ToString("yyyy-MM-dd")"
+                       asp-for="Birthday" 
+                       required />
             </div>
             <div class="col-sm-6">
                 <label for="gender" class="form-label">Gender</label>
@@ -49,10 +53,10 @@
                         {
                             <div class="form-check form-check-inline">
                                 <input type="radio"
-                                    class="form-check-input"
-                                    name="gender"
-                                    value="@gender"
-                                    asp-for="Gender" />
+                                       class="form-check-input"
+                                       name="gender"
+                                       value="@gender"
+                                       asp-for="Gender" />
                                 <label class="form-check-label">@gender</label>
                             </div>
                         }
@@ -65,11 +69,19 @@
         <div class="row mb-3">
             <div class="col-sm-6">
                 <label for="mobilenumber" class="form-label">Mobile Number</label>
-                <input type="text" class="form-control" id="mobilenumber" asp-for="Mobile" required />
+                <input type="text" 
+                       class="form-control" 
+                       id="mobilenumber" 
+                       asp-for="Mobile" 
+                       required />
             </div>
             <div class="col-sm-6">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" asp-for="Email" required />
+                <input type="email" 
+                       class="form-control" 
+                       id="email" 
+                       asp-for="Email" 
+                       required />
             </div>
         </div>
 
@@ -77,17 +89,28 @@
         <div class="row mb-3">
             <div class="col-sm-6">
                 <label for="address" class="form-label">Address</label>
-                <textarea class="form-control" id="address" asp-for="Address" required ></textarea>
+                <textarea class="form-control" 
+                          id="address" 
+                          asp-for="Address" 
+                          required >
+                </textarea>
             </div>
             <div class="col-sm-6">
                 <label for="postalcode" class="form-label">Postal Code</label>
-                <input type="text" class="form-control" id="postalcode" asp-for="PostalCode" required />
+                <input type="text" 
+                       class="form-control" 
+                       id="postalcode" 
+                       asp-for="PostalCode" 
+                       required />
             </div>
         </div>
 
         <!-- Back and Continue Buttons -->
         <div class="float-end">
-            <a href="#" class="btn btn-secondary mx-1"><i class="bi bi-backspace"></i> Back</a>
+            @*<a href="@Url.Action("Index", "Home")" 
+               class="btn btn-secondary mx-1">
+               <i class="bi bi-backspace"></i> Back
+           </a>*@
             <button type="submit" class="btn btn-info mx-1">
                 Save and Continue <i class="bi bi-forward"></i>
             </button>

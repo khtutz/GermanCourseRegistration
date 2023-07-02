@@ -39,7 +39,7 @@ public class UserService : IUserService
 
         if (identityResult.Succeeded)
         {
-            var roles = new List<string> { "Users" };
+            var roles = new List<string> { "User" };
 
             if (adminRoleChecked)
             {

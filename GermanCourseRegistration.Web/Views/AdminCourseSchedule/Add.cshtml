@@ -50,6 +50,7 @@
                 <input type="date"
                        id="startDate"
                        class="form-control"
+                       value="@DateTime.Now.ToString("yyyy-MM-dd")"
                        asp-for="StartDate"
                        required/>
             </div>
@@ -58,6 +59,7 @@
                 <input type="date"
                        id="endDate"
                        class="form-control"
+                       value="@DateTime.Now.ToString("yyyy-MM-dd")"
                        asp-for="EndDate"
                        required/>
             </div>
