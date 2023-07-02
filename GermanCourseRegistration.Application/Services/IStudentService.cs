@@ -7,6 +7,7 @@ public interface IStudentService
     Task<StudentResult> GetByIdAsync(Guid id);
 
     Task<bool> AddAsync(
+        Guid id,
         string salutation,
         string firstName,
         string lastName,

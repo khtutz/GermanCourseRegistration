@@ -58,7 +58,9 @@ public class StudentPersonalInformationController : Controller
 
         if (!viewModel.IsExistingStudent)
         {
+            // Student Id must be from Login Id
             await studentService.AddAsync(
+                loginId,
                 viewModel.Salutation,
                 viewModel.FirstName,
                 viewModel.LastName,

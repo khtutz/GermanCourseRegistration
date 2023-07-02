@@ -81,17 +81,17 @@ public class CourseSelectionController : Controller
 
         // Create 'order' if there is any material selected to purchase
         Guid orderId = Guid.NewGuid();
+        dynamic courseMaterialOrder = new ExpandoObject();
+        List<dynamic> orderItems = new();
 
         if (model.SelectedMaterialIds != null && model.SelectedMaterialIds.Any())
         {
-            dynamic courseMaterialOrder = new ExpandoObject();
             courseMaterialOrder.Id = orderId;
             courseMaterialOrder.RegistrationId = registrationId;
             courseMaterialOrder.OrderStatus = "Unpaid";
             courseMaterialOrder.OrderDate = currentDateAndTime;
 
             // Create order items
-            List<dynamic> orderItems = new();
             foreach (Guid materialId in model.SelectedMaterialIds)
             {
                 dynamic orderItem = new ExpandoObject();
@@ -101,12 +101,12 @@ public class CourseSelectionController : Controller
 
                 orderItems.Add(orderItem);
             }
-
-            courseMaterialOrder.CourseMaterialOrderItems = orderItems;
-            registration.CourseMaterialOrder = courseMaterialOrder;
         }
 
-        bool isAdded = await registrationService.AddAsync(registration);
+        bool isAdded = await registrationService.AddAsync(
+            registration,
+            courseMaterialOrder,
+            orderItems);
 
         if (isAdded)
         {

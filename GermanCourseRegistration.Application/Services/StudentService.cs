@@ -21,6 +21,7 @@ public class StudentService : IStudentService
     }
 
     public async Task<bool> AddAsync(
+        Guid id,
         string salutation,
         string firstName,
         string lastName,
@@ -34,6 +35,7 @@ public class StudentService : IStudentService
     {
         var student = new Student()
         {
+            Id = id,
             Salutation = salutation,
             FirstName = firstName,
             LastName = lastName,
