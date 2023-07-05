@@ -62,6 +62,7 @@
                        value="@DateTime.Now.ToString("yyyy-MM-dd")"
                        asp-for="EndDate"
                        required/>
+                <span id="endDateError" class="text-danger"></span>
             </div>
         </div>
 
@@ -120,7 +121,6 @@
             </div>
         </div>
 
-
         <!-- Save Button -->
         <div class="float-end">
             <button type="submit" class="btn btn-info mx-1">
@@ -129,3 +129,24 @@
         </div>
     </form>
 </div>
+
+<script>
+    var startDateInput = document.getElementById("startDate");
+    var endDateInput = document.getElementById("endDate");
+
+    startDateInput.addEventListener("change", validateEndDate);
+    endDateInput.addEventListener("change", validateEndDate);
+
+    function validateEndDate() {
+        var startDate = new Date(startDateInput.value);
+        var endDate = new Date(endDateInput.value);
+
+        if (endDate <= startDate) {
+            endDateInput.setCustomValidity("End date must be greater than the start date.");
+            document.getElementById("endDateError").textContent = "End date must be greater than the start date.";
+        } else {
+            endDateInput.setCustomValidity("");
+            document.getElementById("endDateError").textContent = "";
+        }
+    }
+</script>
