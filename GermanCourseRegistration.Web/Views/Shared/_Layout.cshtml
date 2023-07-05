@@ -136,16 +136,17 @@
     <!-- Modal to display success or failed message of added, edited, or deleted course material -->
     @if (!string.IsNullOrEmpty(message))
     {
-        <!-- Display modal -->
-        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade" id="messageModal">
+            <div class="modal-dialog">
                 <div class="modal-content">
+
+                    <!-- Modal Header -->
                     <div class="modal-header">
                         <h5 class="modal-title" id="messageModalLabel">@(!string.IsNullOrEmpty(successMessage) ? "Success" : "Error")</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
+
+                    <!-- Modal body -->
                     <div class="modal-body">
                         @message
                     </div>
