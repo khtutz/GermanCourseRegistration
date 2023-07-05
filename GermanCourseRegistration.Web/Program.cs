@@ -1,10 +1,8 @@
 using GermanCourseRegistration.Application.DependencyInjection;
-using GermanCourseRegistration.DataContext;
 using GermanCourseRegistration.DataContext.DependencyInjection;
 using GermanCourseRegistration.Repositories.DependencyInjection;
-using GermanCourseRegistration.Web.Mappings;
+using GermanCourseRegistration.Web.DependencyInjection;
 using GermanCourseRegistration.Web.Middlewares;
-using Microsoft.AspNetCore.Identity;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,27 +20,10 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Logging.AddSerilog(logger);
 
     builder.Services
+        .AddWeb()
         .AddApplication()
         .AddRepository()
-        .AddDbContexts(builder.Configuration);
-
-    builder.Services.AddControllersWithViews();
-
-    builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-        .AddEntityFrameworkStores<GermanCourseAuthDbContext>();
-
-    // Register password settings
-    builder.Services.Configure<IdentityOptions>(options =>
-    {
-        options.Password.RequireDigit = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireUppercase = true;
-        options.Password.RequireNonAlphanumeric = true;
-        options.Password.RequiredLength = 6;
-        options.Password.RequiredUniqueChars = 1;
-    });
-
-    builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
+        .AddDbContext(builder.Configuration);
 }
 
 var app = builder.Build();

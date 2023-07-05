@@ -6,7 +6,7 @@ namespace GermanCourseRegistration.DataContext.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddDbContexts(
+    public static IServiceCollection AddDbContext(
         this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<GermanCourseRegistrationDbContext>(options =>
