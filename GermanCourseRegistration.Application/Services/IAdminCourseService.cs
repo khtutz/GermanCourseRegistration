@@ -1,27 +1,16 @@
-﻿using GermanCourseRegistration.Application.ServiceResults;
+﻿using GermanCourseRegistration.Application.Messages.CourseMessages;
 
 namespace GermanCourseRegistration.Application.Services;
 
 public interface IAdminCourseService
 {
-    Task<CourseResult> GetByIdAsync(Guid id);
+    Task<GetCourseByIdResponse> GetByIdAsync(GetCourseByIdRequest request);
 
-    Task<IEnumerable<CourseResult>> GetAllAsync();
+    Task<GetAllCoursesResponse> GetAllAsync();
 
-    Task<bool> AddAsync(
-        string level,
-        int part,
-        string? description,
-        Guid createdBy,
-        DateTime createdOn);
+    Task<AddCourseResponse> AddAsync(AddCourseRequest request);
 
-    Task<CourseResult> UpdateAsync(
-        Guid id,
-        string level,
-        int part,
-        string? description,
-        Guid lastModifiedBy,
-        DateTime lastModifiedOn);
+    Task<UpdateCourseResponse> UpdateAsync(UpdateCourseRequest request);
 
-    Task<CourseResult> DeleteAsync(Guid id);
+    Task<DeleteCourseResponse> DeleteAsync(DeleteCourseRequest request);
 }

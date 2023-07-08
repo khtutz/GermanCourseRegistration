@@ -28,9 +28,9 @@ public class AdminCourseMaterialController : Controller
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var courseMaterialsResponse = await adminCourseMaterialService.GetAllAsync();
+        var response = await adminCourseMaterialService.GetAllAsync();
 
-        var viewModels = CourseMaterialMapping.MapToViewModels(courseMaterialsResponse);
+        var viewModels = CourseMaterialMapping.MapToViewModels(response);
 
         return View(viewModels);
     }
@@ -53,7 +53,7 @@ public class AdminCourseMaterialController : Controller
 
         var request = CourseMaterialMapping.MapToAddRequest(viewModel, loginId, DateTime.Now);
 
-        AddCourseMaterialResponse response = await adminCourseMaterialService.AddAsync(request);
+        var response = await adminCourseMaterialService.AddAsync(request);
 
         short key = Convert.ToInt16(response.IsTransactionSuccess);
         TempData[Notification.ModalMessage[key]] = response.Message;
@@ -64,8 +64,8 @@ public class AdminCourseMaterialController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        GetCourseMaterialByIdResponse response = await adminCourseMaterialService
-            .GetByIdAsync(new GetCourseMaterialByIdRequest(id));
+        var response = await adminCourseMaterialService.GetByIdAsync(
+            new GetCourseMaterialByIdRequest(id));
 
         if (response.CourseMaterial == null)
         {
@@ -86,11 +86,10 @@ public class AdminCourseMaterialController : Controller
     {
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
-        UpdateCourseMaterialRequest request = CourseMaterialMapping
-            .MapToUpdateRequest(viewModel, loginId, DateTime.Now);
+        var request = CourseMaterialMapping.MapToUpdateRequest(
+            viewModel, loginId, DateTime.Now);
 
-        UpdateCourseMaterialResponse response = 
-            await adminCourseMaterialService.UpdateAsync(request);
+        var response = await adminCourseMaterialService.UpdateAsync(request);
 
         short key = Convert.ToInt16(response.IsTransactionSuccess);
         TempData[Notification.ModalMessage[key]] = response.Message;
@@ -101,8 +100,8 @@ public class AdminCourseMaterialController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id)
     {
-        DeleteCourseMaterialResponse response = await adminCourseMaterialService
-            .DeleteAsync(new DeleteCourseMaterialRequest(id));
+        var response = await adminCourseMaterialService.DeleteAsync(
+            new DeleteCourseMaterialRequest(id));
 
         short key = Convert.ToInt16(response.IsTransactionSuccess);
         TempData[Notification.ModalMessage[key]] = response.Message;

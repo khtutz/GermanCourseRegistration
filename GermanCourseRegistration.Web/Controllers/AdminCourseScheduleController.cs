@@ -49,7 +49,7 @@ public class AdminCourseScheduleController : Controller
     public async Task<IActionResult> Add()
     {
         // Load the courses
-        IEnumerable<CourseResult> courseResults = await adminCourseService.GetAllAsync();
+        IEnumerable<CourseResult> courseResults = Enumerable.Empty<CourseResult>();// await adminCourseService.GetAllAsync();
 
         if (!courseResults.Any())
         {
@@ -101,8 +101,8 @@ public class AdminCourseScheduleController : Controller
     {
 
         // Load the courses and course schedules (offered courses)
-        IEnumerable<CourseResult> courseResults = 
-            await adminCourseService.GetAllAsync();
+        IEnumerable<CourseResult> courseResults = Enumerable.Empty<CourseResult>();
+        //await adminCourseService.GetAllAsync();
         CourseOfferResult courseOfferResult = 
             await adminCourseScheduleService.GetByIdAsync(id);
 

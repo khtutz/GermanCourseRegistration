@@ -32,9 +32,9 @@ public class AdminCourseMaterialService : IAdminCourseMaterialService
     {
         var courseMaterials = await courseMaterialRepository.GetAllAsync();
 
-        var responses = mapper.Map<GetAllCourseMaterialsResponse>(courseMaterials);
+        var response = mapper.Map<GetAllCourseMaterialsResponse>(courseMaterials);
 
-        return responses;
+        return response;
     }
 
     public async Task<AddCourseMaterialResponse> AddAsync(AddCourseMaterialRequest request)

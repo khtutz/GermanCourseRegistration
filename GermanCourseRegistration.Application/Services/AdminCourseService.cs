@@ -1,5 +1,6 @@
-﻿using GermanCourseRegistration.Application.Interfaces.Repositories;
-using GermanCourseRegistration.Application.ServiceResults;
+﻿using AutoMapper;
+using GermanCourseRegistration.Application.Interfaces.Repositories;
+using GermanCourseRegistration.Application.Messages.CourseMessages;
 using GermanCourseRegistration.EntityModels;
 
 namespace GermanCourseRegistration.Application.Services;
@@ -7,77 +8,79 @@ namespace GermanCourseRegistration.Application.Services;
 public class AdminCourseService : IAdminCourseService
 {
     private readonly ICourseRepository courseRepository;
+    private readonly IMapper mapper;
 
-    public AdminCourseService(ICourseRepository courseRepository)
+    public AdminCourseService(
+        ICourseRepository courseRepository,
+        IMapper mapper)
     {
         this.courseRepository = courseRepository;
+        this.mapper = mapper;
     }
 
-    public async Task<CourseResult> GetByIdAsync(Guid id)
+    public async Task<GetCourseByIdResponse> GetByIdAsync(GetCourseByIdRequest request)
     {
-        Course? course = await courseRepository.GetByIdAsync(id);
+        var course = await courseRepository.GetByIdAsync(request.Id);
 
-        return new CourseResult(course);
+        var response = mapper.Map<GetCourseByIdResponse>(course);
+
+        return response;
     }
 
-    public async Task<IEnumerable<CourseResult>> GetAllAsync()
+    public async Task<GetAllCoursesResponse> GetAllAsync()
     {
         var courses = await courseRepository.GetAllAsync();
 
-        var courseResults = courses.Select(c => new CourseResult(c));
+        var response = mapper.Map<GetAllCoursesResponse>(courses);
 
-        return courseResults;
+        return response;
     }
 
-    public async Task<bool> AddAsync(
-        string level, 
-        int part, 
-        string? description, 
-        Guid createdBy, 
-        DateTime createdOn)
-    {   
-        var course = new Course()
-        {
-            Level = level,
-            Part = part,
-            Description = description,
-            CreatedBy = createdBy,
-            CreatedOn = createdOn
-        };
+    public async Task<AddCourseResponse> AddAsync(AddCourseRequest request)
+    {
+        var course = mapper.Map<Course>(request);
 
         bool isAdded = await courseRepository.AddAsync(course);
 
-        return isAdded;
-    }
-
-    public async Task<CourseResult> UpdateAsync(
-        Guid id, 
-        string level, 
-        int part, 
-        string? description, 
-        Guid lastModifiedBy, 
-        DateTime lastModifiedOn)
-    {
-        var course = new Course()
+        var response = new AddCourseResponse()
         {
-            Id = id,
-            Level = level,
-            Part = part,
-            Description = description,
-            LastModifiedBy = lastModifiedBy,
-            LastModifiedOn = lastModifiedOn
+            IsTransactionSuccess = isAdded,
+            Message = isAdded
+                ? "Course added successfully."
+                : "Failed to add course."
         };
 
-        Course? updatedCourse =
-            await courseRepository.UpdateAsync(course, id);
-
-        return new CourseResult(updatedCourse);
+        return response;
     }
 
-    public async Task<CourseResult> DeleteAsync(Guid id)
+    public async Task<UpdateCourseResponse> UpdateAsync(UpdateCourseRequest request)
     {
-        Course? deletedCourse = await courseRepository.DeleteAsync(id);
+        var course = mapper.Map<Course>(request);
 
-        return new CourseResult(deletedCourse);
+        Course? updatedCourse = await courseRepository.UpdateAsync(course, request.Id);
+
+        var response = mapper.Map<UpdateCourseResponse>((
+            updatedCourse,
+            updatedCourse != null,
+            updatedCourse != null
+            ? "Course updated successfully."
+            : "Failed to update course."));
+
+        return response;
+    }
+
+    public async Task<DeleteCourseResponse> DeleteAsync(DeleteCourseRequest request)
+    {
+        Course? deletedCourse =
+            await courseRepository.DeleteAsync(request.Id);
+
+        var response = mapper.Map<DeleteCourseResponse>((
+            deletedCourse,
+            deletedCourse != null,
+            deletedCourse != null
+            ? "Course deleted successfully."
+            : "Failed to delete course."));
+
+        return response;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GermanCourseRegistration.Application.Messages.CourseMaterialMessages;
+using GermanCourseRegistration.Application.Messages.CourseMessages;
 using GermanCourseRegistration.EntityModels;
 
 namespace GermanCourseRegistration.Application.Mappings;
@@ -24,6 +25,25 @@ public class AutoMapperProfiles : Profile
 
         CreateMap<(CourseMaterial, bool, string), DeleteCourseMaterialResponse>()
             .ForMember(d => d.CourseMaterial, opt => opt.MapFrom(s => s.Item1))
+            .ForMember(d => d.IsTransactionSuccess, opt => opt.MapFrom(s => s.Item2))
+            .ForMember(d => d.Message, opt => opt.MapFrom(s => s.Item3));
+
+        // Course
+        CreateMap<Course, GetCourseByIdResponse>()
+            .ForMember(d => d.Course, opt => opt.MapFrom(s => s));
+        CreateMap<IEnumerable<Course>, GetAllCoursesResponse>()
+            .ForMember(d => d.Courses, opt => opt.MapFrom(s => s));
+
+        CreateMap<AddCourseRequest, Course>();
+
+        CreateMap<UpdateCourseRequest, Course>();
+        CreateMap<(Course, bool, string), UpdateCourseResponse>()
+            .ForMember(d => d.Course, opt => opt.MapFrom(s => s.Item1))
+            .ForMember(d => d.IsTransactionSuccess, opt => opt.MapFrom(s => s.Item2))
+            .ForMember(d => d.Message, opt => opt.MapFrom(s => s.Item3));
+
+        CreateMap<(Course, bool, string), DeleteCourseResponse>()
+            .ForMember(d => d.Course, opt => opt.MapFrom(s => s.Item1))
             .ForMember(d => d.IsTransactionSuccess, opt => opt.MapFrom(s => s.Item2))
             .ForMember(d => d.Message, opt => opt.MapFrom(s => s.Item3));
     }

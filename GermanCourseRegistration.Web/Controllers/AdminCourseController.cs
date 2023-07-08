@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using GermanCourseRegistration.Application.ServiceResults;
+﻿using GermanCourseRegistration.Application.Messages.CourseMessages;
 using GermanCourseRegistration.Application.Services;
-using GermanCourseRegistration.Web.Models.ViewModels;
 using GermanCourseRegistration.Web.HelperServices;
+using GermanCourseRegistration.Web.Mappings;
+using GermanCourseRegistration.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,24 +14,21 @@ public class AdminCourseController : Controller
 {
     private readonly IAdminCourseService adminCourseService;
     private readonly UserManager<IdentityUser> userManager;
-    private readonly IMapper mapper;
 
     public AdminCourseController(
         IAdminCourseService adminCourseService,
-        UserManager<IdentityUser> userManager,
-        IMapper mapper)
+        UserManager<IdentityUser> userManager)
     {
         this.adminCourseService = adminCourseService;
         this.userManager = userManager;
-        this.mapper = mapper;
     }
 
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var courseResults = await adminCourseService.GetAllAsync();
+        var response = await adminCourseService.GetAllAsync();
 
-        var viewModels = mapper.Map<List<CourseView>>(courseResults);
+        var viewModels = CourseMapping.MapToViewModels(response);
 
         return View(viewModels);
     }
@@ -47,21 +44,12 @@ public class AdminCourseController : Controller
     {
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
-        bool isAdded = await adminCourseService.AddAsync(
-            viewModel.Level,
-            viewModel.Part,
-            viewModel.Description,
-            loginId,
-            DateTime.Now);
+        var request = CourseMapping.MapToAddRequest(viewModel, loginId, DateTime.Now);
 
-        if (isAdded)
-        {
-            TempData["SuccessMessage"] = "Course added successfully.";
-        }
-        else
-        {
-            TempData["ErrorMessage"] = "Failed to add course.";
-        }
+        var response = await adminCourseService.AddAsync(request);
+
+        short key = Convert.ToInt16(response.IsTransactionSuccess);
+        TempData[Notification.ModalMessage[key]] = response.Message;
 
         return RedirectToAction("List");
     }
@@ -69,9 +57,15 @@ public class AdminCourseController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        var courseResult = await adminCourseService.GetByIdAsync(id);
+        var response = await adminCourseService.GetByIdAsync(new GetCourseByIdRequest(id));
 
-        var viewModel = mapper.Map<CourseView>(courseResult);
+        if (response.Course == null)
+        {
+            TempData[Notification.ModalMessage[0]] = response.Message;
+            return RedirectToAction("List");
+        }
+
+        var viewModel = CourseMapping.MapToViewModel(response);
 
         return View(viewModel);
     }
@@ -79,25 +73,15 @@ public class AdminCourseController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(CourseView viewModel)
     {
-
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
-        CourseResult courseResult = await adminCourseService.UpdateAsync(
-            viewModel.Id,
-            viewModel.Level,
-            viewModel.Part,
-            viewModel.Description,
-            loginId,
-            DateTime.Now);
+        var request = CourseMapping.MapToUpdateRequest(
+            viewModel, loginId, DateTime.Now);
 
-        if (courseResult.Course != null)
-        {
-            TempData["SuccessMessage"] = "Course updated successfully.";
-        }
-        else
-        {
-            TempData["ErrorMessage"] = "Failed to update course.";
-        }
+        var response = await adminCourseService.UpdateAsync(request);
+
+        short key = Convert.ToInt16(response.IsTransactionSuccess);
+        TempData[Notification.ModalMessage[key]] = response.Message;
 
         return RedirectToAction("List");
     }
@@ -105,16 +89,11 @@ public class AdminCourseController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id)
     {
-        CourseResult courseResult = await adminCourseService.DeleteAsync(id);
+        var response = await adminCourseService.DeleteAsync(
+            new DeleteCourseRequest(id));
 
-        if (courseResult.Course != null)
-        {
-            TempData["SuccessMessage"] = "Course deleted successfully.";
-        }
-        else
-        {
-            TempData["ErrorMessage"] = "Failed to delete course.";
-        }
+        short key = Convert.ToInt16(response.IsTransactionSuccess);
+        TempData[Notification.ModalMessage[key]] = response.Message;
 
         return RedirectToAction("List");
     }
