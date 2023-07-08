@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace GermanCourseRegistration.Web.Services;
+namespace GermanCourseRegistration.Web.HelperServices;
 
 public class UserAccountService
 {

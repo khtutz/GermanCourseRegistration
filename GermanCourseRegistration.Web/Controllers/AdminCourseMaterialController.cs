@@ -3,7 +3,6 @@ using GermanCourseRegistration.Application.Services;
 using GermanCourseRegistration.Web.HelperServices;
 using GermanCourseRegistration.Web.Mappings;
 using GermanCourseRegistration.Web.Models.ViewModels;
-using GermanCourseRegistration.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
