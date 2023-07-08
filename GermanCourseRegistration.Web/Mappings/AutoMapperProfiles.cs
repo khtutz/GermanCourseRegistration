@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using GermanCourseRegistration.Application.Messages.CourseMaterialMessages;
 using GermanCourseRegistration.Application.ServiceResults;
 using GermanCourseRegistration.Web.Models.ViewModels;
+using System.Collections.Generic;
 
 namespace GermanCourseRegistration.Web.Mappings;
 
@@ -8,6 +10,20 @@ public class AutoMapperProfiles : Profile
 {
     public AutoMapperProfiles()
     {
+        // CourseMaterial
+        //CreateMap<GetAllCourseMaterialsResponse, IEnumerable<CourseMaterialView>>()
+        //    .ForMember(d => d, opt => opt.MapFrom(s => s.CourseMaterials));
+
+        //CreateMap<GetAllCourseMaterialsResponse, CourseMaterialViews>()
+        //    .ForMember(d => d.CourseMaterials, opt => opt.MapFrom(s => s.CourseMaterials));
+
+        //CreateMap<IEnumerable<CourseMaterialView>, GetAllCourseMaterialsResponse>()
+        //    .ForMember(d => d.CourseMaterials, opt => opt.MapFrom(s => s)).ReverseMap();
+
+        //CreateMap<GetAllCourseMaterialsResponse, IEnumerable<CourseMaterialViewTest>>()
+        //    .ForMember(d => d, opt => opt.MapFrom(s => s.CourseMaterials));
+
+
         CreateMap<CourseMaterialResult, CourseMaterialView>()
             .ForMember(d => d.Id, opt => opt.MapFrom(s => s.CourseMaterial!.Id))
             .ForMember(d => d.Name, opt => opt.MapFrom(s => s.CourseMaterial!.Name))

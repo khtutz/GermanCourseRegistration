@@ -1,6 +1,7 @@
-﻿using AutoMapper;
-using GermanCourseRegistration.Application.ServiceResults;
+﻿using GermanCourseRegistration.Application.Messages.CourseMaterialMessages;
 using GermanCourseRegistration.Application.Services;
+using GermanCourseRegistration.Web.HelperServices;
+using GermanCourseRegistration.Web.Mappings;
 using GermanCourseRegistration.Web.Models.ViewModels;
 using GermanCourseRegistration.Web.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -16,24 +17,21 @@ public class AdminCourseMaterialController : Controller
 {
     private readonly IAdminCourseMaterialService adminCourseMaterialService;
     private readonly UserManager<IdentityUser> userManager;
-    private readonly IMapper mapper;
 
     public AdminCourseMaterialController(
         IAdminCourseMaterialService adminCourseMaterialService,
-        UserManager<IdentityUser> userManager,
-        IMapper mapper)
+        UserManager<IdentityUser> userManager)
     {
         this.adminCourseMaterialService = adminCourseMaterialService;
         this.userManager = userManager;
-        this.mapper = mapper;
     }
 
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        var courseMaterialResults = await adminCourseMaterialService.GetAllAsync();
+        var courseMaterialsResponse = await adminCourseMaterialService.GetAllAsync();
 
-        var viewModels = mapper.Map<List<CourseMaterialView>>(courseMaterialResults);
+        var viewModels = CourseMaterialMapping.MapToViewModels(courseMaterialsResponse);
 
         return View(viewModels);
     }
@@ -43,13 +41,8 @@ public class AdminCourseMaterialController : Controller
     {
         var viewModel = new CourseMaterialView();
 
-        // Load the categories to select
-        var categories = adminCourseMaterialService.GetCourseMaterialCategories();
-        viewModel.AvailableCategories = categories.Select(c => new SelectListItem
-        {
-            Text = c,
-            Value = c
-        });
+        // Load the categories to select in UI
+        LoadCategories(viewModel);
 
         return View(viewModel);
     }
@@ -59,22 +52,12 @@ public class AdminCourseMaterialController : Controller
     {
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
-        bool isAdded = await adminCourseMaterialService.AddAsync(
-            viewModel.Name,
-            viewModel.Description,
-            viewModel.Category,
-            viewModel.Price,
-            loginId,
-            DateTime.Now);
+        var request = CourseMaterialMapping.MapToAddRequest(viewModel, loginId, DateTime.Now);
 
-        if (isAdded)
-        {
-            TempData["SuccessMessage"] = "Course material added successfully.";
-        }
-        else
-        {
-            TempData["ErrorMessage"] = "Failed to add course material.";
-        }
+        AddCourseMaterialResponse response = await adminCourseMaterialService.AddAsync(request);
+
+        short key = Convert.ToInt16(response.IsTransactionSuccess);
+        TempData[Notification.ModalMessage[key]] = response.Message;
 
         return RedirectToAction("List");
     }
@@ -82,17 +65,19 @@ public class AdminCourseMaterialController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
-        var courseMaterialResult = await adminCourseMaterialService.GetByIdAsync(id);
+        GetCourseMaterialByIdResponse response = await adminCourseMaterialService
+            .GetByIdAsync(new GetCourseMaterialByIdRequest(id));
 
-        var viewModel = mapper.Map<CourseMaterialView>(courseMaterialResult);
-
-        // Load the categories to select
-        var categories = adminCourseMaterialService.GetCourseMaterialCategories();
-        viewModel.AvailableCategories = categories.Select(c => new SelectListItem
+        if (response.CourseMaterial == null)
         {
-            Text = c,
-            Value = c
-        });
+            TempData[Notification.ModalMessage[0]] = response.Message;
+            return RedirectToAction("List");
+        }
+
+        var viewModel = CourseMaterialMapping.MapToViewModel(response);
+
+        // Load the categories to select in UI
+        LoadCategories(viewModel);
 
         return View(viewModel);
     }
@@ -102,24 +87,14 @@ public class AdminCourseMaterialController : Controller
     {
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
-        CourseMaterialResult courseMaterialResult = 
-            await adminCourseMaterialService.UpdateAsync(
-                viewModel.Id,
-                viewModel.Name,
-                viewModel.Description,
-                viewModel.Category,
-                viewModel.Price,
-                loginId,
-                DateTime.Now);
+        UpdateCourseMaterialRequest request = CourseMaterialMapping
+            .MapToUpdateRequest(viewModel, loginId, DateTime.Now);
 
-        if (courseMaterialResult.CourseMaterial != null) 
-        {
-            TempData["SuccessMessage"] = "Course material updated successfully.";
-        }
-        else
-        {
-            TempData["ErrorMessage"] = "Failed to update course material.";
-        }
+        UpdateCourseMaterialResponse response = 
+            await adminCourseMaterialService.UpdateAsync(request);
+
+        short key = Convert.ToInt16(response.IsTransactionSuccess);
+        TempData[Notification.ModalMessage[key]] = response.Message;
 
         return RedirectToAction("List");
     }
@@ -127,18 +102,22 @@ public class AdminCourseMaterialController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id)
     {
-        CourseMaterialResult courseMaterialResult = 
-            await adminCourseMaterialService.DeleteAsync(id);
+        DeleteCourseMaterialResponse response = await adminCourseMaterialService
+            .DeleteAsync(new DeleteCourseMaterialRequest(id));
 
-        if (courseMaterialResult.CourseMaterial != null)
-        {
-            TempData["SuccessMessage"] = "Course material deleted successfully.";
-        }
-        else
-        {
-            TempData["ErrorMessage"] = "Failed to delete course material.";
-        }
+        short key = Convert.ToInt16(response.IsTransactionSuccess);
+        TempData[Notification.ModalMessage[key]] = response.Message;
 
         return RedirectToAction("List");
+    }
+
+    private void LoadCategories(CourseMaterialView viewModel)
+    {
+        var categories = adminCourseMaterialService.GetCourseMaterialCategories();
+        viewModel.AvailableCategories = categories.Select(c => new SelectListItem
+        {
+            Text = c,
+            Value = c
+        });
     }
 }

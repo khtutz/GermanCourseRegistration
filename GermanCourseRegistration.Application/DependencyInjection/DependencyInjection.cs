@@ -1,4 +1,5 @@
-﻿using GermanCourseRegistration.Application.Services;
+﻿using GermanCourseRegistration.Application.Mappings;
+using GermanCourseRegistration.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GermanCourseRegistration.Application.DependencyInjection;
@@ -15,6 +16,8 @@ public static class DependencyInjection
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<IRegistrationService, RegistrationService>();
         services.AddScoped<IUserService, UserService>();
+
+        services.AddAutoMapper(typeof(AutoMapperProfiles));
 
         return services;
     }

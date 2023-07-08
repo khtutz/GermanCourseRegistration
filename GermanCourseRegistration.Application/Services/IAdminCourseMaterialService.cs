@@ -1,31 +1,19 @@
-﻿using GermanCourseRegistration.Application.ServiceResults;
+﻿using GermanCourseRegistration.Application.Messages.CourseMaterialMessages;
+using GermanCourseRegistration.Application.ServiceResults;
 
 namespace GermanCourseRegistration.Application.Services;
 
 public interface IAdminCourseMaterialService
 {
-    Task<CourseMaterialResult> GetByIdAsync(Guid id);
+    Task<GetCourseMaterialByIdResponse> GetByIdAsync(GetCourseMaterialByIdRequest request);
 
-    Task<IEnumerable<CourseMaterialResult>> GetAllAsync();
+    Task<GetAllCourseMaterialsResponse> GetAllAsync();
 
-    Task<bool> AddAsync(
-        string name,
-        string? description,
-        string category,
-        decimal price,
-        Guid createdBy,
-        DateTime createdOn);
+    Task<AddCourseMaterialResponse> AddAsync(AddCourseMaterialRequest request);
 
-    Task<CourseMaterialResult> UpdateAsync(
-        Guid id,
-        string name,
-        string? description,
-        string category,
-        decimal price,
-        Guid lastModifiedBy,
-        DateTime lastModifiedOn);
+    Task<UpdateCourseMaterialResponse> UpdateAsync(UpdateCourseMaterialRequest request);
 
-    Task<CourseMaterialResult> DeleteAsync(Guid id);
+    Task<DeleteCourseMaterialResponse> DeleteAsync(DeleteCourseMaterialRequest request);
 
     IEnumerable<string> GetCourseMaterialCategories();
 }

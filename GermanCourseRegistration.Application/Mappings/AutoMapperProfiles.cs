@@ -1,0 +1,30 @@
+﻿using AutoMapper;
+using GermanCourseRegistration.Application.Messages.CourseMaterialMessages;
+using GermanCourseRegistration.EntityModels;
+
+namespace GermanCourseRegistration.Application.Mappings;
+
+public class AutoMapperProfiles : Profile
+{
+    public AutoMapperProfiles()
+    {
+        // CourseMaterial
+        CreateMap<CourseMaterial, GetCourseMaterialByIdResponse>()
+            .ForMember(d => d.CourseMaterial, opt => opt.MapFrom(s => s));
+        CreateMap<IEnumerable<CourseMaterial>, GetAllCourseMaterialsResponse>()
+            .ForMember(d => d.CourseMaterials, opt => opt.MapFrom(s => s));
+
+        CreateMap<AddCourseMaterialRequest, CourseMaterial>();
+
+        CreateMap<UpdateCourseMaterialRequest, CourseMaterial>();
+        CreateMap<(CourseMaterial, bool, string), UpdateCourseMaterialResponse>()
+            .ForMember(d => d.CourseMaterial, opt => opt.MapFrom(s => s.Item1))
+            .ForMember(d => d.IsTransactionSuccess, opt => opt.MapFrom(s => s.Item2))
+            .ForMember(d => d.Message, opt => opt.MapFrom(s => s.Item3));
+
+        CreateMap<(CourseMaterial, bool, string), DeleteCourseMaterialResponse>()
+            .ForMember(d => d.CourseMaterial, opt => opt.MapFrom(s => s.Item1))
+            .ForMember(d => d.IsTransactionSuccess, opt => opt.MapFrom(s => s.Item2))
+            .ForMember(d => d.Message, opt => opt.MapFrom(s => s.Item3));
+    }
+}

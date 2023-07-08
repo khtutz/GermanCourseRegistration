@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "ejUCyVHRSnkl9+jkKaOsH5L4M2ttLzrC4LoA/M2X9eHygkxuPzJt9nDp8GgEk0mqY+nhX+OlI8S+htqDbVPZOg==",
+  "dgSpecHash": "Bi/3XK6rtorIxwimJJAtlCd7JgtLfkJSyj16mKmJYSL3RJgIhP+L2IW9DkHiCG8t0ZE3eJTDD26e8EZix9qiXw==",
   "success": true,
   "projectFilePath": "C:\\Users\\khtutz\\coding\\csharp\\pp\\GermanCourseRegistration\\GermanCourseRegistration.Application\\GermanCourseRegistration.Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\khtutz\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\khtutz\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\khtutz\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\7.0.7\\microsoft.aspnetcore.cryptography.internal.7.0.7.nupkg.sha512",
     "C:\\Users\\khtutz\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\7.0.7\\microsoft.aspnetcore.cryptography.keyderivation.7.0.7.nupkg.sha512",
     "C:\\Users\\khtutz\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\7.0.7\\microsoft.aspnetcore.identity.entityframeworkcore.7.0.7.nupkg.sha512",
+    "C:\\Users\\khtutz\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\khtutz\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.7\\microsoft.entityframeworkcore.7.0.7.nupkg.sha512",
     "C:\\Users\\khtutz\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.7\\microsoft.entityframeworkcore.abstractions.7.0.7.nupkg.sha512",
     "C:\\Users\\khtutz\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\7.0.7\\microsoft.entityframeworkcore.analyzers.7.0.7.nupkg.sha512",

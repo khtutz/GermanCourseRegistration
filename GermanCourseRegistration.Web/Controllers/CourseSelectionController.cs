@@ -46,8 +46,8 @@ public class CourseSelectionController : Controller
         }
 
         // Step 2: Load currently offered (optional) course materials to buy
-        IEnumerable<CourseMaterialResult> courseMaterialResults =
-            await adminCourseMaterialService.GetAllAsync();
+        IEnumerable<CourseMaterialResult> courseMaterialResults = null;
+            //await adminCourseMaterialService.GetAllAsync();
 
         // Step 3: Add offered classes and course materials into registration view model
         var viewModel = new CourseRegistrationView()
