@@ -1,36 +1,15 @@
-﻿using GermanCourseRegistration.Application.ServiceResults;
+﻿using GermanCourseRegistration.Application.Messages.StudentMessages;
+using GermanCourseRegistration.Application.ServiceResults;
 
 namespace GermanCourseRegistration.Application.Services;
 
 public interface IStudentService
 {
-    Task<StudentResult> GetByIdAsync(Guid id);
+    Task<GetStudentByIdResponse> GetByIdAsync(GetStudentByIdRequest request);
 
-    Task<bool> AddAsync(
-        Guid id,
-        string salutation,
-        string firstName,
-        string lastName,
-        DateTime birthday,
-        string gender,
-        string mobile,
-        string email,
-        string address,
-        string postalCode,
-        DateTime createdOn);
+    Task<AddStudentResponse> AddAsync(AddStudentRequest request);
 
-    Task<StudentResult> UpdateAsync(
-        Guid id,
-        string salutation,
-        string firstName,
-        string lastName,
-        DateTime birthday,
-        string gender,
-        string mobile,
-        string email,
-        string address,
-        string postalCode,
-        DateTime lastModifiedOn);
+    Task<UpdateStudentResponse> UpdateAsync(UpdateStudentRequest request);
 
     IEnumerable<string> GetSalutations();
 }

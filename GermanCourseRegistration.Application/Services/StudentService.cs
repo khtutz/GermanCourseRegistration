@@ -1,5 +1,6 @@
-﻿using GermanCourseRegistration.Application.Interfaces.Repositories;
-using GermanCourseRegistration.Application.ServiceResults;
+﻿using AutoMapper;
+using GermanCourseRegistration.Application.Interfaces.Repositories;
+using GermanCourseRegistration.Application.Messages.StudentMessages;
 using GermanCourseRegistration.EntityModels;
 
 namespace GermanCourseRegistration.Application.Services;
@@ -7,83 +8,54 @@ namespace GermanCourseRegistration.Application.Services;
 public class StudentService : IStudentService
 {
     private readonly IStudentRepository studentRepository;
+    private readonly IMapper mapper;
 
-    public StudentService(IStudentRepository studentRepository)
+    public StudentService(IStudentRepository studentRepository, IMapper mapper)
     {
         this.studentRepository = studentRepository;
+        this.mapper = mapper;
     }
 
-    public async Task<StudentResult> GetByIdAsync(Guid id)
+    public async Task<GetStudentByIdResponse> GetByIdAsync(GetStudentByIdRequest request)
     {
-        var student = await studentRepository.GetByIdAsync(id);
+        var student = await studentRepository.GetByIdAsync(request.Id);
 
-        return new StudentResult(student);
+        var response = mapper.Map<GetStudentByIdResponse>(student);
+
+        return response;
     }
 
-    public async Task<bool> AddAsync(
-        Guid id,
-        string salutation,
-        string firstName,
-        string lastName,
-        DateTime birthday,
-        string gender,
-        string mobile,
-        string email, 
-        string address, 
-        string postalCode, 
-        DateTime createdOn)
+    public async Task<AddStudentResponse> AddAsync(AddStudentRequest request)
     {
-        var student = new Student()
-        {
-            Id = id,
-            Salutation = salutation,
-            FirstName = firstName,
-            LastName = lastName,
-            Birthday = birthday,
-            Gender = gender,
-            Mobile = mobile,
-            Email = email,
-            Address = address,
-            PostalCode = postalCode,
-            CreatedOn = createdOn
-        };
+        var student = mapper.Map<Student>(request);
 
         bool isAdded = await studentRepository.AddAsync(student);
 
-        return isAdded;
-    }
-
-    public async Task<StudentResult> UpdateAsync(
-        Guid id, 
-        string salutation, 
-        string firstName, 
-        string lastName, 
-        DateTime birthday, 
-        string gender, 
-        string mobile, 
-        string email, 
-        string address, 
-        string postalCode, 
-        DateTime lastModifiedOn)
-    {
-        var student = new Student()
+        var response = new AddStudentResponse()
         {
-            Id = id,
-            Salutation = salutation,
-            FirstName = firstName,
-            LastName = lastName,
-            Birthday = birthday,
-            Gender = gender,
-            Mobile = mobile,
-            Email = email,
-            Address = address,
-            PostalCode = postalCode,
-            LastModifiedOn = lastModifiedOn
+            IsTransactionSuccess = isAdded,
+            Message = isAdded
+                ? "Student information added successfully."
+                : "Failed to add student information."
         };
 
-        Student? updatedStudent = await studentRepository.UpdateAsync(student, id);
+        return response;
+    }
 
-        return new StudentResult(updatedStudent);
+    public async Task<UpdateStudentResponse> UpdateAsync(UpdateStudentRequest request)
+    {
+        var student = mapper.Map<Student>(request);
+
+        Student? updatedStudent = await studentRepository.UpdateAsync(student, request.Id);
+
+        var response = mapper.Map<UpdateStudentResponse>((
+            updatedStudent,
+            updatedStudent != null,
+            updatedStudent != null
+            ? "Student information updated successfully."
+            : "Failed to update student information."));
+
+        return response;
     }
 
     public IEnumerable<string> GetSalutations()

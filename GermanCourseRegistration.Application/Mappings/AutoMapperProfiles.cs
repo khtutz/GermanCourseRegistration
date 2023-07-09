@@ -2,6 +2,7 @@
 using GermanCourseRegistration.Application.Messages.CourseMaterialMessages;
 using GermanCourseRegistration.Application.Messages.CourseMessages;
 using GermanCourseRegistration.Application.Messages.CourseOfferMessages;
+using GermanCourseRegistration.Application.Messages.StudentMessages;
 using GermanCourseRegistration.EntityModels;
 
 namespace GermanCourseRegistration.Application.Mappings;
@@ -64,6 +65,18 @@ public class AutoMapperProfiles : Profile
 
         CreateMap<(CourseOffer, bool, string), DeleteCourseOfferResponse>()
             .ForMember(d => d.CourseOffer, opt => opt.MapFrom(s => s.Item1))
+            .ForMember(d => d.IsTransactionSuccess, opt => opt.MapFrom(s => s.Item2))
+            .ForMember(d => d.Message, opt => opt.MapFrom(s => s.Item3));
+
+        // Student
+        CreateMap<Student, GetStudentByIdResponse>()
+            .ForMember(d => d.Student, opt => opt.MapFrom(s => s));
+
+        CreateMap<AddStudentRequest, Student>();
+
+        CreateMap<UpdateStudentRequest, Student>();
+        CreateMap<(Student, bool, string), UpdateStudentResponse>()
+            .ForMember(d => d.Student, opt => opt.MapFrom(s => s.Item1))
             .ForMember(d => d.IsTransactionSuccess, opt => opt.MapFrom(s => s.Item2))
             .ForMember(d => d.Message, opt => opt.MapFrom(s => s.Item3));
     }

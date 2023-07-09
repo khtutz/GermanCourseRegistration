@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using GermanCourseRegistration.Application.ServiceResults;
+﻿using GermanCourseRegistration.Application.Messages.StudentMessages;
 using GermanCourseRegistration.Application.Services;
-using GermanCourseRegistration.Web.Models.ViewModels;
 using GermanCourseRegistration.Web.HelperServices;
+using GermanCourseRegistration.Web.Mappings;
+using GermanCourseRegistration.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,16 +13,13 @@ public class StudentPersonalInformationController : Controller
 {
     private readonly IStudentService studentService;
     private readonly UserManager<IdentityUser> userManager;
-    private readonly IMapper mapper;
 
     public StudentPersonalInformationController(
         IStudentService studentService,
-        UserManager<IdentityUser> userManager,
-        IMapper mapper)
+        UserManager<IdentityUser> userManager)
     {
         this.studentService = studentService;
         this.userManager = userManager;
-        this.mapper = mapper;
     }
 
     [HttpGet]
@@ -30,13 +27,12 @@ public class StudentPersonalInformationController : Controller
 	{
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
-        // Load the existing information if registered previously
-        StudentResult studentResult = await studentService.GetByIdAsync(loginId);
+        var response = await studentService.GetByIdAsync(new GetStudentByIdRequest(loginId));
 
-        bool isExistingStudent = studentResult.Student != null;
+        bool isExistingStudent = response == null || response.Student == null ? false : true;
 
-        var viewModel = isExistingStudent 
-            ? mapper.Map<StudentView>(studentResult) 
+        var viewModel = isExistingStudent
+            ? StudentPersonalInformationMapping.MapToViewModel(response!)
             : new StudentView();
 
         // Load the drop down list items, and properties
@@ -58,34 +54,17 @@ public class StudentPersonalInformationController : Controller
 
         if (!viewModel.IsExistingStudent)
         {
-            // Student Id must be from Login Id
-            await studentService.AddAsync(
-                loginId,
-                viewModel.Salutation,
-                viewModel.FirstName,
-                viewModel.LastName,
-                viewModel.Birthday,
-                viewModel.Gender,
-                viewModel.Mobile,
-                viewModel.Email,
-                viewModel.Address,
-                viewModel.PostalCode,
-                DateTime.Now);
+            var request = StudentPersonalInformationMapping.MapToAddRequest(
+                viewModel, loginId, DateTime.Now);
+
+            await studentService.AddAsync(request);
         }
         else
         {
-           await studentService.UpdateAsync(
-                loginId,
-                viewModel.Salutation,
-                viewModel.FirstName,
-                viewModel.LastName,
-                viewModel.Birthday,
-                viewModel.Gender,
-                viewModel.Mobile,
-                viewModel.Email,
-                viewModel.Address,
-                viewModel.PostalCode,
-                DateTime.Now);
+            var request = StudentPersonalInformationMapping.MapToUpdateRequest(
+                viewModel, loginId, DateTime.Now);
+
+            await studentService.UpdateAsync(request);
         }
 
         return RedirectToAction("Add", "CourseSelection");
