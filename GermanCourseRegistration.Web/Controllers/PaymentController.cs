@@ -1,4 +1,6 @@
-﻿using GermanCourseRegistration.Application.Services;
+﻿using GermanCourseRegistration.Application.Messages.CourseOfferMessages;
+using GermanCourseRegistration.Application.Services;
+using GermanCourseRegistration.Web.Mappings;
 using GermanCourseRegistration.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,8 +26,9 @@ public class PaymentController : Controller
     public async Task<IActionResult> Add(Guid registrationId, Guid courseOfferId, Guid orderId)
     {
         // Get the cost of selected course
-        //var courseOfferResult = await adminCourseScheduleService.GetByIdAsync(courseOfferId);
-        decimal courseCost = 0;// courseOfferResult?.CouseOffer?.Cost ?? 0;
+        var response = await adminCourseScheduleService
+            .GetByIdAsync(new GetCourseOfferByIdRequest(courseOfferId));
+        decimal courseCost = response?.CourseOffer?.Cost ?? 0;
 
         // Get purchased items
         var order = await cartService.GetItemsByOrderIdAsync(orderId);
@@ -48,12 +51,14 @@ public class PaymentController : Controller
         // Application will continue based on the result from the payment
 
         // It is assumed that payment is successful here
-        bool isAdded = await paymentService.AddAsync(
+        var request = PaymentMapping.MapToAddRequest(
             "Credit/Debit",
             viewModel.Amount,
             "Success");
 
-        if (isAdded)
+        var response = await paymentService.AddAsync(request);
+
+        if (response.IsTransactionSuccess)
         {
             TempData["SuccessMessage"] = "Course has been registered successfully.";
         }

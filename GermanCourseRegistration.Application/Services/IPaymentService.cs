@@ -1,6 +1,8 @@
-﻿namespace GermanCourseRegistration.Application.Services;
+﻿using GermanCourseRegistration.Application.Messages.PaymentMessages;
+
+namespace GermanCourseRegistration.Application.Services;
 
 public interface IPaymentService
 {
-    Task<bool> AddAsync(string paymentMethod, decimal amount, string paymentStatus);
+    Task<AddPaymentResponse> AddAsync(AddPaymentRequest request);
 }
