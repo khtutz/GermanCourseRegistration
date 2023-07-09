@@ -1,3 +1,3 @@
 ﻿namespace GermanCourseRegistration.Application.Messages.CourseOfferMessages;
 
-public record AddCourseOfferResponse() : BaseResponse;
+public record AddCourseOfferResponse : BaseResponse;
