@@ -1,5 +1,6 @@
-﻿using GermanCourseRegistration.Application.Interfaces.Repositories;
-using GermanCourseRegistration.Application.ServiceResults;
+﻿using AutoMapper;
+using GermanCourseRegistration.Application.Interfaces.Repositories;
+using GermanCourseRegistration.Application.Messages.CourseOfferMessages;
 using GermanCourseRegistration.EntityModels;
 
 namespace GermanCourseRegistration.Application.Services;
@@ -8,119 +9,94 @@ public class AdminCourseScheduleService : IAdminCourseScheduleService
 {
     private readonly ICourseOfferRepository courseOfferRepository;
     private readonly ITimetableRepository timetableRepository;
+    private readonly IMapper mapper;
 
     public AdminCourseScheduleService(
         ICourseOfferRepository courseOfferRepository,
-        ITimetableRepository timetableRepository)
+        ITimetableRepository timetableRepository,
+        IMapper mapper)
     {
         this.courseOfferRepository = courseOfferRepository;
         this.timetableRepository = timetableRepository;
+        this.mapper = mapper;
     }
 
-    public async Task<CourseOfferResult> GetByIdAsync(Guid id)
+    public async Task<GetCourseOfferByIdResponse> GetByIdAsync(GetCourseOfferByIdRequest request)
     {
-        var courseOffer = await courseOfferRepository.GetByIdAsync(id);
+        var courseOffer = await courseOfferRepository.GetByIdAsync(request.Id);
 
-        return new CourseOfferResult(courseOffer);
+        var response = mapper.Map<GetCourseOfferByIdResponse>(courseOffer);
+
+        return response;
     }
 
-    public async Task<IEnumerable<CourseOfferResult>> GetAllAsync()
+    public async Task<GetAllCourseOffersResponse> GetAllAsync()
     {
         var courseOffers = await courseOfferRepository.GetAllAsync();
 
-        var courseOfferResults = courseOffers.Select(c => new CourseOfferResult(c));
+        var response = mapper.Map<GetAllCourseOffersResponse>(courseOffers);
 
-        return courseOfferResults;
+        return response;
     }
 
-    public async Task<bool> AddAsync(
-        Guid courseId,
-        string name,
-        string classType,
-        decimal cost,
-        DateTime startDate,
-        DateTime endDate,
-        Guid createdBy,
-        DateTime createdOn,
-        IEnumerable<string> daysOfWeek,
-        int StartTimeHour,
-        int StartTimeMinute,
-        int EndTimeHour,
-        int EndTimeMinute)
+    public async Task<AddCourseOfferResponse> AddAsync(AddCourseOfferRequest request)
     {
-        var courseOffer = new CourseOffer()
-        {
-            CourseId = courseId,
-            Name = name,
-            ClassType = classType,
-            Cost = cost,
-            StartDate = startDate,
-            EndDate = endDate,
-            CreatedBy = createdBy,
-            CreatedOn = createdOn,
-            Timetables = GetTimetables(
-                daysOfWeek,
-                StartTimeHour,
-                StartTimeMinute,
-                EndTimeHour,
-                EndTimeMinute)
-        };
+        var courseOffer = mapper.Map<CourseOffer>(request);
+        courseOffer.Timetables = GetTimetables(
+            request.DaysOfWeek,
+            request.StartTimeHour,
+            request.StartTimeMinute,
+            request.EndTimeHour,
+            request.EndTimeMinute);
 
         bool isAdded = await courseOfferRepository.AddAsync(courseOffer);
 
-        return isAdded;
-    }
-
-    public async Task<CourseOfferResult> UpdateAsync(
-        Guid id, 
-        Guid courseId, 
-        string name, 
-        string classType, 
-        decimal cost, 
-        DateTime startDate, 
-        DateTime endDate, 
-        Guid lastModifiedBy, 
-        DateTime lastModifiedOn,
-        IEnumerable<string> daysOfWeek,
-        int StartTimeHour,
-        int StartTimeMinute,
-        int EndTimeHour,
-        int EndTimeMinute)
-    {
-        // Delete the existing time table first
-        IEnumerable<Timetable> deletedTimetables = 
-            await timetableRepository.DeleteByCouseOfferIdAsync(id);
-
-        var courseOffer = new CourseOffer()
+        var response = new AddCourseOfferResponse()
         {
-            Id = id,
-            CourseId = courseId,
-            Name = name,
-            ClassType = classType,
-            Cost = cost,
-            StartDate = startDate,
-            EndDate = endDate,
-            LastModifiedBy = lastModifiedBy,
-            LastModifiedOn = lastModifiedOn,
-            Timetables = GetTimetables(
-                daysOfWeek,
-                StartTimeHour,
-                StartTimeMinute,
-                EndTimeHour,
-                EndTimeMinute)
+            IsTransactionSuccess = isAdded,
+            Message = isAdded
+                ? "Course schedule added successfully."
+                : "Failed to add course schedule."
         };
 
-        CourseOffer? updatedCourseOffer = await courseOfferRepository
-            .UpdateAsync(courseOffer, id);
-
-        return new CourseOfferResult(updatedCourseOffer);
+        return response;
     }
 
-    public async Task<CourseOfferResult> DeleteAsync(Guid id)
+    public async Task<UpdateCourseOfferResponse> UpdateAsync(UpdateCourseOfferRequest request)
     {
-        CourseOffer? deletedCourseOffer = await courseOfferRepository.DeleteAsync(id);
+        var courseOffer = mapper.Map<CourseOffer>(request);
+        courseOffer.Timetables = GetTimetables(
+            request.DaysOfWeek,
+            request.StartTimeHour,
+            request.StartTimeMinute,
+            request.EndTimeHour,
+            request.EndTimeMinute);
 
-        return new CourseOfferResult(deletedCourseOffer);
+        CourseOffer? updatedCourseOffer = await courseOfferRepository
+            .UpdateAsync(courseOffer, request.Id);
+
+        var response = mapper.Map<UpdateCourseOfferResponse>((
+            updatedCourseOffer,
+            updatedCourseOffer != null,
+            updatedCourseOffer != null
+            ? "Course schedule updated successfully."
+            : "Failed to update course schedule."));
+
+        return response;
+    }
+
+    public async Task<DeleteCourseOfferResponse> DeleteAsync(DeleteCourseOfferRequest request)
+    {
+        CourseOffer? deletedCourseOffer = await courseOfferRepository.DeleteAsync(request.Id);
+
+        var response = mapper.Map<DeleteCourseOfferResponse>((
+            deletedCourseOffer,
+            deletedCourseOffer != null,
+            deletedCourseOffer != null
+            ? "Course schedule deleted successfully."
+            : "Failed to delete course material."));
+
+        return response;
     }
 
     private IEnumerable<Timetable> GetTimetables(

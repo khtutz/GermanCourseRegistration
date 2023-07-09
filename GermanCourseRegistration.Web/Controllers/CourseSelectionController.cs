@@ -36,8 +36,8 @@ public class CourseSelectionController : Controller
     public async Task<IActionResult> Add()
     {
         // Step 1: Load currently offered classes
-        IEnumerable<CourseOfferResult> courseOfferResults = 
-            await adminCourseScheduleService.GetAllAsync();
+        IEnumerable<CourseOfferResult> courseOfferResults = Enumerable.Empty<CourseOfferResult>();
+            //await adminCourseScheduleService.GetAllAsync();
 
         if (!courseOfferResults.Any())
         {

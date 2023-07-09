@@ -59,9 +59,9 @@ public class AdminCourseController : Controller
     {
         var response = await adminCourseService.GetByIdAsync(new GetCourseByIdRequest(id));
 
-        if (response.Course == null)
+        if (response!.Course == null)
         {
-            TempData[Notification.ModalMessage[0]] = response.Message;
+            TempData[Notification.ModalMessage[0]] = "Something went wrong in retrieving the data";
             return RedirectToAction("List");
         }
 

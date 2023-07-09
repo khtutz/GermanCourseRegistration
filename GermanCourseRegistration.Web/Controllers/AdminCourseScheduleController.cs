@@ -1,13 +1,13 @@
-﻿using GermanCourseRegistration.Application.ServiceResults;
-using GermanCourseRegistration.Application.Services;
+﻿using GermanCourseRegistration.Application.Services;
+using GermanCourseRegistration.Web.HelperServices;
 using GermanCourseRegistration.Web.Mappings;
 using GermanCourseRegistration.Web.Models.ViewModels;
-using GermanCourseRegistration.Web.HelperServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Data;
+using GermanCourseRegistration.Application.Messages.CourseOfferMessages;
 
 namespace GermanCourseRegistration.Web.Controllers;
 
@@ -31,16 +31,9 @@ public class AdminCourseScheduleController : Controller
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        IEnumerable<CourseOfferResult> courseOfferResults =
-            await adminCourseScheduleService.GetAllAsync();
+        var response = await adminCourseScheduleService.GetAllAsync();
 
-        var viewModels = new List<CourseScheduleView>();
-
-        foreach (var courseSchedule in courseOfferResults)
-        {
-            viewModels.Add(MapperProfiles
-                .MapCourseOfferResultToCourseScheduleViewModel(courseSchedule));
-        }
+        var viewModels = CourseScheduleMapping.MapToViewModels(response);
 
         return View(viewModels);
     }
@@ -48,20 +41,21 @@ public class AdminCourseScheduleController : Controller
     [HttpGet]
     public async Task<IActionResult> Add()
     {
-        // Load the courses
-        IEnumerable<CourseResult> courseResults = Enumerable.Empty<CourseResult>();// await adminCourseService.GetAllAsync();
+        var response = await adminCourseService.GetAllAsync();
 
-        if (!courseResults.Any())
+        if (response == null || response.Courses == null || !response.Courses.Any())
         {
-            TempData["ErrorMessage"] = "No courses available. Please create the course first.";
+            TempData[Notification.ModalMessage[0]] = 
+                "No courses available. Please create the course first.";
             return RedirectToAction("List");
         }
 
-        var viewModel = new CourseScheduleView();
+        var courseScheduleView = new CourseScheduleView();
+        var courseViews = CourseMapping.MapToViewModels(response);
 
-        LoadItemsForUI(viewModel, courseResults);
+        LoadItemsForUI(courseScheduleView, courseViews);
 
-        return View(viewModel);
+        return View(courseScheduleView);
     }
 
     [HttpPost]
@@ -69,29 +63,12 @@ public class AdminCourseScheduleController : Controller
     {
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
-        bool isAdded = await adminCourseScheduleService.AddAsync(
-            viewModel.Course!.Id,
-            viewModel.Name,
-            viewModel.ClassType,
-            viewModel.Cost,
-            viewModel.StartDate,
-            viewModel.EndDate,
-            loginId,
-            DateTime.Now,
-            viewModel.DaysOfWeek,
-            viewModel.Timetable.StartTimeHour,
-            viewModel.Timetable.StartTimeMinute,
-            viewModel.Timetable.EndTimeHour,
-            viewModel.Timetable.EndTimeMinute);
+        var request = CourseScheduleMapping.MapToAddRequest(viewModel, loginId, DateTime.Now);
 
-        if (isAdded)
-        {
-            TempData["SuccessMessage"] = "Course schedule added successfully.";
-        }
-        else
-        {
-            TempData["ErrorMessage"] = "Failed to add course schedule.";
-        }
+        var response = await adminCourseScheduleService.AddAsync(request);
+
+        short key = Convert.ToInt16(response.IsTransactionSuccess);
+        TempData[Notification.ModalMessage[key]] = response.Message;
 
         return RedirectToAction("List");
     }
@@ -99,25 +76,26 @@ public class AdminCourseScheduleController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
     {
+        var coursesResponse = await adminCourseService.GetAllAsync();
+        var courseScheduleResponse = await adminCourseScheduleService.GetByIdAsync(
+            new GetCourseOfferByIdRequest(id));
 
-        // Load the courses and course schedules (offered courses)
-        IEnumerable<CourseResult> courseResults = Enumerable.Empty<CourseResult>();
-        //await adminCourseService.GetAllAsync();
-        CourseOfferResult courseOfferResult = 
-            await adminCourseScheduleService.GetByIdAsync(id);
-
-        if (!courseResults.Any() || courseOfferResult.CouseOffer == null)
+        if (coursesResponse == null || 
+            coursesResponse.Courses == null || 
+            !coursesResponse.Courses.Any() ||
+            courseScheduleResponse == null ||
+            courseScheduleResponse.CourseOffer == null)
         {
-            TempData["ErrorMessage"] = "No currently offered courses.";
+            TempData[Notification.ModalMessage[0]] = "No currently offered courses.";
             return RedirectToAction("List");
         }
 
-        var viewModel = MapperProfiles
-                .MapCourseOfferResultToCourseScheduleViewModel(courseOfferResult);
+        var courseScheduleView = CourseScheduleMapping.MapToViewModel(courseScheduleResponse);
+        var courseViews = CourseMapping.MapToViewModels(coursesResponse);
 
-        LoadItemsForUI(viewModel, courseResults);
+        LoadItemsForUI(courseScheduleView, courseViews);
 
-        return View(viewModel);
+        return View(courseScheduleView);
     }
 
     [HttpPost]
@@ -125,30 +103,12 @@ public class AdminCourseScheduleController : Controller
     {
         Guid loginId = await UserAccountService.GetCurrentUserId(userManager, User);
 
-        CourseOfferResult courseOfferResult = await adminCourseScheduleService.UpdateAsync(
-            viewModel.Id,
-            viewModel.Course!.Id,
-            viewModel.Name,
-            viewModel.ClassType,
-            viewModel.Cost,
-            viewModel.StartDate,
-            viewModel.EndDate,
-            loginId,
-            DateTime.Now,
-            viewModel.DaysOfWeek,
-            viewModel.Timetable.StartTimeHour,
-            viewModel.Timetable.StartTimeMinute,
-            viewModel.Timetable.EndTimeHour,
-            viewModel.Timetable.EndTimeMinute);
+        var request = CourseScheduleMapping.MapToUpdateRequest(viewModel, loginId, DateTime.Now);
 
-        if (courseOfferResult.CouseOffer != null)
-        {
-            TempData["SuccessMessage"] = "Course schedule updated successfully.";
-        }
-        else
-        {
-            TempData["ErrorMessage"] = "Failed to update course schedule.";
-        }
+        var response = await adminCourseScheduleService.UpdateAsync(request);
+
+        short key = Convert.ToInt16(response.IsTransactionSuccess);
+        TempData[Notification.ModalMessage[key]] = response.Message;
 
         return RedirectToAction("List");
     }
@@ -156,39 +116,34 @@ public class AdminCourseScheduleController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(Guid id)
     {
-        CourseOfferResult? courseOfferResult = await adminCourseScheduleService.DeleteAsync(id);
+        var response = await adminCourseScheduleService.DeleteAsync(
+            new DeleteCourseOfferRequest(id));
 
-        if (courseOfferResult.CouseOffer != null)
-        {
-            TempData["SuccessMessage"] = "Course schedule deleted successfully.";
-        }
-        else
-        {
-            TempData["ErrorMessage"] = "Failed to delete course schedule.";
-        }
+        short key = Convert.ToInt16(response.IsTransactionSuccess);
+        TempData[Notification.ModalMessage[key]] = response.Message;
 
         return RedirectToAction("List");
     }
 
     private void LoadItemsForUI(
-        CourseScheduleView viewModel, 
-        IEnumerable<CourseResult> courseResults)
+        CourseScheduleView courseScheduleView, 
+        IEnumerable<CourseView> courseViews)
     {
         // Load the drop down list items
-        viewModel.AvailableCourseLevels = courseResults.Select(c => new SelectListItem
+        courseScheduleView.AvailableCourseLevels = courseViews.Select(c => new SelectListItem
         {
-            Text = c.Course!.Level.ToString() + "." + c.Course!.Part.ToString(),
-            Value = c.Course!.Id.ToString()
+            Text = c.Level.ToString() + "." + c.Part.ToString(),
+            Value = c.Id.ToString()
         });
 
         var classTypes = adminCourseScheduleService.GetAvailableClassTypes();
-        viewModel.AvailableClassTypes = classTypes.Select(c => new SelectListItem
+        courseScheduleView.AvailableClassTypes = classTypes.Select(c => new SelectListItem
         {
             Text = c,
             Value = c
         });
 
         // Load the days of the week
-        viewModel.DaysOfWeek = adminCourseScheduleService.GetDaysOfWeek();
+        courseScheduleView.DaysOfWeek = adminCourseScheduleService.GetDaysOfWeek();
     }
 }

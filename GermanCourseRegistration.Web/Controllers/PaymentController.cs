@@ -24,8 +24,8 @@ public class PaymentController : Controller
     public async Task<IActionResult> Add(Guid registrationId, Guid courseOfferId, Guid orderId)
     {
         // Get the cost of selected course
-        var courseOfferResult = await adminCourseScheduleService.GetByIdAsync(courseOfferId);
-        decimal courseCost = courseOfferResult?.CouseOffer?.Cost ?? 0;
+        //var courseOfferResult = await adminCourseScheduleService.GetByIdAsync(courseOfferId);
+        decimal courseCost = 0;// courseOfferResult?.CouseOffer?.Cost ?? 0;
 
         // Get purchased items
         var order = await cartService.GetItemsByOrderIdAsync(orderId);

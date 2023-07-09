@@ -39,6 +39,17 @@ public class CourseOfferRepository : ICourseOfferRepository
 
     public async Task<CourseOffer?> UpdateAsync(CourseOffer entity, Guid id)
     {
+        // Delete the existing timetable first
+        var existingTimetables = await dbContext.Timetables
+            .Where(t => t.CourseOfferId == id)
+            .ToListAsync();
+
+        if (existingTimetables != null && existingTimetables.Any())
+        {
+            dbContext.Timetables.RemoveRange(existingTimetables);
+        }
+
+        // Update the course schedule with new timetables
         var existingCourseOffer = await dbContext.CourseOffers
             .FirstOrDefaultAsync(c => c.Id == id);
 

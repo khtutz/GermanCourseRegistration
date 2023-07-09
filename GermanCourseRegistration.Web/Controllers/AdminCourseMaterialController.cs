@@ -67,9 +67,9 @@ public class AdminCourseMaterialController : Controller
         var response = await adminCourseMaterialService.GetByIdAsync(
             new GetCourseMaterialByIdRequest(id));
 
-        if (response.CourseMaterial == null)
+        if (response?.CourseMaterial == null)
         {
-            TempData[Notification.ModalMessage[0]] = response.Message;
+            TempData[Notification.ModalMessage[0]] = "Something went wrong in retrieving the data";
             return RedirectToAction("List");
         }
 

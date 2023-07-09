@@ -1,45 +1,18 @@
-﻿using GermanCourseRegistration.Application.ServiceResults;
+﻿using GermanCourseRegistration.Application.Messages.CourseOfferMessages;
 
 namespace GermanCourseRegistration.Application.Services;
 
 public interface IAdminCourseScheduleService
 {
-    Task<CourseOfferResult> GetByIdAsync(Guid id);
+    Task<GetCourseOfferByIdResponse> GetByIdAsync(GetCourseOfferByIdRequest request);
 
-    Task<IEnumerable<CourseOfferResult>> GetAllAsync();
+    Task<GetAllCourseOffersResponse> GetAllAsync();
 
-    Task<bool> AddAsync(
-        Guid courseId,
-        string name,
-        string classType,
-        decimal cost,
-        DateTime startDate,
-        DateTime endDate,
-        Guid createdBy,
-        DateTime createdOn,
-        IEnumerable<string> daysOfWeek,
-        int StartTimeHour,
-        int StartTimeMinute,
-        int EndTimeHour,
-        int EndTimeMinute);
+    Task<AddCourseOfferResponse> AddAsync(AddCourseOfferRequest request);
 
-    Task<CourseOfferResult> UpdateAsync(
-        Guid id,
-        Guid courseId,
-        string name,
-        string classType,
-        decimal cost,
-        DateTime startDate,
-        DateTime endDate,
-        Guid lastModifiedBy,
-        DateTime lastModifiedOn,
-        IEnumerable<string> daysOfWeek,
-        int StartTimeHour,
-        int StartTimeMinute,
-        int EndTimeHour,
-        int EndTimeMinute);
+    Task<UpdateCourseOfferResponse> UpdateAsync(UpdateCourseOfferRequest request);
 
-    Task<CourseOfferResult> DeleteAsync(Guid id);
+    Task<DeleteCourseOfferResponse> DeleteAsync(DeleteCourseOfferRequest request);
 
     IEnumerable<string> GetAvailableClassTypes();
 

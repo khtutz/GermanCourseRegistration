@@ -39,11 +39,11 @@ public class HomeController : Controller
         // For student, show the registered course (only one at a time)
         if (User.IsInRole("Admin"))
         {
-            IEnumerable<CourseOfferResult> courseOfferResults = 
-                await adminCourseScheduleService.GetAllAsync();
+            IEnumerable<CourseOfferResult> courseOfferResults = Enumerable.Empty<CourseOfferResult>();
+                //wait adminCourseScheduleService.GetAllAsync();
 
-            courseScheduleModels = MapperProfiles
-                .MapCourseOfferResultsToCourseScheduleViewModels(courseOfferResults);
+            //courseScheduleModels = MapperProfiles
+            //    .MapCourseOfferResultsToCourseScheduleViewModels(courseOfferResults);
         }
         else
         {

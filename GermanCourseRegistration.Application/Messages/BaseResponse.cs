@@ -2,7 +2,7 @@
 
 public record BaseResponse
 {
-    public bool IsTransactionSuccess { get; internal set; } = true;
+    public bool IsTransactionSuccess { get; internal protected set; }
 
-    public string Message { get; internal set; } = "Something went wrong!";
+    public string Message { get; internal protected set; } = "Something went wrong!";
 }
