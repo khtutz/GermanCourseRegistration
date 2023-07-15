@@ -1,5 +1,6 @@
-﻿using GermanCourseRegistration.Application.Interfaces.Repositories;
-using GermanCourseRegistration.Application.ServiceResults;
+﻿using AutoMapper;
+using GermanCourseRegistration.Application.Interfaces.Repositories;
+using GermanCourseRegistration.Application.Messages.RegistrationMessages;
 using GermanCourseRegistration.EntityModels;
 
 namespace GermanCourseRegistration.Application.Services;
@@ -7,87 +8,54 @@ namespace GermanCourseRegistration.Application.Services;
 public class RegistrationService : IRegistrationService
 {
     private readonly IRegistrationRepository registrationRepository;
+    private readonly IMapper mapper;
 
-    public RegistrationService(IRegistrationRepository registrationRepository)
+    public RegistrationService(
+        IRegistrationRepository registrationRepository,
+        IMapper mapper)
     {
         this.registrationRepository = registrationRepository;
+        this.mapper = mapper;
     }
 
-    public async Task<bool> AddAsync(
-        dynamic registrationModel,
-        dynamic orderModel,
-        List<dynamic> itemModels)
+    public async Task<AddRegistrationResponse> AddAsync(
+        AddRegistrationRequest registrationRequest,
+        AddOrderRequest orderRequest,
+        AddOrderItemsRequest itemsRequest)
     {
         var registration = MapToRegistrationModel(
-            registrationModel,
-            orderModel,
-            itemModels);
+            registrationRequest, orderRequest, itemsRequest);
 
         bool isAdded = await registrationRepository.AddAsync(registration);
 
-        return isAdded;
+        var response = new AddRegistrationResponse()
+        {
+            IsTransactionSuccess = isAdded,
+            Message = isAdded
+                ? "Course and materials added successfully."
+                : "Failed to add course and materials."
+        };
+        return response;
     }
 
-    public async Task<RegistrationResult> GetByStudentIdAsync(Guid id)
+    public async Task<GetRegistrationByStudentIdResponse> GetByStudentIdAsync(
+        GetRegistrationByStudentIdRequest request)
     {
-        var registration = await registrationRepository.GetByStudentIdAsync(id);
+        var registration = await registrationRepository.GetByStudentIdAsync(request.Id);
 
-        return new RegistrationResult(registration);
+        var response = mapper.Map<GetRegistrationByStudentIdResponse>(registration);
+
+        return response;
     }
 
     private Registration MapToRegistrationModel(
-        dynamic registrationModel,
-        dynamic orderModel,
-        List<dynamic> itemModels)
+        AddRegistrationRequest registrationRequest,
+        AddOrderRequest orderRequest,
+        AddOrderItemsRequest itemsRequest)
     {
-        var orderItems = MapToOrderItemModels(itemModels);
-        var order = MapToOrderModel(orderModel, orderItems, registrationModel.Id);
-
-        var registration = new Registration()
-        {
-            Id = registrationModel.Id,
-            StudentId = registrationModel.StudentId,
-            CourseOfferId = registrationModel.CourseOfferId,
-            Status = registrationModel.Status,
-            CreatedOn = registrationModel.CreatedOn,
-            CourseMaterialOrder = order
-        };
+        var order = mapper.Map<CourseMaterialOrder>((orderRequest, itemsRequest));
+        var registration = mapper.Map<Registration>((registrationRequest, order));
 
         return registration;
-    }
-
-    private IEnumerable<CourseMaterialOrderItem> MapToOrderItemModels(List<dynamic> itemModels)
-    {
-        var orderItems = new List<CourseMaterialOrderItem>();
-        foreach (var item in itemModels)
-        {
-            var orderItem = new CourseMaterialOrderItem()
-            {
-                Id = item.CourseMaterialOrderId,
-                CourseMaterialId = item.CourseMaterialId,
-                Quantity = item.Quantity
-            };
-
-            orderItems.Add(orderItem);
-        }
-
-        return orderItems;
-    }
-
-    private CourseMaterialOrder MapToOrderModel(
-        dynamic orderModel,
-        IEnumerable<CourseMaterialOrderItem> orderItems,
-        Guid registrationId)
-    {
-        var order = new CourseMaterialOrder()
-        {
-            Id = orderModel.Id,
-            RegistrationId = registrationId,
-            OrderStatus = orderModel.OrderStatus,
-            OrderDate = orderModel.OrderDate,
-            CourseMaterialOrderItems = orderItems
-        };
-
-        return order;
     }
 }

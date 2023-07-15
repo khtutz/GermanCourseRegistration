@@ -1,5 +1,4 @@
-﻿using GermanCourseRegistration.Application.ServiceResults;
-using GermanCourseRegistration.Application.Services;
+﻿using GermanCourseRegistration.Application.Services;
 using GermanCourseRegistration.Web.Mappings;
 using GermanCourseRegistration.Web.Models;
 using GermanCourseRegistration.Web.Models.ViewModels;
@@ -7,6 +6,7 @@ using GermanCourseRegistration.Web.HelperServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using GermanCourseRegistration.Application.Messages.RegistrationMessages;
 
 namespace GermanCourseRegistration.Web.Controllers;
 
@@ -32,45 +32,35 @@ public class HomeController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
 	{
-        var courseScheduleModels = Enumerable.Empty<CourseScheduleView>();
+        var courseScheduleViewModels = Enumerable.Empty<CourseScheduleView>();
         CourseScheduleForStudentView? courseScheduleForStudentModel = null;
 
-        // For admin show the currently offered courses
-        // For student, show the registered course (only one at a time)
         if (User.IsInRole("Admin"))
         {
-            IEnumerable<CourseOfferResult> courseOfferResults = Enumerable.Empty<CourseOfferResult>();
-                //wait adminCourseScheduleService.GetAllAsync();
-
-            //courseScheduleModels = MapperProfiles
-            //    .MapCourseOfferResultsToCourseScheduleViewModels(courseOfferResults);
+            var response = await adminCourseScheduleService.GetAllAsync();
+            courseScheduleViewModels = CourseScheduleMapping.MapToViewModels(response);
         }
         else
         {
             Guid studentId = await UserAccountService.GetCurrentUserId(userManager, User);
+            var studentRegistrationResponse = await registrationService.GetByStudentIdAsync(
+                new GetRegistrationByStudentIdRequest(studentId));
 
-            RegistrationResult registrationResult = 
-                await registrationService.GetByStudentIdAsync(studentId);
-
-            var registeredCourse = registrationResult.Registration;
-
-            if (registeredCourse != null)
+            if (studentRegistrationResponse?.Registration?.CourseOffer != null)
             {
-                if (registeredCourse.CourseOffer != null)
+                courseScheduleForStudentModel = new CourseScheduleForStudentView()
                 {
-                    courseScheduleForStudentModel = new CourseScheduleForStudentView()
-                    {
-                        Name = registeredCourse.CourseOffer.Name,
-                        ClassType = registeredCourse.CourseOffer.ClassType,
-                        StartDate = registeredCourse.CourseOffer.StartDate,
-                        EndDate = registeredCourse.CourseOffer.EndDate
-                    };
-                }
+                    Name = studentRegistrationResponse.Registration.CourseOffer.Name,
+                    ClassType = studentRegistrationResponse.Registration.CourseOffer.ClassType,
+                    StartDate = studentRegistrationResponse.Registration.CourseOffer.StartDate,
+                    EndDate = studentRegistrationResponse.Registration.CourseOffer.EndDate
+                };
             }
+
         }
 
         var tuple = new Tuple<IEnumerable<CourseScheduleView>, CourseScheduleForStudentView>(
-            courseScheduleModels, courseScheduleForStudentModel!);
+            courseScheduleViewModels, courseScheduleForStudentModel!);
         return View(tuple);
     }
 

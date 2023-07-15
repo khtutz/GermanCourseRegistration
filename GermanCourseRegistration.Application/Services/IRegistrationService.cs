@@ -1,13 +1,15 @@
-﻿using GermanCourseRegistration.Application.ServiceResults;
+﻿using GermanCourseRegistration.Application.Messages.RegistrationMessages;
+using GermanCourseRegistration.Application.ServiceResults;
 
 namespace GermanCourseRegistration.Application.Services;
 
 public interface IRegistrationService
 {
-    Task<bool> AddAsync(
-        dynamic registrationModel, 
-        dynamic orderModel, 
-        List<dynamic> itemModels);
+    Task<AddRegistrationResponse> AddAsync(
+        AddRegistrationRequest registrationRequest,
+        AddOrderRequest orderRequest,
+       AddOrderItemsRequest itemsRequest);
 
-    Task<RegistrationResult> GetByStudentIdAsync(Guid id);
+    Task<GetRegistrationByStudentIdResponse> GetByStudentIdAsync(
+        GetRegistrationByStudentIdRequest request);
 }

@@ -1,7 +1,5 @@
 ﻿using GermanCourseRegistration.Application.Messages.CourseOfferMessages;
-using GermanCourseRegistration.Application.ServiceResults;
 using GermanCourseRegistration.Web.Models.ViewModels;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GermanCourseRegistration.Web.Mappings;
 

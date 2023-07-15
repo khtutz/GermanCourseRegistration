@@ -1,7 +1,5 @@
-﻿using Azure;
-using GermanCourseRegistration.Application.Messages.StudentMessages;
+﻿using GermanCourseRegistration.Application.Messages.StudentMessages;
 using GermanCourseRegistration.Web.Models.ViewModels;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GermanCourseRegistration.Web.Mappings;
 

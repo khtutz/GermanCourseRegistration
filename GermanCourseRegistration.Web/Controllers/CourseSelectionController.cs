@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using GermanCourseRegistration.Application.ServiceResults;
 using GermanCourseRegistration.Application.Services;
 using GermanCourseRegistration.Web.Mappings;
 using GermanCourseRegistration.Web.Models.ViewModels;
 using GermanCourseRegistration.Web.HelperServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Dynamic;
+using GermanCourseRegistration.Application.Messages.RegistrationMessages;
 
 namespace GermanCourseRegistration.Web.Controllers;
 
@@ -36,25 +35,22 @@ public class CourseSelectionController : Controller
     public async Task<IActionResult> Add()
     {
         // Step 1: Load currently offered classes
-        IEnumerable<CourseOfferResult> courseOfferResults = Enumerable.Empty<CourseOfferResult>();
-            //await adminCourseScheduleService.GetAllAsync();
+        var offeredCoursesResponse = await adminCourseScheduleService.GetAllAsync();
 
-        if (!courseOfferResults.Any())
+        if (offeredCoursesResponse == null || !offeredCoursesResponse.CourseOffers.Any())
         {
             TempData["ErrorMessage"] = "No available classes at the moment.";
             return RedirectToAction("List", "MyCourse");
         }
 
         // Step 2: Load currently offered (optional) course materials to buy
-        IEnumerable<CourseMaterialResult> courseMaterialResults = null;
-            //await adminCourseMaterialService.GetAllAsync();
+        var courseMaterialsResponse = await adminCourseMaterialService.GetAllAsync();
 
         // Step 3: Add offered classes and course materials into registration view model
         var viewModel = new CourseRegistrationView()
         {
-            CourseSchedules = MapperProfiles
-                .MapCourseOfferResultsToCourseScheduleViewModels(courseOfferResults),
-            CourseMaterials = mapper.Map<List<CourseMaterialView>>(courseMaterialResults)
+            CourseSchedules = CourseScheduleMapping.MapToViewModels(offeredCoursesResponse),
+            CourseMaterials = CourseMaterialMapping.MapToViewModels(courseMaterialsResponse)
         };
 
         return View(viewModel);
@@ -69,46 +65,38 @@ public class CourseSelectionController : Controller
         // To set all 'Date' and 'Time' the same
         DateTime currentDateAndTime = DateTime.Now;
 
-        // Create a 'registration'
+        // Step 1: Create a registration request
         Guid registrationId = Guid.NewGuid();
 
-        dynamic registration = new ExpandoObject();
-        registration.Id = registrationId;
-        registration.StudentId = loginId;
-        registration.CourseOfferId = courseOfferId;
-        registration.Status = "Unpaid";
-        registration.CreatedOn = currentDateAndTime;
+        var registrationRequest = RegistrationMapping.MapToRegistrationAddRequest(
+            registrationId, loginId, courseOfferId, "Unpaid", currentDateAndTime);
 
-        // Create 'order' if there is any material selected to purchase
+        // Step 2: Create an order request
         Guid orderId = Guid.NewGuid();
-        dynamic courseMaterialOrder = new ExpandoObject();
-        List<dynamic> orderItems = new();
+        var orderRequest = new AddOrderRequest();
+        var orderItems = new List<AddOrderItemRequest>();
 
         if (model.SelectedMaterialIds != null && model.SelectedMaterialIds.Any())
         {
-            courseMaterialOrder.Id = orderId;
-            courseMaterialOrder.RegistrationId = registrationId;
-            courseMaterialOrder.OrderStatus = "Unpaid";
-            courseMaterialOrder.OrderDate = currentDateAndTime;
+            orderRequest = RegistrationMapping.MapToOrderRequest(
+                orderId, registrationId, "Unpaid", currentDateAndTime);
 
-            // Create order items
+            // Step 3: Create order items
             foreach (Guid materialId in model.SelectedMaterialIds)
             {
-                dynamic orderItem = new ExpandoObject();
-                orderItem.CourseMaterialOrderId = orderId;
-                orderItem.CourseMaterialId = materialId;
-                orderItem.Quantity = 1;
-
-                orderItems.Add(orderItem);
+                var orderItemRequest = RegistrationMapping.MapToOrderItemRequest(
+                    orderId, materialId, 1);
+                orderItems.Add(orderItemRequest);
             }
         }
+        var orderItemsRequest = new AddOrderItemsRequest(orderItems);
 
-        bool isAdded = await registrationService.AddAsync(
-            registration,
-            courseMaterialOrder,
-            orderItems);
+        var response = await registrationService.AddAsync(
+            registrationRequest,
+            orderRequest,
+            orderItemsRequest);
 
-        if (isAdded)
+        if (response.IsTransactionSuccess)
         {
             return RedirectToAction("Add", "Payment", new
             {
