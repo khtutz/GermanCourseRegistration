@@ -13,11 +13,11 @@ Web application for registering German classes and buying related course materia
 The web application allows students to register different level of German courses created by admins. The project is created to explore web development, and also to demonstrate what can be achieved using the .net core development in MVC framework with C#.
 
 ## Technologies
-* Bootstrap 5
 * ASP.NET Razor
 * ASP.NET Core, Version 7.0
 * MVC with C# and Entity Framework
 * SQL Server
+* Bootstrap 5
 
 ## Setting up and Running the Application
 * **IDEs**: Visual Studio or Visual Studio Code, SQL Server Management Studio
