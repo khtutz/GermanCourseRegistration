@@ -1,3 +1,6 @@
+# German Course Registration System (ASP.NET Core MVC)
+Web application for registering German classes and buying related course materials.
+
 ## Table of Contents
 * [Introduction](#intro)
 * [Technologies](#tech)
