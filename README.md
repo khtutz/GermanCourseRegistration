@@ -45,14 +45,10 @@ Update-Database -Context "GermanCourseRegistrationDbContext"
 * Registering course, adding personal information, and purchasing course and related materials.
 
 ### Enhancements to do
-* Success, and failure notifications
 * Routes for redirect
-* Application service layer to do some validations, mapping between domain models and view models, and other features
 * Personal profile page for students and admins
-* Logging features
-* More auditing features
 * Documentation updates
 
 ## Project Status
-* Basic functions of the projects have been completed. However, adding more codes on catching errors, and unit testings need to be added.
+* Basic functions of the projects have been completed. However, fixing bugs, and adding more codes e.g. unit testings need to be done.
 * Enhanced features are also to be added, and expected to grow (including database tables) in the future development.
