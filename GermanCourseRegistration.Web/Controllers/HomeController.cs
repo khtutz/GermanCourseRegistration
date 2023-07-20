@@ -1,4 +1,5 @@
-﻿using GermanCourseRegistration.Application.Services;
+﻿using GermanCourseRegistration.Application.Messages.RegistrationMessages;
+using GermanCourseRegistration.Application.Services;
 using GermanCourseRegistration.Web.Mappings;
 using GermanCourseRegistration.Web.Models;
 using GermanCourseRegistration.Web.Models.ViewModels;
@@ -6,7 +7,6 @@ using GermanCourseRegistration.Web.HelperServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using GermanCourseRegistration.Application.Messages.RegistrationMessages;
 
 namespace GermanCourseRegistration.Web.Controllers;
 
@@ -15,18 +15,15 @@ public class HomeController : Controller
     private readonly IAdminCourseScheduleService adminCourseScheduleService;
     private readonly IRegistrationService registrationService;
     private readonly UserManager<IdentityUser> userManager;
-    private readonly SignInManager<IdentityUser> signInManager;
 
     public HomeController(
         IAdminCourseScheduleService adminCourseScheduleService,
         IRegistrationService registrationService,
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+        UserManager<IdentityUser> userManager)
     {
         this.adminCourseScheduleService = adminCourseScheduleService;
         this.registrationService = registrationService;
         this.userManager = userManager;
-        this.signInManager = signInManager;
     }
 
     [HttpGet]
@@ -40,7 +37,7 @@ public class HomeController : Controller
             var response = await adminCourseScheduleService.GetAllAsync();
             courseScheduleViewModels = CourseScheduleMapping.MapToViewModels(response);
         }
-        else
+        else if (User.IsInRole("User"))
         {
             Guid studentId = await UserAccountService.GetCurrentUserId(userManager, User);
             var studentRegistrationResponse = await registrationService.GetByStudentIdAsync(
@@ -59,9 +56,11 @@ public class HomeController : Controller
 
         }
 
-        var tuple = new Tuple<IEnumerable<CourseScheduleView>, CourseScheduleForStudentView>(
-            courseScheduleViewModels, courseScheduleForStudentModel!);
-        return View(tuple);
+        var viewModels = (
+            CourseScheduleViews: courseScheduleViewModels,
+            CourseScheduleForStudentView: courseScheduleForStudentModel!);
+
+        return View(viewModels);
     }
 
 	public IActionResult Privacy()

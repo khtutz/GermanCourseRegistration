@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> signInManager
-@model Tuple<IEnumerable<GermanCourseRegistration.Web.Models.ViewModels.CourseScheduleView>, GermanCourseRegistration.Web.Models.ViewModels.CourseScheduleForStudentView>
+@model (IEnumerable<GermanCourseRegistration.Web.Models.ViewModels.CourseScheduleView> CourseScheduleViews, GermanCourseRegistration.Web.Models.ViewModels.CourseScheduleForStudentView CourseScheduleViewForStudent)
 
 @if (signInManager.IsSignedIn(User))
 {
@@ -30,7 +30,7 @@
     {
         @if (User.IsInRole("Admin"))
         {
-            @if (Model.Item1 != null && Model.Item1.Any())
+            @if (Model.CourseScheduleViews != null && Model.CourseScheduleViews.Any())
             {
                 <table class="table table-hover">
                     <thead>
@@ -43,7 +43,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var schedule in Model.Item1)
+                        @foreach (var schedule in Model.CourseScheduleViews)
                         {
                             <tr>
                                 <td>
@@ -74,7 +74,7 @@
         }
         else
         {
-            @if (Model.Item2 != null)
+            @if (Model.CourseScheduleViewForStudent != null)
             {
                 <table class="table table-hover">
                     <thead>
@@ -87,10 +87,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>@Model.Item2.Name</td>
-                            <td>@Model.Item2.ClassType</td>
-                            <td>@Model.Item2.StartDate</td>
-                            <td>@Model.Item2.EndDate</td>
+                            <td>@Model.CourseScheduleViewForStudent.Name</td>
+                            <td>@Model.CourseScheduleViewForStudent.ClassType</td>
+                            <td>@Model.CourseScheduleViewForStudent.StartDate</td>
+                            <td>@Model.CourseScheduleViewForStudent.EndDate</td>
                         </tr>
                     </tbody>
                 </table>
