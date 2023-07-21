@@ -91,6 +91,6 @@ public class AutoMapperProfiles : Profile
         CreateMap<AddRegistrationRequest, Registration>();
 
         // Payment
-        CreateMap<AddPaymentRequest, Student>();
+        CreateMap<AddPaymentRequest, Payment>();
     }
 }
