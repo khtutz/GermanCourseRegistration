@@ -53,9 +53,24 @@ public class RegistrationService : IRegistrationService
         AddOrderRequest orderRequest,
         AddOrderItemsRequest itemsRequest)
     {
-        var order = mapper.Map<CourseMaterialOrder>((orderRequest, itemsRequest));
-        var registration = mapper.Map<Registration>((registrationRequest, order));
+        var orderItems = new List<CourseMaterialOrderItem>();
+        foreach (var item in itemsRequest.OrderItems)
+        {
+            orderItems.Add(new CourseMaterialOrderItem()
+            {
+                CourseMaterialOrderId = item.OrderId,
+                CourseMaterialId = item.MaterialId,
+                Quantity = item.Quantity
+            });
+        }
+
+        var order = mapper.Map<CourseMaterialOrder>(orderRequest);
+        order.CourseMaterialOrderItems = orderItems;
+
+        var registration = mapper.Map<Registration>(registrationRequest);
+        registration.CourseMaterialOrder = order;
 
         return registration;
     }
 }
+ 

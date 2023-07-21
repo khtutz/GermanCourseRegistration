@@ -86,10 +86,9 @@ public class AutoMapperProfiles : Profile
         CreateMap<Registration, GetRegistrationByStudentIdResponse>()
             .ForMember(d => d.Registration, opt => opt.MapFrom(s => s));
 
-        CreateMap<(AddOrderRequest, AddOrderItemsRequest), CourseMaterialOrder>()
-            .ForMember(d => d.CourseMaterialOrderItems, opt => opt.MapFrom(s => s.Item2));
-        CreateMap<(AddRegistrationRequest, AddOrderRequest), Registration>()
-            .ForMember(d => d.CourseMaterialOrder, opt => opt.MapFrom(s => s.Item2));
+        CreateMap<AddOrderItemRequest?, CourseMaterialOrderItem>();
+        CreateMap<AddOrderRequest, CourseMaterialOrder>();
+        CreateMap<AddRegistrationRequest, Registration>();
 
         // Payment
         CreateMap<AddPaymentRequest, Student>();
