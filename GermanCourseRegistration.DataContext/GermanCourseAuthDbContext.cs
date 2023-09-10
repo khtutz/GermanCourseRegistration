@@ -59,8 +59,6 @@ public class GermanCourseAuthDbContext : IdentityDbContext
 			Id = superAdminId
 		};
 
-		// To provide password directly here or load from xml, or json file
-		// To remove back after running the migration
 		const string password = "";
 
         superAdminUser.PasswordHash = new PasswordHasher<IdentityUser>()
